@@ -23,5 +23,4 @@ public class PersonaDTOPut {
     String telefonofijo;
     LocalDate fechaModificacion;
     boolean habilitado;
-    String idUsuario;
 }

@@ -23,8 +23,12 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.listarUsuarios());
     }
     @GetMapping("/filtro")
-    public ResponseEntity<List<UsuarioDTO>> getUsuarios(@RequestParam(name = "email", required = false) String email){
+    public ResponseEntity<List<UsuarioDTO>> getUsuarios(@RequestParam(name = "email") String email){
         return ResponseEntity.ok(usuarioService.listarUsuariosFiltro(email));
+    }
+    @GetMapping("/rol")
+    public ResponseEntity<List<UsuarioDTO>> getUsuariosByRol(@RequestParam(name = "idRol", required = false) Long idRol){
+        return ResponseEntity.ok(usuarioService.listarUsuariosByRol(idRol));
     }
     @GetMapping("/usuario")
     public ResponseEntity<UsuarioDTO> getUsuarioByEmail(@RequestParam(name = "email") String email){
@@ -37,5 +41,9 @@ public class UsuarioController {
     @PutMapping("")
     public ResponseEntity<MensajeRespuesta> bajaUsuario(@RequestParam String emailBajaUsuario){
         return ResponseEntity.ok(usuarioService.bajaUsuario(emailBajaUsuario));
+    }
+    @PutMapping("/rol")
+    public ResponseEntity<MensajeRespuesta> cambiarRolUsuario(@RequestParam String email, @RequestParam(required = false) Long idRol){
+        return ResponseEntity.ok(usuarioService.cambiarRolUsuario(email, idRol));
     }
 }

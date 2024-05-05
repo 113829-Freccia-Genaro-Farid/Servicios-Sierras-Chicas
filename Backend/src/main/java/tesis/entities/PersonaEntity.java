@@ -27,14 +27,14 @@ public class PersonaEntity {
     @Column(length = 25, nullable = false)
     private String nombre;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_ciudad")
     private CiudadEntity ciudad;
 
     @Column(name = "fechaNac", nullable = false)
     private LocalDate fechaNacimiento;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_tipodni")
     private TipoDNIEntity tipoDNI;
 

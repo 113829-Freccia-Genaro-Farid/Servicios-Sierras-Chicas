@@ -3,10 +3,8 @@ package tesis.services.auxiliar;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tesis.dtos.UsuarioDTO;
 import tesis.dtos.auxiliar.CiudadDTO;
 import tesis.dtos.common.MensajeRespuesta;
-import tesis.entities.UsuarioEntity;
 import tesis.entities.auxiliar.CiudadEntity;
 import tesis.exceptions.MensajeRespuestaException;
 import tesis.models.auxiliar.Ciudad;
@@ -40,8 +38,8 @@ public class CiudadServiceImpl implements CiudadService{
     public MensajeRespuesta registrar(CiudadDTO ciudadDTO) {
         MensajeRespuesta mensajeRespuesta = new MensajeRespuesta();
         try{
-            if(ciudadJpaRepository.existsByDescripcionOrCodigoPostal(ciudadDTO.getDescripcion(), ciudadDTO.getCodigoPostal())){
-                mensajeRespuesta.setMensaje("Ya existe una ciudad con el mismo nombre o codigo postal.");
+            if(ciudadJpaRepository.existsByDescripcion(ciudadDTO.getDescripcion())){
+                mensajeRespuesta.setMensaje("Ya existe una ciudad con el mismo nombre.");
                 mensajeRespuesta.setOk(false);
                 return mensajeRespuesta;
             }

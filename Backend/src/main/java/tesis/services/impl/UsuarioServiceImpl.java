@@ -69,6 +69,24 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
+    public List<UsuarioDTO> listarUsuariosByRol(Long idRol) {
+        List<UsuarioDTO> lst = new ArrayList<>();
+        try{
+            List<UsuarioEntity> lista = usuarioJpaRepository.findByRol_Id(idRol);
+            for (UsuarioEntity u:lista){
+                lst.add(new UsuarioDTO(u.getEmail(),
+                        u.isActivo(),
+                        u.getFechaAlta(),
+                        (u.getRol() != null) ? u.getRol().getDescripcion() : null));
+            }
+        }catch (Exception e){
+            MensajeRespuesta mensajeRespuesta = new MensajeRespuesta("Error interno",false);
+            throw new MensajeRespuestaException(mensajeRespuesta);
+        }
+        return lst;
+    }
+
+    @Override
     public UsuarioDTO obtenerUsuarioByEmail(String email) {
         try{
             UsuarioEntity entity = usuarioJpaRepository.getByEmail(email.toLowerCase());
@@ -91,7 +109,6 @@ public class UsuarioServiceImpl implements UsuarioService {
         MensajeRespuesta mensajeRespuesta = new MensajeRespuesta();
         // SE PASA A MINUSCULAS PARA TENER ESTANDARIZADO
         usuarioDTO.setEmail(usuarioDTO.getEmail().toLowerCase());
-        usuarioDTO.setActivo(false);
         try{
             if(usuarioJpaRepository.existsByEmail(usuarioDTO.getEmail())){
                 mensajeRespuesta.setMensaje("Ya existe un usuario registrado con ese email.");
@@ -130,6 +147,33 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new MensajeRespuestaException(mensajeRespuesta);
         }
 
+        return mensajeRespuesta;
+    }
+
+    @Override
+    public MensajeRespuesta cambiarRolUsuario(String email, Long idRol) {
+        MensajeRespuesta mensajeRespuesta = new MensajeRespuesta();
+
+        try{
+            UsuarioEntity entity = usuarioJpaRepository.getByEmail(email);
+            if (entity != null){
+                if(idRol != null){
+                    entity.setRol(rolJpaRepository.findById(idRol).get());
+                    usuarioJpaRepository.save(entity);
+                }else {
+                    entity.setRol(null);
+                    usuarioJpaRepository.save(entity);
+                }
+            }else{
+                mensajeRespuesta.setMensaje("No se encontro el usuario con el mail "+email+".");
+                mensajeRespuesta.setOk(false);
+            }
+
+        }catch (Exception e){
+            mensajeRespuesta.setMensaje("Error al cambiar de rol al usuario.");
+            mensajeRespuesta.setOk(false);
+            throw new MensajeRespuestaException(mensajeRespuesta);
+        }
         return mensajeRespuesta;
     }
 

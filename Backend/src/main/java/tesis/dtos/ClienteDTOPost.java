@@ -1,4 +1,4 @@
-package tesis.models;
+package tesis.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Cliente {
-    Long id;
+public class ClienteDTOPost {
     Long idPersona;
 }

@@ -14,4 +14,5 @@ public class Usuario {
     String password;
     boolean activo;
     LocalDate fechaAlta;
+    Long idRol;
 }

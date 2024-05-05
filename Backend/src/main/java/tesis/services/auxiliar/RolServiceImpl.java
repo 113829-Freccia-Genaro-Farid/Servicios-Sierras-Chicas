@@ -6,10 +6,8 @@ import org.springframework.stereotype.Service;
 import tesis.dtos.auxiliar.RolDTO;
 import tesis.dtos.common.MensajeRespuesta;
 import tesis.entities.auxiliar.RolEntity;
-import tesis.entities.auxiliar.TipoDNIEntity;
 import tesis.exceptions.MensajeRespuestaException;
 import tesis.models.auxiliar.Rol;
-import tesis.models.auxiliar.TipoDNI;
 import tesis.repositories.auxiliar.RolJpaRepository;
 
 import java.util.ArrayList;

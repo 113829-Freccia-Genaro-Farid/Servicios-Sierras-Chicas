@@ -11,7 +11,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PersonaDTO {
-    Long id;
     String apellido;
     String nombre;
     String ciudad;

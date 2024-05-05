@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 public interface PersonaService {
-    List<PersonaDTO> listarPersonas();
+    List<PersonaDTO> listarPersonasHabilitadas();
     List<PersonaDTO> listarPersonasFiltro(String apellido);
     PersonaDTO obtenerPersonaById(Long id);
     MensajeRespuesta modificarPersona(PersonaDTOPut persona, Long id);

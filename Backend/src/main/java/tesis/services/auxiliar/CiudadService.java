@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import tesis.dtos.auxiliar.CiudadDTO;
 import tesis.dtos.common.MensajeRespuesta;
 import tesis.models.auxiliar.Ciudad;
-import tesis.models.auxiliar.TipoDNI;
 
 import java.util.List;
 

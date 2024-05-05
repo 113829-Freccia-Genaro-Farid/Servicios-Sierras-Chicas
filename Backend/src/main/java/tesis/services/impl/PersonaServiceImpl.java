@@ -32,7 +32,7 @@ public class PersonaServiceImpl implements PersonaService {
     ModelMapper modelMapper;
 
     @Override
-    public List<PersonaDTO> listarPersonas() {
+    public List<PersonaDTO> listarPersonasHabilitadas() {
         List<PersonaDTO> lst;
         try{
             List<PersonaEntity> lista= personaJpaRepository.findAll();
@@ -119,7 +119,7 @@ public class PersonaServiceImpl implements PersonaService {
             personaEntity.setNroDocumento(personaDTO.getNroDocumento());
             personaEntity.setHabilitado(true);
 
-            // encontrar una api para validar datos segun dni
+            // TODO:encontrar una api para validar datos segun dni
 
             personaJpaRepository.save(personaEntity);
         }catch (Exception e){
@@ -135,6 +135,8 @@ public class PersonaServiceImpl implements PersonaService {
     private List<PersonaDTO> mapearListaPersonas(List<PersonaEntity> personaEntities) {
         List<PersonaDTO> personaDTOS = new ArrayList<>();
         for (PersonaEntity p:personaEntities){
+            if(!p.isHabilitado())
+                continue;
             PersonaDTO personaDTO = modelMapper.map(p,PersonaDTO.class);
             if(personaDTO.getCiudad() != null)
                 personaDTO.setCiudad(p.getCiudad().getDescripcion());

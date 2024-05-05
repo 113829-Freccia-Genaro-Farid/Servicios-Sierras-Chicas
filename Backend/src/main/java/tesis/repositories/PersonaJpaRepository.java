@@ -11,5 +11,6 @@ public interface PersonaJpaRepository extends JpaRepository<PersonaEntity,Long> 
     List<PersonaEntity> findByApellidoStartingWith(String apellido);
     boolean existsByNroDocumentoAndTipoDNI_Id(String nroDoc, Long idTipoDNI);
     boolean existsByTelefono1(String numero);
+    boolean existsByUsuario_Email(String email);
 
 }

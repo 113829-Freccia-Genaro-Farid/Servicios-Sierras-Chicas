@@ -1,10 +1,8 @@
 package tesis.dtos;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.time.LocalDate;
 
@@ -16,5 +14,5 @@ public class UsuarioDTOPost {
     String password;
     boolean activo;
     LocalDate fechaAlta;
-    Long id_rol;
+    Long idRol;
 }

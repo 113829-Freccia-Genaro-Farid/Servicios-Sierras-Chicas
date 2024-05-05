@@ -13,8 +13,10 @@ public interface UsuarioService {
 
     List<UsuarioDTO> listarUsuarios();
     List<UsuarioDTO> listarUsuariosFiltro(String email);
+    List<UsuarioDTO> listarUsuariosByRol(Long idRol);
     UsuarioDTO obtenerUsuarioByEmail(String codigo);
     MensajeRespuesta registrarUsuario(UsuarioDTOPost usuarioDTO);
     MensajeRespuesta bajaUsuario(String emailBajaUsuario);
+    MensajeRespuesta cambiarRolUsuario(String email, Long idRol);
     MensajeRespuesta loginUsuario(LoginDTO loginDTO);
 }
