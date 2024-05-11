@@ -1,0 +1,6 @@
+export enum Roles {
+  SINROL,
+  CLIENTE,
+  PROFESIONALISTA,
+  ADMINISTRADOR
+}

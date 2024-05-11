@@ -28,7 +28,7 @@ public class UsuarioEntity {
     @Column
     private LocalDate fechaAlta;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_rol")
     private RolEntity rol;
 }

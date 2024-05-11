@@ -30,20 +30,20 @@ public class UsuarioController {
     public ResponseEntity<List<UsuarioDTO>> getUsuariosByRol(@RequestParam(name = "idRol", required = false) Long idRol){
         return ResponseEntity.ok(usuarioService.listarUsuariosByRol(idRol));
     }
-    @GetMapping("/usuario")
-    public ResponseEntity<UsuarioDTO> getUsuarioByEmail(@RequestParam(name = "email") String email){
+    @GetMapping("/{email}")
+    public ResponseEntity<UsuarioDTO> getUsuarioByEmail(@PathVariable(name = "email") String email){
         return ResponseEntity.ok(usuarioService.obtenerUsuarioByEmail(email));
     }
     @PostMapping("")
     public ResponseEntity<MensajeRespuesta> postUsuario(@RequestBody UsuarioDTOPost usuarioDTOPost){
         return ResponseEntity.ok(usuarioService.registrarUsuario(usuarioDTOPost));
     }
-    @PutMapping("")
-    public ResponseEntity<MensajeRespuesta> bajaUsuario(@RequestParam String emailBajaUsuario){
-        return ResponseEntity.ok(usuarioService.bajaUsuario(emailBajaUsuario));
+    @DeleteMapping("/{email}")
+    public ResponseEntity<MensajeRespuesta> bajaUsuario(@PathVariable String email){
+        return ResponseEntity.ok(usuarioService.bajaUsuario(email));
     }
-    @PutMapping("/rol")
-    public ResponseEntity<MensajeRespuesta> cambiarRolUsuario(@RequestParam String email, @RequestParam(required = false) Long idRol){
+    @PutMapping("/{email}")
+    public ResponseEntity<MensajeRespuesta> cambiarRolUsuario(@PathVariable String email, @RequestParam(required = false) Long idRol){
         return ResponseEntity.ok(usuarioService.cambiarRolUsuario(email, idRol));
     }
 }

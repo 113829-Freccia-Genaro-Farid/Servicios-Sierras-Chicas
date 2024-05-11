@@ -12,7 +12,4 @@ import java.time.LocalDate;
 public class UsuarioDTOPost {
     String email;
     String password;
-    boolean activo;
-    LocalDate fechaAlta;
-    Long idRol;
 }

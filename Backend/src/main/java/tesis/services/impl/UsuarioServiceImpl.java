@@ -54,7 +54,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     public List<UsuarioDTO> listarUsuariosFiltro(String email){
         List<UsuarioDTO> lst = new ArrayList<>();
         try{
-            List<UsuarioEntity> lista = usuarioJpaRepository.findByEmailStartingWith(email);
+            List<UsuarioEntity> lista = usuarioJpaRepository.findByEmailStartingWith(email.toLowerCase());
             for (UsuarioEntity u:lista){
                 lst.add(new UsuarioDTO(u.getEmail(),
                         u.isActivo(),
@@ -115,9 +115,9 @@ public class UsuarioServiceImpl implements UsuarioService {
                 mensajeRespuesta.setOk(false);
                 return mensajeRespuesta;
             }
-            UsuarioEntity entity = modelMapper.map(usuarioDTO, UsuarioEntity.class);
-            entity.setRol(null);
+            UsuarioEntity entity = new UsuarioEntity(usuarioDTO.getEmail(), usuarioDTO.getPassword(), true, LocalDate.now(), null);
             usuarioJpaRepository.save(entity);
+            mensajeRespuesta.setMensaje("Usuario registrado con exito.");
             personaJpaRepository.save(new PersonaEntity(null,"","",null, LocalDate.now(),null,"","","","",null,null,entity.getFechaAlta(),false,entity));
         }catch (Exception e){
             mensajeRespuesta.setMensaje("Error al grabar el usuario.");
@@ -130,7 +130,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public MensajeRespuesta bajaUsuario(String emailBajaUsuario) {
         MensajeRespuesta mensajeRespuesta = new MensajeRespuesta();
-
+        emailBajaUsuario = emailBajaUsuario.toLowerCase();
         try{
             UsuarioEntity entity = usuarioJpaRepository.getByEmail(emailBajaUsuario);
             if (entity != null){
@@ -153,7 +153,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public MensajeRespuesta cambiarRolUsuario(String email, Long idRol) {
         MensajeRespuesta mensajeRespuesta = new MensajeRespuesta();
-
+        email = email.toLowerCase();
         try{
             UsuarioEntity entity = usuarioJpaRepository.getByEmail(email);
             if (entity != null){
@@ -190,6 +190,9 @@ public class UsuarioServiceImpl implements UsuarioService {
             }else if (!usuarioJpaRepository.existsByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword())) {
                 mensajeRespuesta.setOk(false);
                 mensajeRespuesta.setMensaje("La contraseña ingresada es incorrecta.");
+            }
+            if (mensajeRespuesta.isOk()) {
+                mensajeRespuesta.setMensaje("Login realizado con exito.");
             }
         }catch (Exception e){
             mensajeRespuesta.setOk(false);
