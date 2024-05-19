@@ -3,27 +3,29 @@ package tesis.services.auxiliar;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tesis.dtos.auxiliar.ProvinciaDTO;
+import tesis.dtos.auxiliar.CategoriaDTO;
 import tesis.dtos.common.MensajeRespuesta;
+import tesis.entities.auxiliar.CategoriaEntity;
 import tesis.entities.auxiliar.ProvinciaEntity;
 import tesis.exceptions.MensajeRespuestaException;
+import tesis.models.auxiliar.Categoria;
 import tesis.models.auxiliar.Provincia;
-import tesis.repositories.auxiliar.ProvinciaJpaRepository;
+import tesis.repositories.auxiliar.CategoriaJpaRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ProvinciaServiceImpl implements ProvinciaService{
+public class CategoriaServiceImpl implements CategoriaService{
     @Autowired
-    ProvinciaJpaRepository provinciaJpaRepository;
+    CategoriaJpaRepository categoriaJpaRepository;
     @Autowired
     ModelMapper modelMapper;
     @Override
     public boolean borrarById(Long id) {
         try{
-            if(provinciaJpaRepository.existsById(id)){
-                provinciaJpaRepository.deleteById(id);
+            if(categoriaJpaRepository.existsById(id)){
+                categoriaJpaRepository.deleteById(id);
                 return true;
             }
             return false;
@@ -31,19 +33,20 @@ public class ProvinciaServiceImpl implements ProvinciaService{
             return false;
         }
     }
+
     @Override
-    public MensajeRespuesta registrar(ProvinciaDTO provinciaDTO) {
+    public MensajeRespuesta registrar(CategoriaDTO categoriaDTO) {
         MensajeRespuesta mensajeRespuesta = new MensajeRespuesta();
         try{
-            if(provinciaJpaRepository.existsByDescripcion(provinciaDTO.getDescripcion())){
-                mensajeRespuesta.setMensaje("Ya existe una provincia con el mismo nombre.");
+            if(categoriaJpaRepository.existsByDescripcion(categoriaDTO.getDescripcion())){
+                mensajeRespuesta.setMensaje("Ya existe una categoria con el mismo nombre.");
                 mensajeRespuesta.setOk(false);
                 return mensajeRespuesta;
             }
-            provinciaJpaRepository.save(modelMapper.map(provinciaDTO, ProvinciaEntity.class));
-            mensajeRespuesta.setMensaje("Se ha guardado correctamente la provincia.");
+            categoriaJpaRepository.save(modelMapper.map(categoriaDTO, CategoriaEntity.class));
+            mensajeRespuesta.setMensaje("Se ha guardado correctamente la categoria.");
         }catch (Exception e){
-            mensajeRespuesta.setMensaje("Error al grabar la provincia.");
+            mensajeRespuesta.setMensaje("Error al grabar la categoria.");
             mensajeRespuesta.setOk(false);
             throw new MensajeRespuestaException(mensajeRespuesta);
         }
@@ -51,12 +54,12 @@ public class ProvinciaServiceImpl implements ProvinciaService{
     }
 
     @Override
-    public List<Provincia> obtenerProvincias() {
-        List<Provincia> lst = new ArrayList<>();
+    public List<Categoria> obtenerCategorias() {
+        List<Categoria> lst = new ArrayList<>();
         try{
-            List<ProvinciaEntity> lista = provinciaJpaRepository.findAll();
-            for (ProvinciaEntity p:lista){
-                lst.add(modelMapper.map(p,Provincia.class));
+            List<CategoriaEntity> lista = categoriaJpaRepository.findAll();
+            for (CategoriaEntity c:lista){
+                lst.add(modelMapper.map(c,Categoria.class));
             }
         }catch (Exception e){
             MensajeRespuesta mensajeRespuesta = new MensajeRespuesta("Error interno",false);

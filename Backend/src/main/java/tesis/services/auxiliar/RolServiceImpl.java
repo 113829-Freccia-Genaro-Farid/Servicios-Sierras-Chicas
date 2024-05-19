@@ -42,6 +42,7 @@ public class RolServiceImpl implements RolService{
                 return mensajeRespuesta;
             }
             rolJpaRepository.save(modelMapper.map(rolDTO, RolEntity.class));
+            mensajeRespuesta.setMensaje("Se ha guardado correctamente el rol.");
         }catch (Exception e){
             mensajeRespuesta.setMensaje("Error al grabar el rol.");
             mensajeRespuesta.setOk(false);

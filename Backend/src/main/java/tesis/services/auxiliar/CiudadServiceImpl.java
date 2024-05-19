@@ -43,8 +43,9 @@ public class CiudadServiceImpl implements CiudadService{
                 mensajeRespuesta.setOk(false);
                 return mensajeRespuesta;
             }
-            CiudadEntity ciudadEntity = new CiudadEntity(null, ciudadDTO.getDescripcion(), ciudadDTO.getCodigoPostal(), provinciaJpaRepository.findById(ciudadDTO.getId_provincia()).get());
+            CiudadEntity ciudadEntity = new CiudadEntity(null, ciudadDTO.getDescripcion(), ciudadDTO.getCodigoPostal(), provinciaJpaRepository.findById(ciudadDTO.getIdProvincia()).get());
             ciudadJpaRepository.save(ciudadEntity);
+            mensajeRespuesta.setMensaje("Se ha guardado correctamente la ciudad.");
         }catch (Exception e){
             mensajeRespuesta.setMensaje("Error al grabar la ciudad.");
             mensajeRespuesta.setOk(false);
@@ -60,7 +61,7 @@ public class CiudadServiceImpl implements CiudadService{
             List<CiudadEntity> lista = ciudadJpaRepository.getAllByProvincia_Id(idProvincia);
             for (CiudadEntity c:lista){
                 Ciudad ciudad = modelMapper.map(c,Ciudad.class);
-                ciudad.setId_provincia(idProvincia);
+                ciudad.setIdProvincia(idProvincia);
                 lst.add(ciudad);
             }
         }catch (Exception e){

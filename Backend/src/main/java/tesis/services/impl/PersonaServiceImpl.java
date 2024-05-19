@@ -122,6 +122,7 @@ public class PersonaServiceImpl implements PersonaService {
             // TODO:encontrar una api para validar datos segun dni
 
             personaJpaRepository.save(personaEntity);
+            mensajeRespuesta.setMensaje("Se ha guardado correctamente los datos de la persona.");
         }catch (Exception e){
             mensajeRespuesta.setMensaje("Error al guardar los datos de la persona.");
             mensajeRespuesta.setOk(false);

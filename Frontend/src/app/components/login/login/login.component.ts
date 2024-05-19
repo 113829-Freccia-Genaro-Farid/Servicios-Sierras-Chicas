@@ -43,10 +43,11 @@ export class LoginComponent implements OnInit, OnDestroy{
       this.usuarioService.postLogin(this.login).subscribe({
         next: async(response:MensajeRespuesta) => {
           this.mensajeRespuesta = response;
+          await this.toggleAlert();
           if (this.mensajeRespuesta.ok){
             this.formLogin.reset();
+            await this.router.navigate([''])
           }
-          await this.toggleAlert();
         },
         error: async (response:MensajeRespuesta) => {
           this.mensajeRespuesta = response;

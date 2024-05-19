@@ -1,4 +1,4 @@
-package tesis.entities;
+package tesis.entities.auxiliar;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,14 +9,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "clientes")
-public class ClienteEntity {
+@Table(name = "categorias")
+public class CategoriaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_cliente")
+    @Column(name = "id_categoria")
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "id_persona", nullable = false)
-    private PersonaEntity persona;
+    @Column
+    private String descripcion;
 }

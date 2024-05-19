@@ -12,5 +12,6 @@ public interface ClienteService {
     List<ClienteDTO> listarClientes();
     ClienteDTO obtenerClienteById(Long id);
     MensajeRespuesta registrarCliente(ClienteDTOPost cliente);
-    MensajeRespuesta modificarCliente(Long id, ClienteDTOPost cliente);
+
+    //MensajeRespuesta modificarCliente(Long id, ClienteDTOPut cliente);
 }

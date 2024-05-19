@@ -11,5 +11,5 @@ public class Ciudad {
     Long id;
     String descripcion;
     String codigoPostal;
-    Long id_provincia;
+    Long idProvincia;
 }

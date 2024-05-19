@@ -28,8 +28,8 @@ public class ClienteController {
     public ResponseEntity<MensajeRespuesta> postCliente(@RequestBody ClienteDTOPost clienteDTOPost){
         return ResponseEntity.ok(clienteService.registrarCliente(clienteDTOPost));
     }
-    @PutMapping("/{idCliente}")
-    public ResponseEntity<MensajeRespuesta> putCliente(@PathVariable Long idCliente, @RequestBody ClienteDTOPost clienteDTOPost){
-        return ResponseEntity.ok(clienteService.modificarCliente(idCliente, clienteDTOPost));
-    }
+//    @PutMapping("/{idCliente}")
+//    public ResponseEntity<MensajeRespuesta> putCliente(@PathVariable Long idCliente, @RequestBody ClienteDTOPut clienteDTOPut){
+//        return ResponseEntity.ok(clienteService.modificarCliente(idCliente, clienteDTOPut));
+//    }
 }

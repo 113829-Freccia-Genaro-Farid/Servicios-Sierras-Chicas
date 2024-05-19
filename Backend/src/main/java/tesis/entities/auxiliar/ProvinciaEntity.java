@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class ProvinciaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column(name = "id_provincia")
     private Long id;
 
     @Column

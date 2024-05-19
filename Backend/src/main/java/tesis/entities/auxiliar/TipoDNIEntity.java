@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class TipoDNIEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column(name = "id_tipoDNI")
     private Long id;
 
     @Column

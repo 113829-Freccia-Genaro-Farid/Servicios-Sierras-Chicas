@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class CiudadEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column(name = "id_ciudad")
     private Long id;
 
     @Column

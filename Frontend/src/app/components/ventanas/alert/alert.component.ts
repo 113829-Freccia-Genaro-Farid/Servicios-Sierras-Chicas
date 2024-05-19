@@ -19,6 +19,6 @@ export class AlertComponent implements OnInit {
     }
     setTimeout(() => {
       this.showAlert = false;
-    }, 1000);
+    }, 0);
   }
 }

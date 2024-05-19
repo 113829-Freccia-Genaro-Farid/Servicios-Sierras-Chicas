@@ -1,19 +1,39 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Login} from "../../models/login";
-import {Observable} from "rxjs";
+import {Observable, tap} from "rxjs";
 import {MensajeRespuesta} from "../../models/mensaje-respuesta";
 import {Usuario} from "../../models/usuario";
 import {UsuarioDTOPost} from "../../DTOs/usuario-dtopost";
+import {Roles} from "../../models/roles";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioService {
 
+  private _usuario:string = '';
+  private _rol:Roles = 0;
+  get usuario(): string {
+    return this._usuario;
+  }
+  get rol(): Roles {
+    return this._rol;
+  }
+
   constructor(private client:HttpClient) { }
-  postLogin(loginDTO:Login):Observable<MensajeRespuesta>{
-    return this.client.post<MensajeRespuesta>("http://localhost:8080/api/login", loginDTO);
+  postLogin(loginDTO: Login): Observable<MensajeRespuesta> {
+    return this.client.post<MensajeRespuesta>("http://localhost:8080/api/login", loginDTO)
+      .pipe(
+        tap((respuesta: MensajeRespuesta) => {
+          if (respuesta.ok) {
+            this.getUsuarioByEmail(loginDTO.email).subscribe((response: Usuario) => {
+              this._usuario = response.email;
+              this._rol = response.rol;
+            });
+          }
+        })
+      );
   }
   getUsuarios(): Observable<Usuario[]> {
     return this.client.get<Usuario[]>("http://localhost:8080/api/usuarios");

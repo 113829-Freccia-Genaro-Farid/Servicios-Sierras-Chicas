@@ -14,6 +14,7 @@
         />
         <div class="text-danger">
           <p *ngIf="email?.getError('required') && (email?.touched || email?.dirty)">Ingrese un correo electronico</p>
+          <p *ngIf="email?.getError('email') && (email?.touched || email?.dirty)">Ingrese un correo electronico</p>
         </div>
       </div>
       <div class="form-group mb-3">

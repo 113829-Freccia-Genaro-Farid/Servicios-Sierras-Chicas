@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class CiudadDTO {
     String descripcion;
     String codigoPostal;
-    Long id_provincia;
+    Long idProvincia;
 }

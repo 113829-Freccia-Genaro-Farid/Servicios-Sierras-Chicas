@@ -12,8 +12,8 @@ import {AlertComponent} from "./components/ventanas/alert/alert.component";
 import {ModalComponent} from "./components/ventanas/modal/modal.component";
 
 const routes:Routes = [
-  {path: '', component:RegistrarUsuarioComponent},
-  {path: 'home', component:HomeComponent},
+  {path: '', component:AppComponent},
+  {path: 'register', component:RegistrarUsuarioComponent},
   {path: 'login', component:LoginComponent}
 ]
 @NgModule({

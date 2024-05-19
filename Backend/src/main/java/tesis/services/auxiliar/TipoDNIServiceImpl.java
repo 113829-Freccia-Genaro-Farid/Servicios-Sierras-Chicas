@@ -41,6 +41,7 @@ public class TipoDNIServiceImpl implements TipoDNIService {
                 return mensajeRespuesta;
             }
             tipoDNIJpaRepository.save(modelMapper.map(tipoDNIDto, TipoDNIEntity.class));
+            mensajeRespuesta.setMensaje("Se ha guardado correctamente el tipo de documento.");
         }catch (Exception e){
             mensajeRespuesta.setMensaje("Error al grabar el tipo.");
             mensajeRespuesta.setOk(false);

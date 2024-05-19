@@ -92,6 +92,7 @@ public class ClienteServiceImpl implements ClienteService {
             usuarioService.cambiarRolUsuario(clienteEntity.getPersona().getUsuario().getEmail(), rolJpaRepository.getByDescripcion("CLIENTE").getId());
 
             clienteJpaRepository.save(clienteEntity);
+            mensajeRespuesta.setMensaje("Se ha guardado correctamente al cliente.");
         }catch (Exception e){
             mensajeRespuesta.setMensaje("Error al guardar al cliente.");
             mensajeRespuesta.setOk(false);
@@ -100,37 +101,26 @@ public class ClienteServiceImpl implements ClienteService {
         return mensajeRespuesta;
     }
 
-    @Override
-    public MensajeRespuesta modificarCliente(Long id, ClienteDTOPost cliente) {
-        MensajeRespuesta mensajeRespuesta = new MensajeRespuesta();
-        try{
-            Optional<ClienteEntity> optionalEntity = clienteJpaRepository.findById(id);
-            if(optionalEntity.isEmpty()){
-                mensajeRespuesta.setMensaje("El cliente a modificar no existe.");
-                mensajeRespuesta.setOk(false);
-                return mensajeRespuesta;
-            }
-            if(personaJpaRepository.findById(cliente.getIdPersona()).isEmpty()){
-                mensajeRespuesta.setMensaje("La persona a registrarse como cliente no existe.");
-                mensajeRespuesta.setOk(false);
-                return mensajeRespuesta;
-            }
-            if (clienteJpaRepository.existsByPersona_Id(cliente.getIdPersona())){
-                mensajeRespuesta.setMensaje("Esta persona ya se encuentra registrada como cliente.");
-                mensajeRespuesta.setOk(false);
-                return mensajeRespuesta;
-            }
-            ClienteEntity clienteEntity =  optionalEntity.get();
-            clienteEntity.setPersona(personaJpaRepository.findById(cliente.getIdPersona()).get());
-
-            clienteJpaRepository.save(clienteEntity);
-        }catch (Exception e){
-            mensajeRespuesta.setMensaje("Error al modificar al cliente.");
-            mensajeRespuesta.setOk(false);
-            throw new MensajeRespuestaException(mensajeRespuesta);
-        }
-        return mensajeRespuesta;
-    }
+//    @Override
+//    public MensajeRespuesta modificarCliente(Long id, ClienteDTOPut cliente) {
+//        MensajeRespuesta mensajeRespuesta = new MensajeRespuesta();
+//        try{
+//            Optional<ClienteEntity> optionalEntity = clienteJpaRepository.findById(id);
+//            if(optionalEntity.isEmpty()){
+//                mensajeRespuesta.setMensaje("El cliente a modificar no existe.");
+//                mensajeRespuesta.setOk(false);
+//                return mensajeRespuesta;
+//            }
+//            ClienteEntity clienteEntity =  optionalEntity.get();
+//
+//            clienteJpaRepository.save(clienteEntity);
+//        }catch (Exception e){
+//            mensajeRespuesta.setMensaje("Error al modificar al cliente.");
+//            mensajeRespuesta.setOk(false);
+//            throw new MensajeRespuestaException(mensajeRespuesta);
+//        }
+//        return mensajeRespuesta;
+//    }
 
     // PRIVADOS
 
