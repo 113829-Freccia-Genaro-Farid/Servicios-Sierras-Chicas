@@ -12,5 +12,6 @@ public interface PersonaService {
     List<PersonaDTO> listarPersonasHabilitadas();
     List<PersonaDTO> listarPersonasFiltro(String apellido);
     PersonaDTO obtenerPersonaById(Long id);
+    PersonaDTO obtenerPersonaByUser(String email);
     MensajeRespuesta modificarPersona(PersonaDTOPut persona, Long id);
 }

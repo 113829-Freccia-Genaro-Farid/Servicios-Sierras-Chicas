@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+import java.time.Month;
+import java.time.Year;
 import java.util.List;
 
 @Data
@@ -14,6 +17,8 @@ public class ProfesionistaDTO {
     boolean PoseeMatricula;
     String NroMatricula;
     boolean ComunicacionWsp;
+    String presentacion;
     List<String> profesiones;
     PersonaDTO persona;
 }
+

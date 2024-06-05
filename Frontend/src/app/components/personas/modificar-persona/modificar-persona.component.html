@@ -1,0 +1,154 @@
+<div class="container mt-5">
+  <form [formGroup]="personaForm">
+    <h2 class="text-center">Datos Personales</h2>
+    <hr class="p-1">
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group mb-3">
+          <label for="apellido">Apellido</label>
+          <input id="apellido" type="text" formControlName="apellido" class="form-control" placeholder="Apellido" [ngClass]="{'is-invalid': apellido?.invalid && (apellido?.touched || apellido?.dirty)}">
+          <div class="text-danger">
+            <p *ngIf="apellido?.getError('required') && (apellido?.touched || apellido?.dirty)">El apellido es obligatorio</p>
+            <p *ngIf="apellido?.getError('maxlength') && (apellido?.touched || apellido?.dirty)">Máximo 25 caracteres</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group mb-3">
+          <label for="nombre">Nombre</label>
+          <input id="nombre" type="text" formControlName="nombre" class="form-control" placeholder="Nombre" [ngClass]="{'is-invalid': nombre?.invalid && (nombre?.touched || nombre?.dirty)}">
+          <div class="text-danger">
+            <p *ngIf="nombre?.getError('required') && (nombre?.touched || nombre?.dirty)">El nombre es obligatorio</p>
+            <p *ngIf="nombre?.getError('maxlength') && (nombre?.touched || nombre?.dirty)">Máximo 25 caracteres</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group mb-3">
+          <label for="provincia">Provincia</label>
+          <select id="provincia"
+                  formControlName="provincia"
+                  class="form-select"
+                  [ngClass]="{'is-invalid': provincia?.invalid && (provincia?.touched || provincia?.dirty)}">
+             <option [value]="provincia.id" *ngFor="let provincia of provincias">{{ provincia.descripcion }}</option>
+          </select>
+          <div class="text-danger">
+            <p *ngIf="provincia?.invalid && (provincia?.touched || provincia?.dirty)">La provincia es obligatoria</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group mb-3">
+          <label for="ciudad">Ciudad</label>
+          <select id="Ciudad" formControlName="ciudad" class="form-select" [ngClass]="{'is-invalid': ciudad?.invalid && (ciudad?.touched || ciudad?.dirty)}">
+            <option *ngFor="let c of ciudades" [value]="c.id">{{ c.descripcion }}</option>
+          </select>
+          <div class="text-danger">
+            <p *ngIf="ciudad?.invalid && (ciudad?.touched || ciudad?.dirty)">La ciudad es obligatoria</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group mb-3">
+          <label for="fechaNacimiento">Fecha de Nacimiento</label>
+          <input id="fechaNacimiento"
+                 type="date"
+                 formControlName="fechaNacimiento"
+                 class="form-control"
+                 [ngClass]="{'is-invalid': fechaNacimiento?.invalid && (fechaNacimiento?.touched || fechaNacimiento?.dirty)}">
+          <div class="text-danger">
+            <p *ngIf="fechaNacimiento?.invalid && (fechaNacimiento?.touched || fechaNacimiento?.dirty)">La fecha de nacimiento es obligatoria</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group mb-3">
+          <label for="tipoDNI">Tipo de DNI</label>
+          <select id="tipoDNI" formControlName="tipoDNI" class="form-select" [ngClass]="{'is-invalid': tipoDNI?.invalid && (tipoDNI?.touched || tipoDNI?.dirty)}">
+             <option *ngFor="let tipo of tiposDNI" [value]="tipo.id">{{ tipo.descripcion }}</option>
+          </select>
+          <div class="text-danger">
+            <p *ngIf="tipoDNI?.invalid && (tipoDNI?.touched || tipoDNI?.dirty)">El tipo de DNI es obligatorio</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row"><div class="col-md-6">
+      <div class="form-group mb-3">
+        <label for="calle">Calle</label>
+        <input id="calle" type="text" formControlName="calle" class="form-control" placeholder="Calle" [ngClass]="{'is-invalid': calle?.invalid && (calle?.touched || calle?.dirty)}">
+        <div class="text-danger">
+          <p *ngIf="calle?.getError('required') && (calle?.touched || calle?.dirty)">La calle es obligatoria</p>
+          <p *ngIf="calle?.getError('maxlength') && (calle?.touched || calle?.dirty)">Máximo 50 caracteres</p>
+        </div>
+      </div>
+    </div>
+      <div class="col-md-6">
+        <div class="form-group mb-3">
+          <label for="nroDocumento">Número de Documento</label>
+          <input id="nroDocumento" type="text" formControlName="nroDocumento" class="form-control" placeholder="Número de Documento" [ngClass]="{'is-invalid': nroDocumento?.invalid && (nroDocumento?.touched || nroDocumento?.dirty)}">
+          <div class="text-danger">
+            <p *ngIf="nroDocumento?.getError('required') && (nroDocumento?.touched || nroDocumento?.dirty)">El número de documento es obligatorio</p>
+            <p *ngIf="nroDocumento?.getError('maxlength') && (nroDocumento?.touched || nroDocumento?.dirty)">Máximo 10 caracteres</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group mb-3">
+          <label for="altura">Altura</label>
+          <input id="altura" type="text" formControlName="altura" class="form-control" placeholder="Altura" [ngClass]="{'is-invalid': altura?.invalid && (altura?.touched || altura?.dirty)}">
+          <div class="text-danger">
+            <p *ngIf="altura?.getError('required') && (altura?.touched || altura?.dirty)">La altura es obligatoria</p>
+            <p *ngIf="altura?.getError('maxlength') && (altura?.touched || altura?.dirty)">Máximo 10 caracteres</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group mb-3">
+          <label for="telefono1">Teléfono 1</label>
+          <input id="telefono1" type="text" formControlName="telefono1" class="form-control" placeholder="Teléfono 1" [ngClass]="{'is-invalid': telefono1?.invalid && (telefono1?.touched || telefono1?.dirty)}">
+          <div class="text-danger">
+            <p *ngIf="telefono1?.getError('required') && (telefono1?.touched || telefono1?.dirty)">El teléfono 1 es obligatorio</p>
+            <p *ngIf="telefono1?.getError('maxlength') && (telefono1?.touched || telefono1?.dirty)">Máximo 12 caracteres</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group mb-3">
+          <label for="telefono2">Teléfono 2</label>
+          <input id="telefono2" type="text" formControlName="telefono2" class="form-control" placeholder="Teléfono 2" [ngClass]="{'is-invalid': telefono2?.invalid && (telefono2?.touched || telefono2?.dirty)}">
+          <div class="text-danger">
+            <p *ngIf="telefono2?.getError('maxlength') && (telefono2?.touched || telefono2?.dirty)">Máximo 12 caracteres</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group mb-3">
+          <label for="telefonofijo">Teléfono Fijo</label>
+          <input id="telefonofijo" type="text" formControlName="telefonofijo" class="form-control" placeholder="Teléfono Fijo" [ngClass]="{'is-invalid': telefonofijo?.invalid && (telefonofijo?.touched || telefonofijo?.dirty)}">
+          <div class="text-danger">
+            <p *ngIf="telefonofijo?.getError('maxlength') && (telefonofijo?.touched || telefonofijo?.dirty)">Máximo 12 caracteres</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <button type="submit" class="btn btn-success" [disabled]="false" (click)="o()">Enviar</button>
+    </div>
+  </form>
+</div>

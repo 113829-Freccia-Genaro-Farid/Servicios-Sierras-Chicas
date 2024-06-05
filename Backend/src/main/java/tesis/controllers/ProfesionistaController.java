@@ -3,6 +3,7 @@ package tesis.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tesis.dtos.AnuncioDTO;
 import tesis.dtos.ProfesionistaDTO;
 import tesis.dtos.ProfesionistaDTOPost;
 import tesis.dtos.ProfesionistaDTOPut;
@@ -33,9 +34,30 @@ public class ProfesionistaController {
     public ResponseEntity<MensajeRespuesta> putProfesionista(@PathVariable Long idProfesionista, @RequestBody ProfesionistaDTOPut profesionistaDTOPut){
         return ResponseEntity.ok(profesionistaService.modificarProfesionista(idProfesionista, profesionistaDTOPut));
     }
+    @PutMapping("/presentacion/{idProfesionista}")
+    public ResponseEntity<MensajeRespuesta> putPresentacionProfesionista(@PathVariable Long idProfesionista, @RequestBody String nuevaPresentacion){
+        return ResponseEntity.ok(profesionistaService.modificarPresentacionProfesionista(idProfesionista, nuevaPresentacion));
+    }
     @DeleteMapping("/{id}")
-    public ResponseEntity<MensajeRespuesta> deleteProfesion(@PathVariable Long id){
+    public ResponseEntity<MensajeRespuesta> deleteProfesionista(@PathVariable Long id){
         return ResponseEntity.ok(profesionistaService.borrarProfesionistaById(id));
+    }
+
+    // ***************************************************
+    // ****************** ANUNCIOS ***********************
+    // ***************************************************
+
+    @GetMapping("/anuncios")
+    public ResponseEntity<List<AnuncioDTO>> getAnuncios(){
+        return ResponseEntity.ok(profesionistaService.getAnuncios());
+    }
+    @GetMapping("/anuncios/{idProfesionista}")
+    public ResponseEntity<List<AnuncioDTO>> getAnuncios(@PathVariable Long idProfesionista){
+        return ResponseEntity.ok(profesionistaService.getAnunciosByProfesionista(idProfesionista));
+    }
+    @PostMapping("/clickAnuncio")
+    public ResponseEntity<MensajeRespuesta> postClickAnuncio(@RequestBody Long profesionistaId){
+        return ResponseEntity.ok(profesionistaService.clickEnAnuncio(profesionistaId));
     }
 }
 

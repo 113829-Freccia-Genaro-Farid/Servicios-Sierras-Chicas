@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit, OnDestroy{
           await this.toggleAlert();
           if (this.mensajeRespuesta.ok){
             this.formLogin.reset();
-            await this.router.navigate([''])
+            await this.router.navigate(['datospersonales'])
           }
         },
         error: async (response:MensajeRespuesta) => {

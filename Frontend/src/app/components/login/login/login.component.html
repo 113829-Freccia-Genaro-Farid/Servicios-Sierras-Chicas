@@ -1,9 +1,9 @@
-<div class="container d-flex justify-content-center align-items-center vh-100 flex-column position-relative">
+<div class="container d-flex justify-content-center align-items-center flex-column position-relative">
   <ng-container *ngIf="alerta">
     <fn-alert [mensajeRespuesta]="mensajeRespuesta"></fn-alert>
   </ng-container>
   <div class="col-md-5 mt-5">
-    <form [formGroup]="formLogin" class="p-5 border shadow-lg rounded">
+    <form [formGroup]="formLogin" class="p-5 border shadow-lg rounded bg-green-200">
       <h3 class="mb-4 d-flex justify-content-center">Inicio de sesión</h3>
       <div class="form-group mb-3">
         <input type="email"

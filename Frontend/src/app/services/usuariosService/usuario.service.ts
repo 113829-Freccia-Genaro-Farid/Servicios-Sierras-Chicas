@@ -1,35 +1,37 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Login} from "../../models/login";
 import {Observable, tap} from "rxjs";
 import {MensajeRespuesta} from "../../models/mensaje-respuesta";
 import {Usuario} from "../../models/usuario";
 import {UsuarioDTOPost} from "../../DTOs/usuario-dtopost";
-import {Roles} from "../../models/roles";
+import {Roles} from "../../models/Auxiliares/roles";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioService {
+  constructor(private client: HttpClient) { }
 
-  private _usuario:string = '';
-  private _rol:Roles = 0;
-  get usuario(): string {
-    return this._usuario;
+  estaLogueado():Boolean{
+    return this.getUsuarioLogueado().email != null;
   }
-  get rol(): Roles {
-    return this._rol;
+  cerrarSesion(){
+    localStorage.removeItem('user');
   }
-
-  constructor(private client:HttpClient) { }
+  rolUsuario():Roles{
+    return this.getUsuarioLogueado().rol;
+  }
+  getUsuarioLogueado(): Usuario {
+    return JSON.parse(localStorage.getItem('user') || '{}') as Usuario;
+  }
   postLogin(loginDTO: Login): Observable<MensajeRespuesta> {
     return this.client.post<MensajeRespuesta>("http://localhost:8080/api/login", loginDTO)
       .pipe(
         tap((respuesta: MensajeRespuesta) => {
           if (respuesta.ok) {
             this.getUsuarioByEmail(loginDTO.email).subscribe((response: Usuario) => {
-              this._usuario = response.email;
-              this._rol = response.rol;
+              localStorage.setItem('user', JSON.stringify(response));
             });
           }
         })

@@ -1,4 +1,4 @@
-import {Roles} from "./roles";
+import {Roles} from "./Auxiliares/roles";
 
 export interface Usuario {
   email:string;

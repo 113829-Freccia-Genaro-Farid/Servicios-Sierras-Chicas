@@ -1,0 +1,47 @@
+<header class="relative z-10 h-16 w-full items-center bg-white shadow md:h-20">
+  <div class="relative mx-auto flex h-full flex-col justify-center px-3">
+    <div class="relative flex w-full items-center pl-1 sm:ml-0 sm:pr-2">
+      <div class="relative left-0 flex w-3/4">
+        <div class="group relative flex h-full w-12 items-center">
+          <button
+            type="button"
+            aria-expanded="false"
+            aria-label="Toggle sidenav"
+            class="text-4xl text-black focus:outline-none"
+            (click)="openSidebar()"
+          >
+            &#8801;
+          </button>
+        </div>
+      </div>
+      <div class="relative w-3/4">
+        <search-icon></search-icon>
+        <input
+          type="text"
+          class="block w-full rounded-2xl bg-gray-200 py-2 pl-9 pr-4 leading-normal text-gray-400 opacity-90 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-green-500"
+          placeholder="Buscar Servicio"
+        />
+      </div>
+
+      <div class="relative ml-5 flex w-full items-center justify-end p-1 sm:right-auto sm:mr-0 overflow-visible">
+        <button mat-fab extended color="primary" class="h-60" *ngIf="esProfesionista()">
+          <mat-icon>favorite</mat-icon>
+          Anuncios Premium
+        </button>
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>account_circle</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <ng-container *ngIf="!logueado()">
+            <button mat-menu-item routerLink="/login">Iniciar sesión</button>
+            <button mat-menu-item routerLink="/register">Registrarse</button>
+          </ng-container>
+          <ng-container *ngIf="logueado()">
+            <button mat-menu-item routerLink="/datospersonales">Datos Personales</button>
+            <button mat-menu-item routerLink="/home" (click)="cerrarSesion()">Cerrar Sesion</button>
+          </ng-container>
+        </mat-menu>
+      </div>
+    </div>
+  </div>
+</header>

@@ -14,7 +14,7 @@ public class PersonaDTO {
     String apellido;
     String nombre;
     String ciudad;
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     LocalDate fechaNacimiento;
     String tipoDNI;
     String nroDocumento;
@@ -23,7 +23,7 @@ public class PersonaDTO {
     String telefono1;
     String telefono2;
     String telefonofijo;
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     LocalDate fechaModificacion;
     boolean habilitado;
     String emailUsuario;

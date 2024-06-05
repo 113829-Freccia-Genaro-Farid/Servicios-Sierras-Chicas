@@ -79,6 +79,27 @@ public class PersonaServiceImpl implements PersonaService {
     }
 
     @Override
+    public PersonaDTO obtenerPersonaByUser(String email) {
+        try {
+            PersonaEntity entity = personaJpaRepository.findByUsuarioEmail(email);
+            if (entity != null) {
+                PersonaDTO personaDTO = modelMapper.map(entity, PersonaDTO.class);
+                if(personaDTO.getCiudad() != null)
+                    personaDTO.setCiudad(entity.getCiudad().getDescripcion());
+                if(personaDTO.getTipoDNI() != null)
+                    personaDTO.setTipoDNI(entity.getTipoDNI().getDescripcion());
+                personaDTO.setEmailUsuario(entity.getUsuario().getEmail());
+                return personaDTO;
+            }
+            else
+                return null;
+        }catch (Exception e) {
+            MensajeRespuesta mensajeRespuesta = new MensajeRespuesta("Error interno",false);
+            throw new MensajeRespuestaException(mensajeRespuesta);
+        }
+    }
+
+    @Override
     public MensajeRespuesta modificarPersona(PersonaDTOPut personaDTO, Long id) {
         MensajeRespuesta mensajeRespuesta = new MensajeRespuesta();
         try{

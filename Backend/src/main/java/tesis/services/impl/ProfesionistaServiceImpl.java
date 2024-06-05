@@ -4,13 +4,16 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tesis.dtos.AnuncioDTO;
 import tesis.dtos.ProfesionistaDTO;
 import tesis.dtos.ProfesionistaDTOPost;
 import tesis.dtos.ProfesionistaDTOPut;
 import tesis.dtos.common.MensajeRespuesta;
+import tesis.entities.AnuncioEntity;
 import tesis.entities.ProfesionistaEntity;
 import tesis.entities.auxiliar.ProfesionEntity;
 import tesis.exceptions.MensajeRespuestaException;
+import tesis.repositories.AnuncioJpaRepository;
 import tesis.repositories.PersonaJpaRepository;
 import tesis.repositories.ProfesionistaJpaRepository;
 import tesis.repositories.auxiliar.ProfesionJpaRepository;
@@ -18,6 +21,9 @@ import tesis.repositories.auxiliar.RolJpaRepository;
 import tesis.services.ProfesionistaService;
 import tesis.services.UsuarioService;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +37,8 @@ public class ProfesionistaServiceImpl implements ProfesionistaService {
     RolJpaRepository rolJpaRepository;
     @Autowired
     ProfesionJpaRepository profesionJpaRepository;
+    @Autowired
+    AnuncioJpaRepository anuncioJpaRepository;
     @Autowired
     UsuarioService usuarioService;
     @Autowired
@@ -134,6 +142,7 @@ public class ProfesionistaServiceImpl implements ProfesionistaService {
                 profesionistaEntity.setNroMatricula(null);
             }
             profesionistaEntity.setComunicacionWsp(profesionista.isComunicacionWsp());
+            profesionistaEntity.setPresentacion(profesionista.getPresentacion());
             for (Long idProfesion : profesionista.getIdProfesiones()) {
                 if(profesionJpaRepository.findById(idProfesion).isPresent())
                     profesionistaEntity.getProfesiones().add(profesionJpaRepository.findById(idProfesion).get());
@@ -142,6 +151,28 @@ public class ProfesionistaServiceImpl implements ProfesionistaService {
             mensajeRespuesta.setMensaje("Se ha modificado correctamente al profesionista.");
         }catch (Exception e){
             mensajeRespuesta.setMensaje("Error al modificar al profesionista.");
+            mensajeRespuesta.setOk(false);
+            throw new MensajeRespuestaException(mensajeRespuesta);
+        }
+        return mensajeRespuesta;
+    }
+
+    @Override
+    public MensajeRespuesta modificarPresentacionProfesionista(Long id, String nuevaPresentacion) {
+        MensajeRespuesta mensajeRespuesta = new MensajeRespuesta();
+        try{
+            Optional<ProfesionistaEntity> optionalEntity = profesionistaJpaRepository.findById(id);
+            if(optionalEntity.isEmpty()){
+                mensajeRespuesta.setMensaje("El profesionista a modificar no existe.");
+                mensajeRespuesta.setOk(false);
+                return mensajeRespuesta;
+            }
+            ProfesionistaEntity profesionistaEntity =  optionalEntity.get();
+            profesionistaEntity.setPresentacion(nuevaPresentacion);
+            profesionistaJpaRepository.save(profesionistaEntity);
+            mensajeRespuesta.setMensaje("Se ha modificado correctamente la presentacion del profesionista.");
+        }catch (Exception e){
+            mensajeRespuesta.setMensaje("Error al modificar la presentacion del profesionista.");
             mensajeRespuesta.setOk(false);
             throw new MensajeRespuestaException(mensajeRespuesta);
         }
@@ -161,6 +192,65 @@ public class ProfesionistaServiceImpl implements ProfesionistaService {
         }
     }
 
+    // ***************************************************
+    // ****************** ANUNCIOS ***********************
+    // ***************************************************
+
+    @Override
+    public MensajeRespuesta clickEnAnuncio(Long idProfesionista) {
+        MensajeRespuesta mensajeRespuesta = new MensajeRespuesta();
+        AnuncioEntity anuncioEntity;
+        try{
+            Optional<AnuncioEntity> optionalEntity = anuncioJpaRepository.findByFechaAndProfesionista_Id(YearMonth.now(),idProfesionista);
+            if (optionalEntity.isPresent()) {
+                anuncioEntity = optionalEntity.get();
+                anuncioEntity.setCantidadClicks(anuncioEntity.getCantidadClicks().add(BigDecimal.ONE));
+            } else {
+                anuncioEntity = new AnuncioEntity(null, new BigDecimal(BigInteger.ONE), YearMonth.now(), null);
+                if (profesionistaJpaRepository.findById(idProfesionista).isPresent()){
+                    anuncioEntity.setProfesionista(profesionistaJpaRepository.findById(idProfesionista).get());
+                }else{
+                    mensajeRespuesta.setMensaje("No se pudo encontrar al profesionista dueño del anuncio.");
+                    mensajeRespuesta.setOk(false);
+                    return mensajeRespuesta;
+                }
+            }
+            anuncioJpaRepository.save(anuncioEntity);
+            mensajeRespuesta.setMensaje("Se añadio correctamente el click al anuncio.");
+        }catch (Exception e){
+            mensajeRespuesta.setMensaje("Error al añadir click en el anuncio.");
+            mensajeRespuesta.setOk(false);
+            throw new MensajeRespuestaException(mensajeRespuesta);
+        }
+        return mensajeRespuesta;
+    }
+
+    @Override
+    public List<AnuncioDTO> getAnuncios() {
+        List<AnuncioDTO> lst;
+        try{
+            List<AnuncioEntity> lista= anuncioJpaRepository.findAll();
+            lst = mapearListaAnuncios(lista);
+        }catch (Exception e){
+            MensajeRespuesta mensajeRespuesta = new MensajeRespuesta("Error interno",false);
+            throw new MensajeRespuestaException(mensajeRespuesta);
+        }
+        return lst;
+    }
+
+    @Override
+    public List<AnuncioDTO> getAnunciosByProfesionista(Long idProfesionista) {
+        List<AnuncioDTO> lst;
+        try{
+            List<AnuncioEntity> lista= anuncioJpaRepository.findAllByProfesionista_Id(idProfesionista);
+            lst = mapearListaAnuncios(lista);
+        }catch (Exception e){
+            MensajeRespuesta mensajeRespuesta = new MensajeRespuesta("Error interno",false);
+            throw new MensajeRespuestaException(mensajeRespuesta);
+        }
+        return lst;
+    }
+
     // PRIVADOS
 
     private List<ProfesionistaDTO> mapearListaProfesionistas(List<ProfesionistaEntity> profesionistaEntities) {
@@ -177,6 +267,17 @@ public class ProfesionistaServiceImpl implements ProfesionistaService {
             profesionistaDTOS.add(profesionistaDTO);
         }
         return profesionistaDTOS;
+    }
+
+    private List<AnuncioDTO> mapearListaAnuncios(List<AnuncioEntity> anuncioEntities) {
+        List<AnuncioDTO> anuncioDTOS = new ArrayList<>();
+        for (AnuncioEntity a : anuncioEntities){
+            AnuncioDTO anuncioDTO = modelMapper.map(a,AnuncioDTO.class);
+            if(a.getProfesionista() != null)
+                anuncioDTO.setProfesionistaDTO(mapearListaProfesionistas(List.of(a.getProfesionista())).get(0));
+            anuncioDTOS.add(anuncioDTO);
+        }
+        return anuncioDTOS;
     }
 
     public void mapearProfesiones(ProfesionistaDTO profesionistaDTO, ProfesionistaEntity profesionistaEntity) {

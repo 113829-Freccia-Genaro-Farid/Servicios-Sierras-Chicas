@@ -24,9 +24,13 @@ public class PersonaController {
     public ResponseEntity<List<PersonaDTO>> getPersonasFiltrado(@RequestParam(required = false) String apellido){
         return ResponseEntity.ok(personaService.listarPersonasFiltro(apellido));
     }
-    @GetMapping("/{idPersona}")
+    @GetMapping("/id/{idPersona}")
     public ResponseEntity<PersonaDTO> getPersonaById(@PathVariable Long idPersona){
         return ResponseEntity.ok(personaService.obtenerPersonaById(idPersona));
+    }
+    @GetMapping("/{email}")
+    public ResponseEntity<PersonaDTO> getPersonaById(@PathVariable String email){
+        return ResponseEntity.ok(personaService.obtenerPersonaByUser(email));
     }
     @PutMapping("/{idPersona}")
     public ResponseEntity<MensajeRespuesta> postPersona(@RequestBody PersonaDTOPut personaDTOPut, @PathVariable Long idPersona){

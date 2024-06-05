@@ -28,6 +28,9 @@ public class ProfesionistaEntity {
     @Column(name = "comunicacion_wsp",nullable = false)
     private boolean ComunicacionWsp;
 
+    @Column
+    private String presentacion;
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "profesionista_profesiones",
             joinColumns = @JoinColumn(name = "id_profesionista"),

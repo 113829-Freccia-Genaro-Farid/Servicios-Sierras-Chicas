@@ -1,6 +1,7 @@
 package tesis.services;
 
 import org.springframework.stereotype.Service;
+import tesis.dtos.AnuncioDTO;
 import tesis.dtos.ProfesionistaDTO;
 import tesis.dtos.ProfesionistaDTOPost;
 import tesis.dtos.ProfesionistaDTOPut;
@@ -14,5 +15,11 @@ public interface ProfesionistaService {
     ProfesionistaDTO obtenerProfesionistaById(Long id);
     MensajeRespuesta registrarProfesionista(ProfesionistaDTOPost profesionista);
     MensajeRespuesta modificarProfesionista(Long id, ProfesionistaDTOPut profesionista);
+    MensajeRespuesta modificarPresentacionProfesionista(Long id, String nuevaPresentacion);
     MensajeRespuesta borrarProfesionistaById(Long id);
+
+    // **** ANUNCIOS ****
+    MensajeRespuesta clickEnAnuncio(Long idProfesionista);
+    List<AnuncioDTO> getAnuncios();
+    List<AnuncioDTO> getAnunciosByProfesionista(Long idProfesionista);
 }

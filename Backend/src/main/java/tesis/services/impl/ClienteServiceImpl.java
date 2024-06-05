@@ -8,7 +8,6 @@ import tesis.dtos.ClienteDTO;
 import tesis.dtos.ClienteDTOPost;
 import tesis.dtos.common.MensajeRespuesta;
 import tesis.entities.ClienteEntity;
-import tesis.entities.PersonaEntity;
 import tesis.exceptions.MensajeRespuestaException;
 import tesis.repositories.ClienteJpaRepository;
 import tesis.repositories.PersonaJpaRepository;

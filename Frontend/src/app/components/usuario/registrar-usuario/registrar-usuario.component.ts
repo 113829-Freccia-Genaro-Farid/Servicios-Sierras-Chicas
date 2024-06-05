@@ -1,11 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {MensajeRespuesta} from "../../../models/mensaje-respuesta";
 import {Login} from "../../../models/login";
 import {UsuarioService} from "../../../services/usuariosService/usuario.service";
 import {Router} from "@angular/router";
 import {UsuarioDTOPost} from "../../../DTOs/usuario-dtopost";
+import {CustomValidators} from "../../../customValidators/custom-validators";
 
 @Component({
   selector: 'app-registrar-usuario',
@@ -31,6 +32,7 @@ export class RegistrarUsuarioComponent implements OnInit,OnDestroy{
     this.formUsuario = this.fb.group({
       email: [null, [Validators.required, Validators.email]], // email validator
       password: [null, [Validators.required, Validators.minLength(8)]],
+      confirmpassword: [null, [Validators.required, CustomValidators.mismaPassword]]
     });
   }
 
@@ -71,6 +73,9 @@ export class RegistrarUsuarioComponent implements OnInit,OnDestroy{
   }
   get password(){
     return this.formUsuario.get('password')
+  }
+  get confirmpassword(){
+    return this.formUsuario.get('confirmpassword')
   }
 
 }
