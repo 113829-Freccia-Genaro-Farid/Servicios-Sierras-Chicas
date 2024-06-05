@@ -6,8 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.Month;
-import java.time.Year;
 import java.time.YearMonth;
 
 @Data
@@ -18,5 +16,5 @@ public class AnuncioDTO {
     BigDecimal cantidadClicks;
     @JsonFormat(pattern = "MM-yyyy")
     YearMonth fecha;
-    ProfesionistaDTO profesionistaDTO;
+    ProfesionistaDTO profesionista;
 }

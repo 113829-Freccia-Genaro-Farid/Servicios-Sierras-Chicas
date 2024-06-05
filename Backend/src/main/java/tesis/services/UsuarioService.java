@@ -19,4 +19,5 @@ public interface UsuarioService {
     MensajeRespuesta bajaUsuario(String emailBajaUsuario);
     MensajeRespuesta cambiarRolUsuario(String email, Long idRol);
     MensajeRespuesta loginUsuario(LoginDTO loginDTO);
+    MensajeRespuesta eliminarUsuarioSistema(String id);
 }

@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface AnuncioJpaRepository extends JpaRepository<AnuncioEntity, Long> {
     List<AnuncioEntity> findAllByProfesionista_Id(Long idProfesionista);
     Optional<AnuncioEntity> findByFechaAndProfesionista_Id(YearMonth fecha, Long idProfesionista);
+    AnuncioEntity findByProfesionista_Id(Long id);
 }

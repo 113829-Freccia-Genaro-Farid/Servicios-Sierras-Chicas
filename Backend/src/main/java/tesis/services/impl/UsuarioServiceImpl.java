@@ -8,11 +8,9 @@ import tesis.dtos.LoginDTO;
 import tesis.dtos.UsuarioDTO;
 import tesis.dtos.UsuarioDTOPost;
 import tesis.dtos.common.MensajeRespuesta;
-import tesis.entities.PersonaEntity;
-import tesis.entities.UsuarioEntity;
+import tesis.entities.*;
 import tesis.exceptions.MensajeRespuestaException;
-import tesis.repositories.PersonaJpaRepository;
-import tesis.repositories.UsuarioJpaRepository;
+import tesis.repositories.*;
 import tesis.repositories.auxiliar.RolJpaRepository;
 import tesis.services.UsuarioService;
 
@@ -29,6 +27,16 @@ public class UsuarioServiceImpl implements UsuarioService {
     RolJpaRepository rolJpaRepository;
     @Autowired
     PersonaJpaRepository personaJpaRepository;
+    @Autowired
+    ProfesionistaJpaRepository profesionistaJpaRepository;
+    @Autowired
+    ClienteJpaRepository clienteJpaRepository;
+    @Autowired
+    TurnoJpaRepository turnoJpaRepository;
+    @Autowired
+    AnuncioJpaRepository anuncioJpaRepository;
+    @Autowired
+    ReseniaJpaRepository reseniaJpaRepository;
     @Autowired
     ModelMapper modelMapper;
 
@@ -157,7 +165,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         try{
             UsuarioEntity entity = usuarioJpaRepository.getByEmail(email);
             if (entity != null){
-                if(idRol != null){
+                if(idRol != null && rolJpaRepository.findById(idRol).isPresent() ){
                     entity.setRol(rolJpaRepository.findById(idRol).get());
                     usuarioJpaRepository.save(entity);
                 }else {
@@ -201,5 +209,43 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
 
         return mensajeRespuesta;
+    }
+
+    @Override
+    @Transactional
+    public MensajeRespuesta eliminarUsuarioSistema(String emailUsuario) {
+        try{
+            if(usuarioJpaRepository.existsByEmail(emailUsuario)){
+                if(personaJpaRepository.existsByUsuario_Email(emailUsuario)) {
+                    PersonaEntity persona = personaJpaRepository.findByUsuarioEmail(emailUsuario);
+                    if (profesionistaJpaRepository.existsByPersona_Id(persona.getId())){
+                        for (AnuncioEntity e : anuncioJpaRepository.findAllByProfesionista_Id(profesionistaJpaRepository.getByPersona_Id(persona.getId()).getId())) {
+                            anuncioJpaRepository.deleteById(e.getId());
+                        }
+                        for (TurnoEntity t : turnoJpaRepository.findAllByProfesionista_Id(profesionistaJpaRepository.getByPersona_Id(persona.getId()).getId())) {
+                            turnoJpaRepository.deleteById(t.getId());
+                        }
+                        for (ReseniaEntity r : reseniaJpaRepository.findAllByProfesionista_Id(profesionistaJpaRepository.getByPersona_Id(persona.getId()).getId())) {
+                            reseniaJpaRepository.deleteById(r.getId());
+                        }
+                        profesionistaJpaRepository.deleteById(profesionistaJpaRepository.getByPersona_Id(persona.getId()).getId());
+                    }else if (clienteJpaRepository.existsByPersona_Id(persona.getId())){
+                        for (TurnoEntity t : turnoJpaRepository.findAllByCliente_Id(clienteJpaRepository.getByPersona_Id(persona.getId()).getId())) {
+                            turnoJpaRepository.deleteById(t.getId());
+                        }
+                        for (ReseniaEntity r : reseniaJpaRepository.findAllByProfesionista_Id(clienteJpaRepository.getByPersona_Id(persona.getId()).getId())) {
+                            reseniaJpaRepository.deleteById(r.getId());
+                        }
+                        clienteJpaRepository.deleteById(clienteJpaRepository.getByPersona_Id(persona.getId()).getId());
+                    }
+                    personaJpaRepository.deleteById(persona.getId());
+                }
+                usuarioJpaRepository.deleteByEmail(emailUsuario);
+                return new MensajeRespuesta("Se ha eliminado correctamente al usuario de todo el sistema.", true);
+            }else
+                return new MensajeRespuesta("No se encontro al usuario a eliminar.", false);
+        }catch (Exception e){
+            return new MensajeRespuesta("Problemas al eliminar al usuario.", false);
+        }
     }
 }

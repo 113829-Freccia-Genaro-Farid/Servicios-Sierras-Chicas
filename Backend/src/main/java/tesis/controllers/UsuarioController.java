@@ -42,7 +42,11 @@ public class UsuarioController {
     public ResponseEntity<MensajeRespuesta> bajaUsuario(@PathVariable String email){
         return ResponseEntity.ok(usuarioService.bajaUsuario(email));
     }
-    @PutMapping("/{email}")
+    @DeleteMapping("/deleteUser/{email}")
+    public ResponseEntity<MensajeRespuesta> borrarUsuarioSistema(@PathVariable String email){
+        return ResponseEntity.ok(usuarioService.eliminarUsuarioSistema(email));
+    }
+    @PutMapping("/cambioRol/{email}")
     public ResponseEntity<MensajeRespuesta> cambiarRolUsuario(@PathVariable String email, @RequestParam(required = false) Long idRol){
         return ResponseEntity.ok(usuarioService.cambiarRolUsuario(email, idRol));
     }

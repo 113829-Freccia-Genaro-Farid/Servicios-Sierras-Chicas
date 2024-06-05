@@ -7,4 +7,5 @@ import tesis.entities.ClienteEntity;
 @Repository
 public interface ClienteJpaRepository extends JpaRepository<ClienteEntity,Long> {
     boolean existsByPersona_Id(Long id);
+    ClienteEntity getByPersona_Id(Long id);
 }

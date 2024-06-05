@@ -34,11 +34,11 @@ public class ProfesionistaServiceImpl implements ProfesionistaService {
     @Autowired
     PersonaJpaRepository personaJpaRepository;
     @Autowired
+    AnuncioJpaRepository anuncioJpaRepository;
+    @Autowired
     RolJpaRepository rolJpaRepository;
     @Autowired
     ProfesionJpaRepository profesionJpaRepository;
-    @Autowired
-    AnuncioJpaRepository anuncioJpaRepository;
     @Autowired
     UsuarioService usuarioService;
     @Autowired
@@ -80,8 +80,8 @@ public class ProfesionistaServiceImpl implements ProfesionistaService {
         }
     }
 
-    @Transactional
     @Override
+    @Transactional
     public MensajeRespuesta registrarProfesionista(ProfesionistaDTOPost profesionista) {
         MensajeRespuesta mensajeRespuesta = new MensajeRespuesta();
         try{
@@ -113,7 +113,8 @@ public class ProfesionistaServiceImpl implements ProfesionistaService {
             profesionistaEntity.setPersona(personaJpaRepository.findById(profesionista.getIdPersona()).get());
             usuarioService.cambiarRolUsuario(profesionistaEntity.getPersona().getUsuario().getEmail(), rolJpaRepository.getByDescripcion("PROFESIONISTA").getId());
 
-            profesionistaJpaRepository.save(profesionistaEntity);
+            ProfesionistaEntity guardado = profesionistaJpaRepository.save(profesionistaEntity);
+            anuncioJpaRepository.save(new AnuncioEntity(null, new BigDecimal(BigInteger.ZERO), YearMonth.now(), guardado));
 
             mensajeRespuesta.setMensaje("Se ha guardado correctamente al profesionista.");
         }catch (Exception e){
@@ -180,9 +181,13 @@ public class ProfesionistaServiceImpl implements ProfesionistaService {
     }
 
     @Override
+    @Transactional
     public MensajeRespuesta borrarProfesionistaById(Long id) {
         try{
             if(profesionistaJpaRepository.existsById(id)){
+                if(anuncioJpaRepository.findByProfesionista_Id(id) != null){
+                    anuncioJpaRepository.deleteById(anuncioJpaRepository.findByProfesionista_Id(id).getId());
+                }
                 profesionistaJpaRepository.deleteById(id);
                 return new MensajeRespuesta("Se ha eliminado correctamente al profesionista.", true);
             }else
@@ -274,7 +279,7 @@ public class ProfesionistaServiceImpl implements ProfesionistaService {
         for (AnuncioEntity a : anuncioEntities){
             AnuncioDTO anuncioDTO = modelMapper.map(a,AnuncioDTO.class);
             if(a.getProfesionista() != null)
-                anuncioDTO.setProfesionistaDTO(mapearListaProfesionistas(List.of(a.getProfesionista())).get(0));
+                anuncioDTO.setProfesionista(mapearListaProfesionistas(List.of(a.getProfesionista())).get(0));
             anuncioDTOS.add(anuncioDTO);
         }
         return anuncioDTOS;

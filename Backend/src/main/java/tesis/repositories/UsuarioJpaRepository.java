@@ -13,4 +13,5 @@ public interface UsuarioJpaRepository extends JpaRepository<UsuarioEntity, Strin
     boolean existsByEmailAndPassword(String email,String password);
     List<UsuarioEntity> findByEmailStartingWith(String email);
     List<UsuarioEntity> findByRol_Id(Long id);
+    void deleteByEmail(String email);
 }
