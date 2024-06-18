@@ -12,4 +12,5 @@ public interface CiudadService {
     boolean borrarById(Long id);
     MensajeRespuesta registrar(CiudadDTO ciudadDTO);
     List<Ciudad> obtenerCiudadesPorProvincia(Long idProvincia);
+    List<Ciudad> obtenerCiudades();
 }

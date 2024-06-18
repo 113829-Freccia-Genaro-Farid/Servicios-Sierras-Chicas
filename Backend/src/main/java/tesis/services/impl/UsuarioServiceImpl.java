@@ -9,14 +9,17 @@ import tesis.dtos.UsuarioDTO;
 import tesis.dtos.UsuarioDTOPost;
 import tesis.dtos.common.MensajeRespuesta;
 import tesis.entities.*;
+import tesis.entities.auxiliar.RecuperacionEntity;
 import tesis.exceptions.MensajeRespuestaException;
 import tesis.repositories.*;
+import tesis.repositories.auxiliar.RecuperacionJpaRepository;
 import tesis.repositories.auxiliar.RolJpaRepository;
 import tesis.services.UsuarioService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
@@ -37,6 +40,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     AnuncioJpaRepository anuncioJpaRepository;
     @Autowired
     ReseniaJpaRepository reseniaJpaRepository;
+    @Autowired
+    RecuperacionJpaRepository recuperacionJpaRepository;
     @Autowired
     ModelMapper modelMapper;
 
@@ -234,7 +239,8 @@ public class UsuarioServiceImpl implements UsuarioService {
                             turnoJpaRepository.deleteById(t.getId());
                         }
                         for (ReseniaEntity r : reseniaJpaRepository.findAllByProfesionista_Id(clienteJpaRepository.getByPersona_Id(persona.getId()).getId())) {
-                            reseniaJpaRepository.deleteById(r.getId());
+                            r.setCliente(null);
+                            reseniaJpaRepository.save(r);
                         }
                         clienteJpaRepository.deleteById(clienteJpaRepository.getByPersona_Id(persona.getId()).getId());
                     }
@@ -247,5 +253,58 @@ public class UsuarioServiceImpl implements UsuarioService {
         }catch (Exception e){
             return new MensajeRespuesta("Problemas al eliminar al usuario.", false);
         }
+    }
+
+    @Override
+    public MensajeRespuesta cambiarContraseña(String email, String nuevaPass) {
+        MensajeRespuesta mensajeRespuesta = new MensajeRespuesta();
+        email = email.toLowerCase();
+        try{
+            UsuarioEntity entity = usuarioJpaRepository.getByEmail(email);
+            if (entity != null){
+                if(!nuevaPass.equals(entity.getPassword())){
+                    entity.setPassword(nuevaPass);
+                    usuarioJpaRepository.save(entity);
+                    mensajeRespuesta.setMensaje("La constraseña se cambio con exito.");
+                }else {
+                    mensajeRespuesta.setMensaje("La nueva contraseña ingresada es identica a la anterior.");
+                    mensajeRespuesta.setOk(false);
+                }
+            }else{
+                mensajeRespuesta.setMensaje("No se encontro usuario registrado con ese email.");
+                mensajeRespuesta.setOk(false);
+            }
+
+        }catch (Exception e){
+            mensajeRespuesta.setMensaje("Error al cambiar de contraseña.");
+            mensajeRespuesta.setOk(false);
+            throw new MensajeRespuestaException(mensajeRespuesta);
+        }
+        return mensajeRespuesta;
+    }
+
+    @Override
+    public MensajeRespuesta verificacionCodigo(String email, String codigo) {
+        MensajeRespuesta mensajeRespuesta = new MensajeRespuesta();
+        email = email.toLowerCase();
+        Optional<RecuperacionEntity> entity = recuperacionJpaRepository.findFirstByEmailOrderByFechaSolicitudDesc(email);
+        try{
+            if (entity.isPresent()){
+                if(entity.get().getCodigoRecuperacion().equals(codigo)){
+                    mensajeRespuesta.setMensaje("Codigo correcto.");
+                }else {
+                    mensajeRespuesta.setMensaje("El codigo de verificacion es incorrecto.");
+                    mensajeRespuesta.setOk(false);
+                }
+            }else{
+                mensajeRespuesta.setMensaje("No se encontro usuario registrado con ese email.");
+                mensajeRespuesta.setOk(false);
+            }
+        }catch (Exception e){
+            mensajeRespuesta.setMensaje("Error al verificar codigo.");
+            mensajeRespuesta.setOk(false);
+            throw new MensajeRespuestaException(mensajeRespuesta);
+        }
+        return mensajeRespuesta;
     }
 }

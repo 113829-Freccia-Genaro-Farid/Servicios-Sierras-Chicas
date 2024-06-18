@@ -24,6 +24,10 @@ public class ClienteController {
     public ResponseEntity<ClienteDTO> getClienteById(@PathVariable Long idCliente){
         return ResponseEntity.ok(clienteService.obtenerClienteById(idCliente));
     }
+    @GetMapping("/byUserEmail/{email}")
+    public ResponseEntity<ClienteDTO> getClienteByUserEmail(@PathVariable String email){
+        return ResponseEntity.ok(clienteService.obtenerClienteByUserEmail(email));
+    }
     @PostMapping("")
     public ResponseEntity<MensajeRespuesta> postCliente(@RequestBody ClienteDTOPost clienteDTOPost){
         return ResponseEntity.ok(clienteService.registrarCliente(clienteDTOPost));

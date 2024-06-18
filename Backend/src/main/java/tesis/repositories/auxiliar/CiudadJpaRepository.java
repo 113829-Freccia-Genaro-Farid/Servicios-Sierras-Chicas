@@ -11,6 +11,7 @@ public interface CiudadJpaRepository extends JpaRepository<CiudadEntity, Long> {
     void deleteById(Long id);
     boolean existsById(Long id);
     boolean existsByDescripcion(String descripcion);
-    List<CiudadEntity> getAllByProvincia_Id(Long id);
+    List<CiudadEntity> getAllByProvincia_IdOrderByDescripcion(Long id);
+    List<CiudadEntity> getAllByOrderByDescripcion();
     CiudadEntity getByCodigoPostal(String codigoPostal);
 }

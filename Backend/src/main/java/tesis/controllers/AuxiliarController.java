@@ -39,9 +39,13 @@ public class AuxiliarController {
     public ResponseEntity<Boolean> deleteProvincia(@PathVariable Long id){
         return ResponseEntity.ok(provinciaService.borrarById(id));
     }
-    @GetMapping("/ciudades")
-    public ResponseEntity<List<Ciudad>> getCiudadesPorProvincia(@RequestParam(name = "idProvincia") Long idProvincia){
+    @GetMapping("/ciudades/{idProvincia}")
+    public ResponseEntity<List<Ciudad>> getCiudadesPorProvincia(@PathVariable(name = "idProvincia") Long idProvincia){
         return ResponseEntity.ok(ciudadService.obtenerCiudadesPorProvincia(idProvincia));
+    }
+    @GetMapping("/ciudades")
+    public ResponseEntity<List<Ciudad>> getCiudades(){
+        return ResponseEntity.ok(ciudadService.obtenerCiudades());
     }
     @PostMapping("/ciudades")
     public ResponseEntity<MensajeRespuesta> postCiudad(@RequestBody CiudadDTO ciudadDTO){
@@ -79,6 +83,10 @@ public class AuxiliarController {
     public ResponseEntity<List<Categoria>> getCategorias(){
         return ResponseEntity.ok(categoriaService.obtenerCategorias());
     }
+    @GetMapping("/categoriasUso")
+    public ResponseEntity<List<Categoria>> getCategoriasUtilizadas(){
+        return ResponseEntity.ok(categoriaService.obtenerCategoriasUtilizadas());
+    }
     @PostMapping("/categorias")
     public ResponseEntity<MensajeRespuesta> postCategoria(@RequestBody CategoriaDTO categoriaDTO){
         return ResponseEntity.ok(categoriaService.registrar(categoriaDTO));
@@ -87,9 +95,21 @@ public class AuxiliarController {
     public ResponseEntity<Boolean> deleteCategoria(@PathVariable Long id){
         return ResponseEntity.ok(categoriaService.borrarById(id));
     }
-    @GetMapping("/profesiones")
-    public ResponseEntity<List<Profesion>> getProfesionesPorCategoria(@RequestParam(name = "idCategoria") Long idCategoria){
+    @GetMapping("/profesiones/{idCategoria}")
+    public ResponseEntity<List<Profesion>> getProfesionesPorCategoria(@PathVariable(name = "idCategoria") Long idCategoria){
         return ResponseEntity.ok(profesionService.obtenerProfesionesPorCategoria(idCategoria));
+    }
+    @GetMapping("/profesionesUso/{idCategoria}")
+    public ResponseEntity<List<Profesion>> getProfesionesPorCategoriaEnUso(@PathVariable(name = "idCategoria") Long idCategoria){
+        return ResponseEntity.ok(profesionService.obtenerProfesionesPorCategoriaEnUso(idCategoria));
+    }
+    @GetMapping("/profesiones")
+    public ResponseEntity<List<Profesion>> getProfesiones(){
+        return ResponseEntity.ok(profesionService.obtenerProfesiones());
+    }
+    @GetMapping("/profesionesUso")
+    public ResponseEntity<List<Profesion>> getProfesionesEnUso(){
+        return ResponseEntity.ok(profesionService.obtenerProfesionesEnUso());
     }
     @PostMapping("/profesiones")
     public ResponseEntity<MensajeRespuesta> postProfesion(@RequestBody ProfesionDTO profesionDTO){

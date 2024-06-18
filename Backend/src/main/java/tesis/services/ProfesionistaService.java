@@ -6,12 +6,15 @@ import tesis.dtos.ProfesionistaDTO;
 import tesis.dtos.ProfesionistaDTOPost;
 import tesis.dtos.ProfesionistaDTOPut;
 import tesis.dtos.common.MensajeRespuesta;
+import tesis.models.auxiliar.Categoria;
 
 import java.util.List;
 
 @Service
 public interface ProfesionistaService {
     List<ProfesionistaDTO> listarProfesionistas();
+    List<ProfesionistaDTO> listarProfesionistasOrdenadaSuscritos();
+    List<ProfesionistaDTO> listaProfesionistasConFiltros(String nombreApellido, List<Long> categorias, List<Long> profesiones, List<Long> ciudades);
     ProfesionistaDTO obtenerProfesionistaById(Long id);
     MensajeRespuesta registrarProfesionista(ProfesionistaDTOPost profesionista);
     MensajeRespuesta modificarProfesionista(Long id, ProfesionistaDTOPut profesionista);

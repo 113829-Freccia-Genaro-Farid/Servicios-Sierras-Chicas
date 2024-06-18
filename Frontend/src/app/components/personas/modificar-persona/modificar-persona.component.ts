@@ -79,25 +79,25 @@ export class ModificarPersonaComponent implements OnInit, OnDestroy{
       telefono2: [null, Validators.maxLength(12)],
       telefonofijo: [null, Validators.maxLength(12)]
     });
+    this.personaForm.controls['provincia'].valueChanges.subscribe((value) => {
+      this.cargarCiudades(value);
+    })
+    this.provincia?.setValue(5);
+    this.provincia?.disable();
 
     this.subscription.add(
       this.personasService.getDatosPersonaByUser(this.usuarioLogeado.email).subscribe({
         next: (response) => {
           this.datosPersona = response;
           this.personaForm.patchValue(this.datosPersona);
+          this.ciudad?.setValue(this.ciudades.find(tipo => tipo.descripcion === this.datosPersona.ciudad)?.id);
+          this.tipoDNI?.setValue(this.tiposDNI.find(tipo => tipo.descripcion === this.datosPersona.tipoDNI)?.id);
         },
         error: () => {
           alert('Error al cargar los datos de la persona');
         }
       })
     )
-
-    this.personaForm.controls['provincia'].valueChanges.subscribe((value) => {
-      this.cargarCiudades(value);
-    })
-
-    this.provincia?.setValue(5);
-    this.provincia?.disable();
   }
 
 
@@ -114,7 +114,7 @@ export class ModificarPersonaComponent implements OnInit, OnDestroy{
 
   cargarCiudades(idProvincia:number){
     this.subscription?.add(
-      this.auxiliaresService.getCiudades(idProvincia).subscribe(
+      this.auxiliaresService.getCiudadesByProvincia(idProvincia).subscribe(
         (response:Ciudad[])=>{
           this.ciudades=response;
         }

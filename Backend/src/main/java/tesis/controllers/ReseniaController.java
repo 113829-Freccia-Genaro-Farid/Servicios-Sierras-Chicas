@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tesis.dtos.ReseniaDTOPost;
+import tesis.dtos.ReseniaStats;
 import tesis.dtos.common.MensajeRespuesta;
 import tesis.models.Resenia;
 import tesis.services.ReseniaService;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api/reseñas")
+@RequestMapping("/api/resenas")
 public class ReseniaController {
     @Autowired
     ReseniaService reseniaService;
@@ -29,6 +30,10 @@ public class ReseniaController {
     @GetMapping("/profesionista/{idProfesionista}")
     public ResponseEntity<List<Resenia>> getReseñaByProfesionista(@PathVariable Long idProfesionista){
         return ResponseEntity.ok(reseniaService.obtenerReseñasByProfesionista(idProfesionista));
+    }
+    @GetMapping("/stats/{idProfesionista}")
+    public ResponseEntity<ReseniaStats> getReseñaStatsByProfesionista(@PathVariable Long idProfesionista){
+        return ResponseEntity.ok(reseniaService.estadisticasReseniasByProfesionista(idProfesionista));
     }
     @GetMapping("/{idReseña}")
     public ResponseEntity<Resenia> getReseñaById(@PathVariable Long idReseña){

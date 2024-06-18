@@ -32,6 +32,6 @@ public class ReseniaEntity {
     private ClienteEntity cliente;
 
     @ManyToOne
-    @JoinColumn(name = "id_profesionista")
+    @JoinColumn(name = "id_profesionista", nullable = false)
     private ProfesionistaEntity profesionista;
 }

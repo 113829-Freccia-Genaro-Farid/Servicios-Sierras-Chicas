@@ -1,0 +1,27 @@
+/* src/app/components/perfil-profesionista/perfil-profesionista.component.css */
+.profile-card {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.profile-card.subscribed {
+  border-left: 5px solid green;
+}
+
+.reviews {
+  margin-top: 20px;
+}
+
+.reviews ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.reviews li {
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}

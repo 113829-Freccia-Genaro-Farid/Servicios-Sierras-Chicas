@@ -19,6 +19,7 @@ public class ProfesionistaDTO {
     boolean ComunicacionWsp;
     String presentacion;
     List<String> profesiones;
+    boolean Suscrito;
     PersonaDTO persona;
 }
 

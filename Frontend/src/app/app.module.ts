@@ -37,15 +37,40 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatMenuModule} from "@angular/material/menu";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
+import {DUIAccordion} from "david-ui-angular";
+import { DialogGenericoComponent } from './components/ventanas/dialog-generico/dialog-generico.component';
+import {MatDialogModule} from "@angular/material/dialog";
+import { RecuperarContrasenaComponent } from './components/login/recuperar-contrasena/recuperar-contrasena.component';
+import {MatInputModule} from "@angular/material/input";
+import { ListadoAnunciosComponent } from './components/listado-anuncios/listado-anuncios.component';
+import {MatPaginatorModule} from "@angular/material/paginator";
+import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
+import { CambiarContraseniaComponent } from './components/login/cambiar-contrasenia/cambiar-contrasenia.component';
+import {MatExpansionModule} from "@angular/material/expansion";
+import {MatSelectModule} from "@angular/material/select";
+import { PerfilProfesionistaComponent } from './components/perfil-profesionista/perfil-profesionista.component';
+import {MatChipsModule} from "@angular/material/chips";
+import {MatListModule} from "@angular/material/list";
+import { CanvasJSAngularStockChartsModule } from '@canvasjs/angular-stockcharts';
+import {BarChartComponent} from "./charts/bar-chart/bar.chart.component";
+import { NgApexchartsModule } from "ng-apexcharts";
+import { GraficoBarraResenasComponent } from './charts/grafico-barra-resenas/grafico-barra-resenas.component';
+import { SeleccionRolComponent } from './components/seleccion-rol/seleccion-rol.component';
 
 const routes:Routes = [
   {path: 'home', component:HomeComponent},
   {path: 'register', component:RegistrarUsuarioComponent},
   {path: 'login', component:LoginComponent},
   {path: 'datospersonales', component:ModificarPersonaComponent},
-  {path: 'pagosuscripcion', component:MercadoPagoComponent},
+  {path: 'suscripcion', component:MercadoPagoComponent},
   {path: 'terms', component:TermsConditionsComponent},
   {path: 'faq', component:PreguntasFrecuentesComponent},
+  {path: 'profesionistas', children:[
+    {path: ':id', component:PerfilProfesionistaComponent},
+    {path:"", component:ListadoAnunciosComponent}
+    ]
+  },
+  {path: 'seleccionRol', component:SeleccionRolComponent},
 
   {path: '', redirectTo: 'home', pathMatch: 'full' },
   {path: '**', redirectTo: 'home' },
@@ -85,7 +110,14 @@ const routes:Routes = [
     TermsIconComponent,
     UserIconComponent,
     SearchIconComponent,
-
+    DialogGenericoComponent,
+    RecuperarContrasenaComponent,
+    ListadoAnunciosComponent,
+    CambiarContraseniaComponent,
+    PerfilProfesionistaComponent,
+    BarChartComponent,
+    GraficoBarraResenasComponent,
+    SeleccionRolComponent
   ],
   imports: [
     BrowserModule,
@@ -96,8 +128,30 @@ const routes:Routes = [
     MatMenuModule,
     MatButtonModule,
     MatIconModule,
+    DUIAccordion,
+    MatDialogModule,
+    MatInputModule,
+    MatPaginatorModule,
+    MatSnackBarModule,
+    MatExpansionModule,
+    MatSelectModule,
+    MatChipsModule,
+    MatListModule,
+    CanvasJSAngularStockChartsModule,
+    NgApexchartsModule,
   ],
-  providers: [],
+  providers: [
+    {provide:
+      MAT_SNACK_BAR_DEFAULT_OPTIONS,
+      useValue: {
+        duration: 3000,
+        horizontalPosition: "center",
+        verticalPosition:"top",
+        panelClass:"mt-5"
+      }
+    },
+
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

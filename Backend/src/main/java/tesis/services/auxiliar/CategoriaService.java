@@ -12,4 +12,5 @@ public interface CategoriaService {
     boolean borrarById(Long id);
     MensajeRespuesta registrar(CategoriaDTO categoriaDTO);
     List<Categoria> obtenerCategorias();
+    List<Categoria> obtenerCategoriasUtilizadas();
 }

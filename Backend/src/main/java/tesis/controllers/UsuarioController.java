@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tesis.dtos.UsuarioDTO;
 import tesis.dtos.UsuarioDTOPost;
+import tesis.dtos.auxiliar.CambioContraseña;
+import tesis.dtos.auxiliar.VerificacionCodigo;
 import tesis.dtos.common.MensajeRespuesta;
 import tesis.services.UsuarioService;
 
@@ -49,5 +51,15 @@ public class UsuarioController {
     @PutMapping("/cambioRol/{email}")
     public ResponseEntity<MensajeRespuesta> cambiarRolUsuario(@PathVariable String email, @RequestParam(required = false) Long idRol){
         return ResponseEntity.ok(usuarioService.cambiarRolUsuario(email, idRol));
+    }
+
+    @PostMapping("/cambioPassword")
+    public ResponseEntity<MensajeRespuesta> cambioContraseña(@RequestBody CambioContraseña body){
+        return ResponseEntity.ok(usuarioService.cambiarContraseña(body.getEmail(), body.getPassword()));
+    }
+
+    @PostMapping("/verificarCodigo")
+    public ResponseEntity<MensajeRespuesta> verificacionCodigo(@RequestBody VerificacionCodigo body){
+        return ResponseEntity.ok(usuarioService.verificacionCodigo(body.getEmail(), body.getCodigo()));
     }
 }

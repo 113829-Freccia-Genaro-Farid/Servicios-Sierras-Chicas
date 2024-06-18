@@ -5,6 +5,10 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Login} from "../../../models/login";
 import {MensajeRespuesta} from "../../../models/mensaje-respuesta";
 import {Router} from "@angular/router";
+import {DialogGenericoComponent} from "../../ventanas/dialog-generico/dialog-generico.component";
+import {TermsConditionsComponent} from "../../terms-conditions/terms-conditions.component";
+import {RecuperarContrasenaComponent} from "../recuperar-contrasena/recuperar-contrasena.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-login',
@@ -18,7 +22,11 @@ export class LoginComponent implements OnInit, OnDestroy{
   mensajeRespuesta:MensajeRespuesta = {} as MensajeRespuesta;
   login:Login = {} as Login;
   alerta:boolean = false;
-  constructor(private usuarioService:UsuarioService, private fb:FormBuilder, private router:Router) {}
+  constructor(private usuarioService:UsuarioService,
+              private fb:FormBuilder,
+              private router:Router,
+              private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.subscription = new Subscription();
@@ -72,6 +80,13 @@ export class LoginComponent implements OnInit, OnDestroy{
   get password(){
     return this.formLogin.get('password')
   }
-
-
+  openDialog(): void {
+    this.dialog.open(DialogGenericoComponent, {
+      data: {
+        title: 'Recuperar contraseña',
+        component: RecuperarContrasenaComponent,
+        sinBotones: true
+      }
+    });
+  }
 }

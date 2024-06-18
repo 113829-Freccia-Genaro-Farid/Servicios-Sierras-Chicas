@@ -50,7 +50,7 @@ public class MercadoPagoController {
             // Preferencia de control de sucesos
             PreferenceBackUrlsRequest backUrlsRequest = PreferenceBackUrlsRequest.builder()
                     .success("http://localhost:4200/home")
-                    .failure("http://localhost:4200/datospersonales")
+                    .failure("http://localhost:4200/suscripcion")
                     .build();
 
             // Preferencia general ENSAMBLE DE PREFERENCIAS

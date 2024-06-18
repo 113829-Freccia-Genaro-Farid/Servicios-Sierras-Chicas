@@ -16,15 +16,16 @@ export class UsuarioService {
   estaLogueado():Boolean{
     return this.getUsuarioLogueado().email != null;
   }
+  getUsuarioLogueado(): Usuario {
+    return JSON.parse(localStorage.getItem('user') || '{}') as Usuario;
+  }
   cerrarSesion(){
     localStorage.removeItem('user');
   }
   rolUsuario():Roles{
     return this.getUsuarioLogueado().rol;
   }
-  getUsuarioLogueado(): Usuario {
-    return JSON.parse(localStorage.getItem('user') || '{}') as Usuario;
-  }
+
   postLogin(loginDTO: Login): Observable<MensajeRespuesta> {
     return this.client.post<MensajeRespuesta>("http://localhost:8080/api/login", loginDTO)
       .pipe(
@@ -57,5 +58,25 @@ export class UsuarioService {
   }
   cambioRolUsuario(email:string,idRol:string):Observable<MensajeRespuesta>{
     return this.client.put<MensajeRespuesta>("http://localhost:8080/api/usuarios/"+email, idRol);
+  }
+  verificarCodigo(email: string, codigo: string): Observable<MensajeRespuesta> {
+    const body = {
+      email: email,
+      codigo: codigo
+    };
+    return this.client.post<MensajeRespuesta>("http://localhost:8080/api/usuarios/verificarCodigo", body);
+  }
+  enviarCorreo(email:string):Observable<MensajeRespuesta>{
+    const body = {
+      mailTo: email
+    };
+    return this.client.post<MensajeRespuesta>("http://localhost:8080/email/send-html", body);
+  }
+  cambiarContrasenia(email: string, pass: string):Observable<MensajeRespuesta>{
+    const body = {
+      email: email,
+      password: pass
+    };
+    return this.client.post<MensajeRespuesta>("http://localhost:8080/api/usuarios/cambioPassword", body);
   }
 }

@@ -12,11 +12,10 @@
                class="form-control"
                id="email"
                formControlName="email"
-               [ngClass]="{'is-invalid': email?.invalid && (email?.touched || email?.dirty)}"
-        >
+               [ngClass]="{'is-invalid': email?.invalid && (email?.touched || email?.dirty)}">
         <div class="text-danger">
           <p *ngIf="email?.getError('required') && (email?.touched || email?.dirty)">Debe ingresar un correo electronico</p>
-          <p *ngIf="email?.getError('email') && (email?.touched || email?.dirty)">Debe ingresar un correo electronico2</p>
+          <p *ngIf="email?.getError('email') && (email?.touched || email?.dirty)">Debe ingresar un correo electronico válido</p>
         </div>
       </div>
       <div class="form-group mb-3">
@@ -25,11 +24,10 @@
                class="form-control"
                id="password"
                formControlName="password"
-               [ngClass]="{'is-invalid': password?.invalid && (password?.touched || password?.dirty)}"
-        >
+               [ngClass]="{'is-invalid': password?.invalid && (password?.touched || password?.dirty)}">
         <div class="text-danger">
           <p *ngIf="password?.getError('required') && (password?.touched || password?.dirty)">Debe ingresar una contraseña</p>
-          <p *ngIf="password?.getError('minlength') && (password?.touched || password?.dirty)">La contraseña debe tener minimo 8 caracteres</p>
+          <p *ngIf="password?.getError('minlength') && (password?.touched || password?.dirty)">La contraseña debe tener mínimo 8 caracteres</p>
         </div>
       </div>
       <div class="form-group mb-3">
@@ -38,11 +36,26 @@
                class="form-control"
                id="confirmpassword"
                formControlName="confirmpassword"
-               [ngClass]="{'is-invalid': confirmpassword?.invalid && (confirmpassword?.touched || confirmpassword?.dirty)}"
-        >
+               [ngClass]="{'is-invalid': confirmpassword?.invalid && (confirmpassword?.touched || confirmpassword?.dirty)}">
         <div class="text-danger">
           <p *ngIf="confirmpassword?.getError('required') && (confirmpassword?.touched || confirmpassword?.dirty)">Debe ingresar una contraseña</p>
-          <p *ngIf="(confirmpassword?.touched || confirmpassword?.dirty) && confirmpassword?.getError('mismaPassword')">La contraseña debe ser identica a la ingresada</p>
+          <p *ngIf="(confirmpassword?.touched || confirmpassword?.dirty) && confirmpassword?.getError('mismaPassword')">La contraseña debe ser idéntica a la ingresada</p>
+        </div>
+      </div>
+      <div class="form-group mb-3">
+        <div class="form-check">
+          <input type="checkbox"
+                 formControlName="terms"
+                 class="form-check-input"
+                 id="terms"
+                 (click)="openTermsDialog()"
+          >
+          <label class="form-check-label" for="terms">
+            Acepto los <a href="javascript:void(0)" (click)="openTermsDialog()">Términos y Condiciones</a>
+          </label>
+          <div class="text-danger">
+            <p *ngIf="terms?.invalid && (terms?.touched || terms?.dirty)">Debe aceptar los términos y condiciones</p>
+          </div>
         </div>
       </div>
       <div class="d-grid gap-2 justify-content-center">

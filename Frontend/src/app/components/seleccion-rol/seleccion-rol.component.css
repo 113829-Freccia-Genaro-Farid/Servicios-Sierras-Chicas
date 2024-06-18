@@ -1,0 +1,51 @@
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+.split {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.5s ease;
+    cursor: pointer;
+}
+
+.left {
+    background-color: #ffcccb;
+}
+
+.right {
+    background-color: #add8e6;
+}
+
+.split h1 {
+    font-size: 2em;
+    transition: font-size 0.5s ease;
+}
+
+.split button {
+    padding: 10px 20px;
+    margin-top: 20px;
+    border: none;
+    background-color: white;
+    cursor: pointer;
+    transition: transform 0.5s ease;
+}
+
+.left:hover {
+    flex: 2;
+}
+
+.right:hover {
+    flex: 2;
+}
+
+.split:hover h1 {
+    font-size: 2.5em;
+}
+
+.split:hover button {
+    transform: scale(1.1);
+}

@@ -30,7 +30,7 @@
       </div>
       <div class="d-grid gap-2">
         <button type="submit" class="btn btn-primary fw-bold text-white" [disabled]="formLogin.invalid" (click)="enviarLogin()">Entrar</button>
-        <a href="#" class="btn btn-link">¿Olvidó su contraseña?</a>
+        <a class="btn btn-link" (click)="openDialog()">¿Olvidó su contraseña?</a>
       </div>
     </form>
   </div>

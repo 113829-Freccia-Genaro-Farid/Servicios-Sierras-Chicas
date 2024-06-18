@@ -20,4 +20,6 @@ public interface UsuarioService {
     MensajeRespuesta cambiarRolUsuario(String email, Long idRol);
     MensajeRespuesta loginUsuario(LoginDTO loginDTO);
     MensajeRespuesta eliminarUsuarioSistema(String id);
+    MensajeRespuesta cambiarContraseña(String email, String nuevaPass);
+    MensajeRespuesta verificacionCodigo(String email, String codigo);
 }

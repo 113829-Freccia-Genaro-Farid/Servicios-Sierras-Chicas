@@ -2,6 +2,7 @@ package tesis.services.impl;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tesis.dtos.AnuncioDTO;
@@ -23,10 +24,12 @@ import tesis.services.UsuarioService;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.Normalizer;
 import java.time.YearMonth;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
+import static java.util.stream.Collectors.toList;
+
 @Service
 public class ProfesionistaServiceImpl implements ProfesionistaService {
     @Autowired
@@ -56,6 +59,33 @@ public class ProfesionistaServiceImpl implements ProfesionistaService {
         return lst;
     }
 
+    @Override
+    public List<ProfesionistaDTO> listarProfesionistasOrdenadaSuscritos() {
+        List<ProfesionistaDTO> lst;
+        try{
+            List<ProfesionistaEntity> lista= profesionistaJpaRepository.findAll();
+            lst = mapearListaProfesionistas(lista);
+            lst.sort(Comparator.comparing(ProfesionistaDTO::isSuscrito).reversed());
+        }catch (Exception e){
+            MensajeRespuesta mensajeRespuesta = new MensajeRespuesta("Error interno",false);
+            throw new MensajeRespuestaException(mensajeRespuesta);
+        }
+        return lst;
+    }
+
+    @Override
+    public List<ProfesionistaDTO> listaProfesionistasConFiltros(String nombreApellido, List<Long> categorias, List<Long> profesiones, List<Long> ciudades) {
+        List<ProfesionistaEntity> entityList = profesionistaJpaRepository.findAll();
+
+        List<ProfesionistaEntity> filteredList = entityList.stream()
+                .filter(profesionista -> (nombreApellido == null || nombreApellido.isEmpty() || normalizar(profesionista.getPersona().getNombre()).contains(normalizar(nombreApellido)) || normalizar(profesionista.getPersona().getApellido()).contains(normalizar(nombreApellido))))
+                .filter(profesionista -> categorias == null || categorias.isEmpty() || categorias.stream().allMatch(categoria -> profesionista.getProfesiones().stream().anyMatch(p -> p.getCategoria().getId().equals(categoria))))
+                .filter(profesionista -> profesiones == null || profesiones.isEmpty() || profesiones.stream().allMatch(p -> profesionista.getProfesiones().stream().anyMatch(profesion -> profesion.getId().equals(p))))
+                .filter(profesionista -> ciudades == null || ciudades.isEmpty() || ciudades.stream().anyMatch(ciudad -> profesionista.getPersona().getCiudad().getId().equals(ciudad))).toList();
+        List<ProfesionistaDTO> lst = mapearListaProfesionistas(filteredList);
+        lst.sort(Comparator.comparing(ProfesionistaDTO::isSuscrito).reversed());
+        return lst;
+    }
     @Override
     public ProfesionistaDTO obtenerProfesionistaById(Long id) {
         try {
@@ -110,6 +140,7 @@ public class ProfesionistaServiceImpl implements ProfesionistaService {
                 if(profesionJpaRepository.findById(idProfesion).isPresent())
                     profesionistaEntity.getProfesiones().add(profesionJpaRepository.findById(idProfesion).get());
             }
+            profesionistaEntity.setSuscrito(false);
             profesionistaEntity.setPersona(personaJpaRepository.findById(profesionista.getIdPersona()).get());
             usuarioService.cambiarRolUsuario(profesionistaEntity.getPersona().getUsuario().getEmail(), rolJpaRepository.getByDescripcion("PROFESIONISTA").getId());
 
@@ -291,5 +322,10 @@ public class ProfesionistaServiceImpl implements ProfesionistaService {
             profesionDTOList.add(profesionEnt.getDescripcion());
         }
         profesionistaDTO.setProfesiones(profesionDTOList);
+    }
+    private String normalizar(String texto) {
+        return Normalizer.normalize(texto, Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "")
+                .toLowerCase(Locale.ROOT);
     }
 }

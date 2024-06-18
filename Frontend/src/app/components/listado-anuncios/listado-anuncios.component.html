@@ -1,0 +1,76 @@
+<div class="container mx-auto bg-green-100 py-2">
+  <h1 class="text-2xl text-center font-bold mb-4">Listado de Anuncios</h1>
+  <mat-accordion class="example-headers-align">
+    <mat-expansion-panel class="rounded-lg overflow-hidden shadow-lg mb-4" hideToggle>
+      <mat-expansion-panel-header class="panel-filtros">
+        <mat-panel-title class="font-bold text-white text-lg">
+          Filtros
+        </mat-panel-title>
+        <mat-icon>filter_alt</mat-icon>
+      </mat-expansion-panel-header>
+      <div>
+        <form [formGroup]="filtrosForm">
+          <mat-form-field class="example-form-field">
+            <mat-label>Nombre/Apellido</mat-label>
+            <input matInput type="text" formControlName="nombre">
+            <button matSuffix mat-icon-button aria-label="Borrar" (click)="this.nombre?.setValue('')">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Categorias</mat-label>
+            <mat-select formControlName="categorias" multiple>
+              <ng-container *ngFor="let c of categorias">
+                <mat-option [value]="c.id">{{c.descripcion}}</mat-option>
+              </ng-container>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="mt-3">
+            <mat-label>Profesiones</mat-label>
+            <mat-select formControlName="profesiones" multiple>
+              <ng-container *ngFor="let p of profesiones">
+                <mat-option [value]="p.id">{{p.descripcion}}</mat-option>
+              </ng-container>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="mt-3">
+            <mat-label>Ciudades</mat-label>
+            <mat-select formControlName="ciudades" multiple>
+              <ng-container *ngFor="let c of ciudades">
+                <mat-option [value]="c.id">{{c.descripcion}}</mat-option>
+              </ng-container>
+            </mat-select>
+          </mat-form-field>
+        </form>
+      </div>
+      <div class="text-center">
+        <button mat-fab extended class="green-button mr-5" (click)="filtrarProfesionistas()">
+          Filtrar
+        </button>
+        <button mat-fab extended class="green-button" (click)="limparFiltros()">
+          Limpiar
+        </button>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <div *ngFor="let profesionista of pagedItems" class="shadow-md rounded-lg p-4 mb-4" [ngClass]="{'suscripcion': profesionista.suscrito, 'no-suscripcion': !profesionista.suscrito}">
+    <h2 class="text-xl font-bold mb-2">{{ profesionista.persona.apellido + ', ' + profesionista.persona.nombre }}</h2>
+    <hr class="pb-3">
+    <div *ngIf="profesionista.PoseeMatricula" class="mb-2">
+      <strong>Matrícula:</strong> {{ profesionista.NroMatricula }}
+    </div>
+    <div *ngIf="profesionista.ComunicacionWsp" class="mb-2">
+      <strong>Comunicación por WhatsApp:</strong> Sí
+    </div>
+    <p>{{ profesionista.presentacion }}</p>
+    <div class="flex flex-wrap gap-2">
+      <ng-container *ngFor="let profesion of profesionista.profesiones">
+        <button mat-button [disabled]="true" class="cursor-not-allowed">{{ profesion }}</button>
+      </ng-container>
+    </div>
+    <button mat-button color="primary" (click)="clickAnuncio(profesionista.id)">Ir al perfil</button>
+  </div>
+
+  <mat-paginator [length]="profesionistas.length" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25, 100]" (page)="onPageChange($event)"></mat-paginator>
+</div>

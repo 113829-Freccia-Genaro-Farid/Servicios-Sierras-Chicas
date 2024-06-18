@@ -67,6 +67,28 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
+    public ClienteDTO obtenerClienteByUserEmail(String email) {
+        try {
+            Optional<ClienteEntity> optionalEntity = clienteJpaRepository.findByPersona_Usuario_Email(email);
+            if (optionalEntity.isPresent()) {
+                ClienteEntity entity = optionalEntity.get();
+                ClienteDTO clienteDTO = modelMapper.map(entity, ClienteDTO.class);
+                if(clienteDTO.getPersona().getCiudad() != null)
+                    clienteDTO.getPersona().setCiudad(entity.getPersona().getCiudad().getDescripcion());
+                if(clienteDTO.getPersona().getTipoDNI() != null)
+                    clienteDTO.getPersona().setTipoDNI(entity.getPersona().getTipoDNI().getDescripcion());
+                clienteDTO.getPersona().setEmailUsuario(entity.getPersona().getUsuario().getEmail());
+                return clienteDTO;
+            }
+            else
+                return null;
+        }catch (Exception e) {
+            MensajeRespuesta mensajeRespuesta = new MensajeRespuesta("Error interno",false);
+            throw new MensajeRespuestaException(mensajeRespuesta);
+        }
+    }
+
+    @Override
     @Transactional
     public MensajeRespuesta registrarCliente(ClienteDTOPost cliente) {
         MensajeRespuesta mensajeRespuesta = new MensajeRespuesta();

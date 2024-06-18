@@ -22,6 +22,17 @@ public class ProfesionistaController {
     public ResponseEntity<List<ProfesionistaDTO>> getProfesionistas(){
         return ResponseEntity.ok(profesionistaService.listarProfesionistas());
     }
+    @GetMapping("/ordenada")
+    public ResponseEntity<List<ProfesionistaDTO>> getProfesionistasOrdenada(){
+        return ResponseEntity.ok(profesionistaService.listarProfesionistasOrdenadaSuscritos());
+    }
+    @GetMapping("/filtrada")
+    public ResponseEntity<List<ProfesionistaDTO>> getProfesionistasFiltrada(@RequestParam(name = "nombreApllido", required = false) String nombreApellido,
+                                                                            @RequestParam(name = "categorias", required = false) List<Long> categorias,
+                                                                            @RequestParam(name = "profesiones", required = false) List<Long> profesiones,
+                                                                            @RequestParam(name = "ciudades", required = false) List<Long> ciudades){
+        return ResponseEntity.ok(profesionistaService.listaProfesionistasConFiltros(nombreApellido,categorias,profesiones,ciudades));
+    }
     @GetMapping("/{idProfesionista}")
     public ResponseEntity<ProfesionistaDTO> getProfesionistaById(@PathVariable Long idProfesionista){
         return ResponseEntity.ok(profesionistaService.obtenerProfesionistaById(idProfesionista));
@@ -55,8 +66,8 @@ public class ProfesionistaController {
     public ResponseEntity<List<AnuncioDTO>> getAnuncios(@PathVariable Long idProfesionista){
         return ResponseEntity.ok(profesionistaService.getAnunciosByProfesionista(idProfesionista));
     }
-    @PostMapping("/clickAnuncio")
-    public ResponseEntity<MensajeRespuesta> postClickAnuncio(@RequestBody Long profesionistaId){
+    @PostMapping("/clickAnuncio/{profesionistaId}")
+    public ResponseEntity<MensajeRespuesta> postClickAnuncio(@PathVariable Long profesionistaId){
         return ResponseEntity.ok(profesionistaService.clickEnAnuncio(profesionistaId));
     }
 }

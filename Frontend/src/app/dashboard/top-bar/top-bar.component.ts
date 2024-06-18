@@ -6,7 +6,8 @@ import {Router} from "@angular/router";
 
 @Component({
   selector: 'top-bar',
-  templateUrl: './top-bar.component.html'
+  templateUrl: './top-bar.component.html',
+  styleUrls: ['./top-bar.component.css']
 })
 export class TopBarComponent {
   constructor(private dashboard: DashboardService,
@@ -18,8 +19,6 @@ export class TopBarComponent {
   }
 
   esProfesionista():Boolean{
-    console.log(this.usuarioService.rolUsuario())
-    console.log(Roles.PROFESIONISTA)
     return this.usuarioService.rolUsuario() == Roles.PROFESIONISTA;
   }
 
@@ -27,6 +26,7 @@ export class TopBarComponent {
     this.usuarioService.cerrarSesion();
     this.roter.navigate(['home'])
   }
+
 
   logueado():Boolean{
     return this.usuarioService.estaLogueado();

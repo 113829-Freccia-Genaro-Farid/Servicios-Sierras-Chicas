@@ -1,0 +1,5 @@
+.dialog-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem; /* Ajusta el valor según el espacio que desees entre los botones */
+}

@@ -12,4 +12,7 @@ public interface ProfesionService {
     boolean borrarById(Long id);
     MensajeRespuesta registrar(ProfesionDTO profesionDTO);
     List<Profesion> obtenerProfesionesPorCategoria(Long idCategoria);
+    List<Profesion> obtenerProfesionesPorCategoriaEnUso(Long idCategoria);
+    List<Profesion> obtenerProfesiones();
+    List<Profesion> obtenerProfesionesEnUso();
 }

@@ -3,6 +3,7 @@ package tesis.services.auxiliar;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tesis.dtos.ProfesionistaDTO;
 import tesis.dtos.auxiliar.CiudadDTO;
 import tesis.dtos.common.MensajeRespuesta;
 import tesis.entities.auxiliar.CiudadEntity;
@@ -12,6 +13,7 @@ import tesis.repositories.auxiliar.CiudadJpaRepository;
 import tesis.repositories.auxiliar.ProvinciaJpaRepository;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -58,10 +60,27 @@ public class CiudadServiceImpl implements CiudadService{
     public List<Ciudad> obtenerCiudadesPorProvincia(Long idProvincia) {
         List<Ciudad> lst = new ArrayList<>();
         try{
-            List<CiudadEntity> lista = ciudadJpaRepository.getAllByProvincia_Id(idProvincia);
+            List<CiudadEntity> lista = ciudadJpaRepository.getAllByProvincia_IdOrderByDescripcion(idProvincia);
             for (CiudadEntity c:lista){
                 Ciudad ciudad = modelMapper.map(c,Ciudad.class);
                 ciudad.setIdProvincia(idProvincia);
+                lst.add(ciudad);
+            }
+        }catch (Exception e){
+            MensajeRespuesta mensajeRespuesta = new MensajeRespuesta("Error interno",false);
+            throw new MensajeRespuestaException(mensajeRespuesta);
+        }
+        return lst;
+    }
+
+    @Override
+    public List<Ciudad> obtenerCiudades() {
+        List<Ciudad> lst = new ArrayList<>();
+        try{
+            List<CiudadEntity> lista = ciudadJpaRepository.getAllByOrderByDescripcion();
+            for (CiudadEntity c:lista){
+                Ciudad ciudad = modelMapper.map(c,Ciudad.class);
+                ciudad.setIdProvincia(c.getProvincia().getId());
                 lst.add(ciudad);
             }
         }catch (Exception e){

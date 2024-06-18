@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Usuario} from "../../models/usuario";
 import {Provincia} from "../../models/Auxiliares/provincia";
 import {Ciudad} from "../../models/Auxiliares/ciudad";
 import {TipoDNI} from "../../models/Auxiliares/tipo-dni";
@@ -19,8 +18,11 @@ export class AuxiliaresService {
     return this.client.get<Provincia[]>("http://localhost:8080/api/auxiliares/provincias");
   }
 
-  getCiudades(idProvincia:number): Observable<Ciudad[]> {
-    return this.client.get<Ciudad[]>("http://localhost:8080/api/auxiliares/ciudades?idProvincia="+idProvincia);
+  getCiudadesByProvincia(idProvincia:number): Observable<Ciudad[]> {
+    return this.client.get<Ciudad[]>("http://localhost:8080/api/auxiliares/ciudades/"+idProvincia);
+  }
+  getCiudades(): Observable<Ciudad[]> {
+    return this.client.get<Ciudad[]>("http://localhost:8080/api/auxiliares/ciudades");
   }
 
   getTiposDNI(): Observable<TipoDNI[]> {
@@ -28,11 +30,14 @@ export class AuxiliaresService {
   }
 
   getCategorias(): Observable<Categoria[]> {
-    return this.client.get<Ciudad[]>("http://localhost:8080/api/auxiliares/categorias");
+    return this.client.get<Ciudad[]>("http://localhost:8080/api/auxiliares/categoriasUso");
   }
 
-  getProfesiones(idCategoria:number): Observable<Profesion[]> {
-    return this.client.get<Profesion[]>("http://localhost:8080/api/auxiliares/profesiones?idCategoria="+idCategoria);
+  getProfesionesByCategoria(idCategoria:number): Observable<Profesion[]> {
+    return this.client.get<Profesion[]>("http://localhost:8080/api/auxiliares/profesionesUso/"+idCategoria);
+  }
+  getProfesiones(): Observable<Profesion[]> {
+    return this.client.get<Profesion[]>("http://localhost:8080/api/auxiliares/profesiones");
   }
 
   createPreference(article: any): Observable<any> {

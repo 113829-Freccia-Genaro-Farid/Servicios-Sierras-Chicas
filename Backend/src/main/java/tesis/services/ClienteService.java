@@ -11,6 +11,7 @@ import java.util.List;
 public interface ClienteService {
     List<ClienteDTO> listarClientes();
     ClienteDTO obtenerClienteById(Long id);
+    ClienteDTO obtenerClienteByUserEmail(String email);
     MensajeRespuesta registrarCliente(ClienteDTOPost cliente);
 
     //MensajeRespuesta modificarCliente(Long id, ClienteDTOPut cliente);

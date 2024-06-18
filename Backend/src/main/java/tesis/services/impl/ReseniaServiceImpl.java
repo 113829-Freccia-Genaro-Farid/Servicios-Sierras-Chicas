@@ -3,10 +3,7 @@ package tesis.services.impl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tesis.dtos.ClienteDTO;
-import tesis.dtos.PersonaDTO;
-import tesis.dtos.ProfesionistaDTO;
-import tesis.dtos.ReseniaDTOPost;
+import tesis.dtos.*;
 import tesis.dtos.common.MensajeRespuesta;
 import tesis.entities.ProfesionistaEntity;
 import tesis.entities.ReseniaEntity;
@@ -89,14 +86,17 @@ public class ReseniaServiceImpl implements ReseniaService {
         }
         ReseniaEntity r = optionalEntity.get();
         Resenia resenia = modelMapper.map(r, Resenia.class);
-        ClienteDTO clienteDTO = modelMapper.map(r.getCliente(),ClienteDTO.class);
-        clienteDTO.setPersona(modelMapper.map(r.getCliente().getPersona(), PersonaDTO.class));
-        if(r.getCliente().getPersona().getCiudad() != null)
-            clienteDTO.getPersona().setCiudad(r.getCliente().getPersona().getCiudad().getDescripcion());
-        if(r.getCliente().getPersona().getTipoDNI() != null)
-            clienteDTO.getPersona().setTipoDNI(r.getCliente().getPersona().getTipoDNI().getDescripcion());
-        clienteDTO.getPersona().setEmailUsuario(r.getCliente().getPersona().getUsuario().getEmail());
 
+        if (resenia.getCliente() != null) {
+            ClienteDTO clienteDTO = modelMapper.map(r.getCliente(), ClienteDTO.class);
+            clienteDTO.setPersona(modelMapper.map(r.getCliente().getPersona(), PersonaDTO.class));
+            if (r.getCliente().getPersona().getCiudad() != null)
+                clienteDTO.getPersona().setCiudad(r.getCliente().getPersona().getCiudad().getDescripcion());
+            if (r.getCliente().getPersona().getTipoDNI() != null)
+                clienteDTO.getPersona().setTipoDNI(r.getCliente().getPersona().getTipoDNI().getDescripcion());
+            clienteDTO.getPersona().setEmailUsuario(r.getCliente().getPersona().getUsuario().getEmail());
+            resenia.setCliente(clienteDTO);
+        }
         ProfesionistaDTO profesionistaDTO = modelMapper.map(r.getProfesionista(),ProfesionistaDTO.class);
         profesionistaDTO.setPersona(modelMapper.map(r.getProfesionista().getPersona(), PersonaDTO.class));
         if(r.getProfesionista().getPersona().getCiudad() != null)
@@ -107,7 +107,6 @@ public class ReseniaServiceImpl implements ReseniaService {
             mapearProfesiones(profesionistaDTO, r.getProfesionista());
         profesionistaDTO.getPersona().setEmailUsuario(r.getProfesionista().getPersona().getUsuario().getEmail());
 
-        resenia.setCliente(clienteDTO);
         resenia.setProfesionista(profesionistaDTO);
 
         return resenia;
@@ -149,20 +148,54 @@ public class ReseniaServiceImpl implements ReseniaService {
         }
     }
 
+    @Override
+    public ReseniaStats estadisticasReseniasByProfesionista(Long idProfesionista) {
+        ReseniaStats stats = new ReseniaStats();
+        try{
+            List<ReseniaEntity> lista= reseniaJpaRepository.findAllByProfesionista_Id(idProfesionista);
+            stats.setTotalResenias(lista.size());
+            for (ReseniaEntity r:lista) {
+                switch (r.getCalificacion()){
+                    case 1:
+                        stats.setUnaEstrella(stats.getUnaEstrella()+1);
+                        break;
+                    case 2:
+                        stats.setDosEstrella(stats.getDosEstrella()+1);
+                        break;
+                    case 3:
+                        stats.setTresEstrella(stats.getTresEstrella()+1);
+                        break;
+                    case 4:
+                        stats.setCuatroEstrella(stats.getCuatroEstrella()+1);
+                        break;
+                    case 5:
+                        stats.setCincoEstrella(stats.getCincoEstrella()+1);
+                        break;
+                }
+            }
+        }catch (Exception e){
+            MensajeRespuesta mensajeRespuesta = new MensajeRespuesta("Error interno",false);
+            throw new MensajeRespuestaException(mensajeRespuesta);
+        }
+        return stats;
+    }
+
     //Private
 
     private List<Resenia> mapearListaReseñas(List<ReseniaEntity> reseniaEntities) {
         List<Resenia> resenias = new ArrayList<>();
         for (ReseniaEntity r : reseniaEntities){
             Resenia resenia = modelMapper.map(r, Resenia.class);
-            ClienteDTO clienteDTO = modelMapper.map(r.getCliente(),ClienteDTO.class);
-            clienteDTO.setPersona(modelMapper.map(r.getCliente().getPersona(), PersonaDTO.class));
-            if(r.getCliente().getPersona().getCiudad() != null)
-                clienteDTO.getPersona().setCiudad(r.getCliente().getPersona().getCiudad().getDescripcion());
-            if(r.getCliente().getPersona().getTipoDNI() != null)
-                clienteDTO.getPersona().setTipoDNI(r.getCliente().getPersona().getTipoDNI().getDescripcion());
-            clienteDTO.getPersona().setEmailUsuario(r.getCliente().getPersona().getUsuario().getEmail());
-
+            if (resenia.getCliente() != null) {
+                ClienteDTO clienteDTO = modelMapper.map(r.getCliente(), ClienteDTO.class);
+                clienteDTO.setPersona(modelMapper.map(r.getCliente().getPersona(), PersonaDTO.class));
+                if (r.getCliente().getPersona().getCiudad() != null)
+                    clienteDTO.getPersona().setCiudad(r.getCliente().getPersona().getCiudad().getDescripcion());
+                if (r.getCliente().getPersona().getTipoDNI() != null)
+                    clienteDTO.getPersona().setTipoDNI(r.getCliente().getPersona().getTipoDNI().getDescripcion());
+                clienteDTO.getPersona().setEmailUsuario(r.getCliente().getPersona().getUsuario().getEmail());
+                resenia.setCliente(clienteDTO);
+            }
             ProfesionistaDTO profesionistaDTO = modelMapper.map(r.getProfesionista(),ProfesionistaDTO.class);
             profesionistaDTO.setPersona(modelMapper.map(r.getProfesionista().getPersona(), PersonaDTO.class));
             if(r.getProfesionista().getPersona().getCiudad() != null)
@@ -173,7 +206,6 @@ public class ReseniaServiceImpl implements ReseniaService {
                 mapearProfesiones(profesionistaDTO, r.getProfesionista());
             profesionistaDTO.getPersona().setEmailUsuario(r.getProfesionista().getPersona().getUsuario().getEmail());
 
-            resenia.setCliente(clienteDTO);
             resenia.setProfesionista(profesionistaDTO);
             resenias.add(resenia);
         }

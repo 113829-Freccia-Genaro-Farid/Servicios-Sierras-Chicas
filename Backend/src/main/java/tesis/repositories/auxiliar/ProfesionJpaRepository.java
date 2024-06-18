@@ -11,5 +11,6 @@ public interface ProfesionJpaRepository extends JpaRepository<ProfesionEntity, L
     void deleteById(Long id);
     boolean existsByDescripcion(String descripcion);
     boolean existsById(Long id);
-    List<ProfesionEntity> getAllByCategoria_Id(Long id);
+    List<ProfesionEntity> getAllByCategoria_IdOrderByDescripcion(Long id);
+    List<ProfesionEntity> findAllByOrderByDescripcion();
 }
