@@ -56,6 +56,7 @@ export class ListadoAnunciosComponent implements OnInit,OnDestroy{
         next: (response) => {
           this.profesionistas = response;
           this.updatePagedItems();
+          this.obtenerPromedios();
         },
         error: () => {
           alert('Error al cargar los profesionistas');
@@ -146,5 +147,17 @@ export class ListadoAnunciosComponent implements OnInit,OnDestroy{
       }
     });
     this.router.navigate(['/profesionistas',idProfesionista]);
+  }
+
+  obtenerPromedios(){
+    for (const p of this.profesionistas) {
+      this.subscription?.add(
+        this.profesionistasService.getPromedioReseniasByProfesionista(p.id).subscribe({
+          next:(response) =>{
+            p.promedioResenias = response;
+          }
+        })
+      )
+    }
   }
 }

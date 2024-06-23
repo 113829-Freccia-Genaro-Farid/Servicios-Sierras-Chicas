@@ -23,7 +23,10 @@ public class AnuncioEntity {
     private BigDecimal cantidadClicks;
 
     @Column
-    private YearMonth fecha;
+    private int anio;
+
+    @Column
+    private int mes;
 
     @ManyToOne
     @JoinColumn(name = "id_profesionista", nullable = false)

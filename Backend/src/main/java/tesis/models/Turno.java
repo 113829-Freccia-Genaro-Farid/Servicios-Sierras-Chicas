@@ -7,18 +7,16 @@ import lombok.NoArgsConstructor;
 import tesis.dtos.ClienteDTO;
 import tesis.dtos.ProfesionistaDTO;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Turno {
     Long idTurno;
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    LocalDate fechaTurno;
-    @JsonFormat(pattern = "HH:mm")
-    LocalTime horaTurno;
+    String descripcion;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    LocalDateTime fechaTurno;
     ClienteDTO cliente;
     ProfesionistaDTO profesionista;
 }

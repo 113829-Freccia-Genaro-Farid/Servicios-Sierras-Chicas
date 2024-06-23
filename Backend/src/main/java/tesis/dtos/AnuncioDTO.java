@@ -14,7 +14,7 @@ import java.time.YearMonth;
 public class AnuncioDTO {
     Long id;
     BigDecimal cantidadClicks;
-    @JsonFormat(pattern = "MM-yyyy")
-    YearMonth fecha;
+    int anio;
+    int mes;
     ProfesionistaDTO profesionista;
 }

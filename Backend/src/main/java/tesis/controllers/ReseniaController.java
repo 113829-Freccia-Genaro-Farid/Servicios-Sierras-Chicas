@@ -10,6 +10,7 @@ import tesis.models.Resenia;
 import tesis.services.ReseniaService;
 import tesis.services.TurnoService;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -34,6 +35,10 @@ public class ReseniaController {
     @GetMapping("/stats/{idProfesionista}")
     public ResponseEntity<ReseniaStats> getReseñaStatsByProfesionista(@PathVariable Long idProfesionista){
         return ResponseEntity.ok(reseniaService.estadisticasReseniasByProfesionista(idProfesionista));
+    }
+    @GetMapping("/promedio/{idProfesionista}")
+    public ResponseEntity<BigDecimal> getPromedioReseñasByProfesionista(@PathVariable Long idProfesionista){
+        return ResponseEntity.ok(reseniaService.promedioReseniasByProfesionista(idProfesionista));
     }
     @GetMapping("/{idReseña}")
     public ResponseEntity<Resenia> getReseñaById(@PathVariable Long idReseña){

@@ -37,6 +37,10 @@ public class ProfesionistaController {
     public ResponseEntity<ProfesionistaDTO> getProfesionistaById(@PathVariable Long idProfesionista){
         return ResponseEntity.ok(profesionistaService.obtenerProfesionistaById(idProfesionista));
     }
+    @GetMapping("/byUserEmail/{email}")
+    public ResponseEntity<ProfesionistaDTO> getProfesionistaByUserEmail(@PathVariable String email){
+        return ResponseEntity.ok(profesionistaService.obtenerProfesionistaByEmailUser(email));
+    }
     @PostMapping("")
     public ResponseEntity<MensajeRespuesta> postProfesionista(@RequestBody ProfesionistaDTOPost profesionistaDTOPost){
         return ResponseEntity.ok(profesionistaService.registrarProfesionista(profesionistaDTOPost));

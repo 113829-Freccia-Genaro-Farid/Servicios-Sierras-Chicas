@@ -35,6 +35,9 @@
           </ng-container>
           <ng-container *ngIf="logueado()">
             <button mat-menu-item routerLink="/datospersonales">Datos Personales</button>
+            <button mat-menu-item routerLink="/panelProfesionista" *ngIf="esProfesionista()">Panel Profesionista</button>
+            <button mat-menu-item routerLink="/turnos" *ngIf="esProfesionista()">Turnos</button>
+            <button mat-menu-item routerLink="/panelAdmin" *ngIf="esAdmin()">Panel Admin</button>
             <button mat-menu-item routerLink="/home" (click)="cerrarSesion()">Cerrar Sesion</button>
           </ng-container>
         </mat-menu>

@@ -28,13 +28,13 @@ public class ProfesionistaEntity {
     @Column(name = "comunicacion_wsp",nullable = false)
     private boolean ComunicacionWsp;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String presentacion;
 
     @Column
     private boolean Suscrito;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(name = "profesionista_profesiones",
             joinColumns = @JoinColumn(name = "id_profesionista"),
             inverseJoinColumns = @JoinColumn(name = "id_profesion"))

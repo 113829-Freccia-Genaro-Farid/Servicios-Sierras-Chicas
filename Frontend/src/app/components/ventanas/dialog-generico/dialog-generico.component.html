@@ -1,9 +1,13 @@
-<h1 mat-dialog-title class="bg-green-400">{{data.title}}</h1>
+<h1 mat-dialog-title class="bg-green-400 text-center mb-0">{{data.title}}</h1>
 <div mat-dialog-content>
-  <ng-container *ngComponentOutlet="data.component"></ng-container>
+  <ng-container *ngIf="data.component">
+    <ng-container *ngComponentOutlet="data.component"></ng-container>
+  </ng-container>
+  <ng-container *ngIf="!data.component">
+    <p class="w-96 text-center">{{descripcion}}</p>
+  </ng-container>
 </div>
 <div mat-dialog-actions class="dialog-actions" *ngIf="!sinBotones">
   <button mat-button color="warn" (click)="onCancel()" *ngIf="!soloAceptar">Cancelar</button>
   <button mat-flat-button color="primary" (click)="onAccept()">{{captionBoton}}</button>
 </div>
-

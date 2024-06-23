@@ -2,13 +2,9 @@ package tesis.services.impl;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tesis.dtos.AnuncioDTO;
-import tesis.dtos.ProfesionistaDTO;
-import tesis.dtos.ProfesionistaDTOPost;
-import tesis.dtos.ProfesionistaDTOPut;
+import tesis.dtos.*;
 import tesis.dtos.common.MensajeRespuesta;
 import tesis.entities.AnuncioEntity;
 import tesis.entities.ProfesionistaEntity;
@@ -25,10 +21,10 @@ import tesis.services.UsuarioService;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.Normalizer;
+import java.time.LocalDate;
+import java.time.Year;
 import java.time.YearMonth;
 import java.util.*;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 public class ProfesionistaServiceImpl implements ProfesionistaService {
@@ -111,6 +107,30 @@ public class ProfesionistaServiceImpl implements ProfesionistaService {
     }
 
     @Override
+    public ProfesionistaDTO obtenerProfesionistaByEmailUser(String email) {
+        try {
+            Optional<ProfesionistaEntity> optionalEntity = profesionistaJpaRepository.findByPersona_Usuario_Email(email);
+            if (optionalEntity.isPresent()) {
+                ProfesionistaEntity entity = optionalEntity.get();
+                ProfesionistaDTO profesionistaDTO = modelMapper.map(entity, ProfesionistaDTO.class);
+                if(profesionistaDTO.getPersona().getCiudad() != null)
+                    profesionistaDTO.getPersona().setCiudad(entity.getPersona().getCiudad().getDescripcion());
+                if(profesionistaDTO.getPersona().getTipoDNI() != null)
+                    profesionistaDTO.getPersona().setTipoDNI(entity.getPersona().getTipoDNI().getDescripcion());
+                if(entity.getProfesiones() != null)
+                    mapearProfesiones(profesionistaDTO, entity);
+                profesionistaDTO.getPersona().setEmailUsuario(entity.getPersona().getUsuario().getEmail());
+                return profesionistaDTO;
+            }
+            else
+                return null;
+        }catch (Exception e) {
+            MensajeRespuesta mensajeRespuesta = new MensajeRespuesta("Error interno",false);
+            throw new MensajeRespuestaException(mensajeRespuesta);
+        }
+    }
+
+    @Override
     @Transactional
     public MensajeRespuesta registrarProfesionista(ProfesionistaDTOPost profesionista) {
         MensajeRespuesta mensajeRespuesta = new MensajeRespuesta();
@@ -145,7 +165,7 @@ public class ProfesionistaServiceImpl implements ProfesionistaService {
             usuarioService.cambiarRolUsuario(profesionistaEntity.getPersona().getUsuario().getEmail(), rolJpaRepository.getByDescripcion("PROFESIONISTA").getId());
 
             ProfesionistaEntity guardado = profesionistaJpaRepository.save(profesionistaEntity);
-            anuncioJpaRepository.save(new AnuncioEntity(null, new BigDecimal(BigInteger.ZERO), YearMonth.now(), guardado));
+            anuncioJpaRepository.save(new AnuncioEntity(null, new BigDecimal(BigInteger.ZERO), Year.now().getValue(), LocalDate.now().getMonth().getValue(), guardado));
 
             mensajeRespuesta.setMensaje("Se ha guardado correctamente al profesionista.");
         }catch (Exception e){
@@ -157,6 +177,7 @@ public class ProfesionistaServiceImpl implements ProfesionistaService {
     }
 
     @Override
+    @Transactional
     public MensajeRespuesta modificarProfesionista(Long id, ProfesionistaDTOPut profesionista) {
         MensajeRespuesta mensajeRespuesta = new MensajeRespuesta();
         try{
@@ -174,7 +195,7 @@ public class ProfesionistaServiceImpl implements ProfesionistaService {
                 profesionistaEntity.setNroMatricula(null);
             }
             profesionistaEntity.setComunicacionWsp(profesionista.isComunicacionWsp());
-            profesionistaEntity.setPresentacion(profesionista.getPresentacion());
+            profesionistaJpaRepository.borrarRelacionesPorProfesionista(id);
             for (Long idProfesion : profesionista.getIdProfesiones()) {
                 if(profesionJpaRepository.findById(idProfesion).isPresent())
                     profesionistaEntity.getProfesiones().add(profesionJpaRepository.findById(idProfesion).get());
@@ -237,12 +258,12 @@ public class ProfesionistaServiceImpl implements ProfesionistaService {
         MensajeRespuesta mensajeRespuesta = new MensajeRespuesta();
         AnuncioEntity anuncioEntity;
         try{
-            Optional<AnuncioEntity> optionalEntity = anuncioJpaRepository.findByFechaAndProfesionista_Id(YearMonth.now(),idProfesionista);
+            Optional<AnuncioEntity> optionalEntity = anuncioJpaRepository.findByAnioAndMesAndProfesionista_Id( Year.now().getValue(), LocalDate.now().getMonth().getValue(), idProfesionista);
             if (optionalEntity.isPresent()) {
                 anuncioEntity = optionalEntity.get();
                 anuncioEntity.setCantidadClicks(anuncioEntity.getCantidadClicks().add(BigDecimal.ONE));
             } else {
-                anuncioEntity = new AnuncioEntity(null, new BigDecimal(BigInteger.ONE), YearMonth.now(), null);
+                anuncioEntity = new AnuncioEntity(null, new BigDecimal(BigInteger.ONE), Year.now().getValue(), LocalDate.now().getMonth().getValue(), null);
                 if (profesionistaJpaRepository.findById(idProfesionista).isPresent()){
                     anuncioEntity.setProfesionista(profesionistaJpaRepository.findById(idProfesionista).get());
                 }else{
@@ -278,7 +299,7 @@ public class ProfesionistaServiceImpl implements ProfesionistaService {
     public List<AnuncioDTO> getAnunciosByProfesionista(Long idProfesionista) {
         List<AnuncioDTO> lst;
         try{
-            List<AnuncioEntity> lista= anuncioJpaRepository.findAllByProfesionista_Id(idProfesionista);
+            List<AnuncioEntity> lista= anuncioJpaRepository.findAllByProfesionista_IdOrderByMesAndAnio(idProfesionista);
             lst = mapearListaAnuncios(lista);
         }catch (Exception e){
             MensajeRespuesta mensajeRespuesta = new MensajeRespuesta("Error interno",false);

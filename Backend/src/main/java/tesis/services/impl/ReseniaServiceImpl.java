@@ -18,6 +18,10 @@ import tesis.repositories.auxiliar.RolJpaRepository;
 import tesis.services.ReseniaService;
 import tesis.services.UsuarioService;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -179,6 +183,25 @@ public class ReseniaServiceImpl implements ReseniaService {
         }
         return stats;
     }
+
+    @Override
+    public BigDecimal promedioReseniasByProfesionista(Long idProfesionista) {
+        BigDecimal promedio = BigDecimal.ZERO;
+        List<ReseniaEntity> lista = reseniaJpaRepository.findAllByProfesionista_Id(idProfesionista);
+        try {
+            for (ReseniaEntity r : lista) {
+                promedio = promedio.add(new BigDecimal(r.getCalificacion()));
+            }
+            if (!lista.isEmpty()) {
+                promedio = promedio.divide(new BigDecimal(lista.size()), new MathContext(2, RoundingMode.HALF_UP));
+            }
+        } catch (Exception e) {
+            MensajeRespuesta mensajeRespuesta = new MensajeRespuesta("Error interno", false);
+            throw new MensajeRespuestaException(mensajeRespuesta);
+        }
+        return promedio.setScale(1, RoundingMode.HALF_UP);
+    }
+
 
     //Private
 

@@ -6,6 +6,7 @@ import tesis.dtos.ReseniaStats;
 import tesis.dtos.common.MensajeRespuesta;
 import tesis.models.Resenia;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -17,5 +18,6 @@ public interface ReseniaService {
     MensajeRespuesta registrarReseña(ReseniaDTOPost reseniaDTOPost);
     MensajeRespuesta borrarReseñaById(Long id);
     ReseniaStats estadisticasReseniasByProfesionista(Long idProfesionista);
+    BigDecimal promedioReseniasByProfesionista(Long idProfesionista);
 }
 

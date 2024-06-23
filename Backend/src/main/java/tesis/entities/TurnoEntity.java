@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -20,19 +21,18 @@ public class TurnoEntity {
     private Long id;
 
     // CODIGO DE TURNO A FUTURO
+    @Column
+    private String descripcion;
 
     @Column(name = "fecha_turno")
-    private LocalDate fechaTurno;
-
-    @Column(name = "hora_turno")
-    private LocalTime horaTurno;
+    private LocalDateTime fechaTurno;
 
     @ManyToOne
-    @JoinColumn(name = "id_cliente", nullable = false)
+    @JoinColumn(name = "id_cliente")
     private ClienteEntity cliente;
 
     @ManyToOne
-    @JoinColumn(name = "id_profesionista")
+    @JoinColumn(name = "id_profesionista", nullable = false)
     private ProfesionistaEntity profesionista;
 
 }

@@ -3,30 +3,30 @@
   <dui-accordion>
     <!-- Pregunta 1 -->
     <dui-accordion-expansion className= "divide-y-2 divide-green-800">
-      <dui-accordion-header [showIcon]="true" icon title="¿Cómo creo mi usuario?" ></dui-accordion-header>
-      <dui-accordion-body className="bg-green-700">
+      <dui-accordion-header [showIcon]="true" title="¿Cómo creo mi usuario?" ></dui-accordion-header>
+      <dui-accordion-body className="bg-green-700 text-white">
         Para crear tu usuario, debes ingresar <a routerLink="/register">aqui</a> y sigue los pasos.
       </dui-accordion-body>
     </dui-accordion-expansion>
     <!-- Pregunta 4 -->
     <dui-accordion-expansion className= "divide-y-2 divide-green-800">
       <dui-accordion-header [showIcon]="true" title="¿Cómo puedo suscribirme?"></dui-accordion-header>
-      <dui-accordion-body className="bg-green-700">
+      <dui-accordion-body className="bg-green-700 text-white">
         La opcion de suscribirse es solo para profesionistas para poder promocionar su anuncio.
-        Para suscribirte debes ingresar <a routerLink="/suscripcion">aqui</a> y completar el pago por la plataforma Mercado Pago.
+        Para suscribirte debes ingresar <a routerLink="/suscripcion" (click)="comprobarLogin()">aqui</a> y completar el pago por la plataforma Mercado Pago.
       </dui-accordion-body>
     </dui-accordion-expansion>
     <!-- Pregunta 7 -->
     <dui-accordion-expansion className= "divide-y-2 divide-green-800">
       <dui-accordion-header [showIcon]="true" title="¿Qué necesito para publicar mis servicios?"></dui-accordion-header>
-      <dui-accordion-body className="bg-green-700">
+      <dui-accordion-body className="bg-green-700 text-white">
         Para publicar tu anuncio con tus servicios solamente necesitas registrarte como profesionista y ya se encuentra publicado tu anuncio.
       </dui-accordion-body>
     </dui-accordion-expansion>
     <!-- Pregunta 8 -->
     <dui-accordion-expansion className= "divide-y-2 divide-green-800">
       <dui-accordion-header [showIcon]="true" title="¿Qué medios de pago aceptan?"></dui-accordion-header>
-      <dui-accordion-body className="bg-green-700">
+      <dui-accordion-body className="bg-green-700 text-white">
         Aceptamos todos los medios de pago que permita la plataforma Mercado Pago.
         Puedes consultarlos <a href="https://www.mercadopago.com.ar/ayuda/medios-de-pago-cuotas-promociones_264">aqui</a>.
       </dui-accordion-body>
@@ -34,8 +34,14 @@
     <!-- Pregunta 5 -->
     <dui-accordion-expansion className= "divide-y-2 divide-green-800">
       <dui-accordion-header [showIcon]="true" title="¿Tienes alguna duda o quieres comunicarte con nosotros?"></dui-accordion-header>
-      <dui-accordion-body className="bg-green-700">
+      <dui-accordion-body className="bg-green-700 text-white">
         Para cualquier duda o consulta, comunícate con nosotros a través de correo electronico enviando tu duda a: serviciossierraschicas@yopmail.com
+      </dui-accordion-body>
+    </dui-accordion-expansion>
+    <dui-accordion-expansion className= "divide-y-2 divide-green-800">
+      <dui-accordion-header [showIcon]="true" title="¿Como darme de baja en el sistema?"></dui-accordion-header>
+      <dui-accordion-body className="bg-green-700 text-white">
+        Para darse de baja por completo y eliminar todos sus datos en el sistema. Debe apretar <button type="button" class='boton' (click)="openDialog()">aquí</button>.
       </dui-accordion-body>
     </dui-accordion-expansion>
   </dui-accordion>

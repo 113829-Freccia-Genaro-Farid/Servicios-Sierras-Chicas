@@ -113,13 +113,19 @@ public class TurnoServiceImpl implements TurnoService {
     public MensajeRespuesta registrarTurno(TurnoDTOPost turnoDTOPost) {
         MensajeRespuesta mensajeRespuesta = new MensajeRespuesta();
         try{
-            if (turnoJpaRepository.existsByCliente_IdAndProfesionista_Id(turnoDTOPost.getIdCliente(), turnoDTOPost.getIdProfesionista())){
-                mensajeRespuesta.setMensaje("Esta persona ya tiene un turno asginado.");
-                mensajeRespuesta.setOk(false);
-                return mensajeRespuesta;
+            if (turnoDTOPost.getIdCliente() != null){
+                if (turnoJpaRepository.existsByCliente_IdAndProfesionista_Id(turnoDTOPost.getIdCliente(), turnoDTOPost.getIdProfesionista())){
+                    mensajeRespuesta.setMensaje("Esta persona ya tiene un turno asginado.");
+                    mensajeRespuesta.setOk(false);
+                    return mensajeRespuesta;
+                }
             }
-            TurnoEntity turnoEntity = new TurnoEntity(null, turnoDTOPost.getFechaTurno(), turnoDTOPost.getHoraTurno(), null,null);
-            turnoEntity.setCliente(clienteJpaRepository.findById(turnoDTOPost.getIdCliente()).get());
+            TurnoEntity turnoEntity = new TurnoEntity(null, null,turnoDTOPost.getFechaTurno(), null,null);
+            if(turnoDTOPost.getIdCliente() != null)
+                turnoEntity.setCliente(clienteJpaRepository.findById(turnoDTOPost.getIdCliente()).get());
+            else
+                turnoEntity.setCliente(null);
+            turnoEntity.setDescripcion(turnoDTOPost.getDescripcion());
             turnoEntity.setProfesionista(profesionistaJpaRepository.findById(turnoDTOPost.getIdProfesionista()).get());
             turnoJpaRepository.save(turnoEntity);
 
@@ -144,11 +150,11 @@ public class TurnoServiceImpl implements TurnoService {
             }
             TurnoEntity turnoEntity =  optionalEntity.get();
             turnoEntity.setFechaTurno(turnoDTOPut.getFechaTurno());
-            turnoEntity.setHoraTurno(turnoDTOPut.getHoraTurno());
             if(turnoDTOPut.getIdCliente() != null)
                 turnoEntity.setCliente(clienteJpaRepository.findById(turnoDTOPut.getIdCliente()).get());
             else
                 turnoEntity.setCliente(null);
+            turnoEntity.setDescripcion(turnoDTOPut.getDescripcion());
             turnoEntity.setProfesionista(profesionistaJpaRepository.findById(turnoDTOPut.getIdProfesionista()).get());
             turnoJpaRepository.save(turnoEntity);
             mensajeRespuesta.setMensaje("Se ha modificado correctamente el turno.");

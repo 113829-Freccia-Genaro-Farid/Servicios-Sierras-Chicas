@@ -1,0 +1,48 @@
+<div class="grid grid-cols-2 gap-4 p-4">
+  <div class="bg-white rounded-lg shadow-md p-4">
+    <h2 class="text-lg font-bold mb-2">Datos del Profesionista</h2>
+    <form [formGroup]="profesionistaForm" class="grid grid-cols-2 gap-4 p-4">
+      <mat-checkbox formControlName="poseeMatricula" (change)="toggleMatricula($event.checked)">Posee Matrícula</mat-checkbox>
+      <mat-form-field appearance="fill">
+        <mat-label>Número de Matrícula</mat-label>
+        <input matInput formControlName="nroMatricula" placeholder="Número de Matrícula">
+      </mat-form-field>
+      <mat-checkbox formControlName="comunicacionWsp">Comunicación por WhatsApp</mat-checkbox>
+      <mat-form-field appearance="fill" class="col-span-2">
+        <mat-label>Profesiones</mat-label>
+        <mat-select formControlName="profesiones" multiple>
+          <mat-option *ngFor="let profesion of profesiones" [value]="profesion.id">{{ profesion.descripcion }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="col-span-2 text-center">
+        <button mat-raised-button color="primary" class="mx-1" (click)="habilitar()" *ngIf="!editModeDatos">Modificar</button>
+        <button mat-raised-button color="warn" class="mx-1" (click)="cancelEdit()" *ngIf="editModeDatos">Cancelar</button>
+        <button mat-raised-button color="primary" class="mx-1" (click)="saveChanges()" *ngIf="editModeDatos" [disabled]="profesionistaForm.invalid">Guardar</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="bg-white rounded-lg shadow-md p-4 text-center">
+    <h2 class="text-lg font-bold mb-2">Descripción del Anuncio</h2>
+    <form [formGroup]="descripcionForm">
+      <mat-form-field appearance="fill" class="w-full" style="height: 292px">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput placeholder="Descripcion del anuncio..." formControlName="descripcion" style="height: 245px"></textarea>
+      </mat-form-field>
+    </form>
+    <button mat-raised-button color="primary" (click)="descripcionForm.enable(); editModeDesc=true" *ngIf="!editModeDesc">Modificar</button>
+    <button mat-raised-button color="warn" class="mx-1" (click)="cancelEditDesc()" *ngIf="editModeDesc">Cancelar</button>
+    <button mat-raised-button color="primary" class="mx-1" (click)="saveChangesDesc()" *ngIf="editModeDesc" [disabled]="profesionistaForm.invalid">Guardar</button>
+  </div>
+
+  <div class="bg-white rounded-lg shadow-md p-4">
+    <h2 class="text-lg font-bold mb-2">Clicks en el Anuncio</h2>
+    <vertical-bar-chart></vertical-bar-chart>
+  </div>
+
+  <div class="bg-white rounded-lg shadow-md p-4">
+    <h2 class="text-lg font-bold mb-2">Turnos durante el Mes</h2>
+    <grafico-turnos-mes></grafico-turnos-mes>
+  </div>
+</div>

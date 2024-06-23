@@ -18,7 +18,7 @@ public class ReseniaEntity {
     @Column(name = "id_reseña")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String descripcion;
 
     @Column(nullable = false)

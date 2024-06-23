@@ -16,6 +16,7 @@ public interface ProfesionistaService {
     List<ProfesionistaDTO> listarProfesionistasOrdenadaSuscritos();
     List<ProfesionistaDTO> listaProfesionistasConFiltros(String nombreApellido, List<Long> categorias, List<Long> profesiones, List<Long> ciudades);
     ProfesionistaDTO obtenerProfesionistaById(Long id);
+    ProfesionistaDTO obtenerProfesionistaByEmailUser(String email);
     MensajeRespuesta registrarProfesionista(ProfesionistaDTOPost profesionista);
     MensajeRespuesta modificarProfesionista(Long id, ProfesionistaDTOPut profesionista);
     MensajeRespuesta modificarPresentacionProfesionista(Long id, String nuevaPresentacion);

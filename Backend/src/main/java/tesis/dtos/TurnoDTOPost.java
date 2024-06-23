@@ -7,16 +7,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class TurnoDTOPost {
-    LocalDate fechaTurno;
-    @JsonFormat(pattern = "HH:mm")
-    @Schema(type = "string", pattern = "HH:mm")
-    LocalTime horaTurno;
+    LocalDateTime fechaTurno;
+    String descripcion;
     Long idCliente;
     Long idProfesionista;
 }

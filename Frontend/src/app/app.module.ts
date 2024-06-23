@@ -51,11 +51,21 @@ import {MatSelectModule} from "@angular/material/select";
 import { PerfilProfesionistaComponent } from './components/perfil-profesionista/perfil-profesionista.component';
 import {MatChipsModule} from "@angular/material/chips";
 import {MatListModule} from "@angular/material/list";
-import { CanvasJSAngularStockChartsModule } from '@canvasjs/angular-stockcharts';
-import {BarChartComponent} from "./charts/bar-chart/bar.chart.component";
 import { NgApexchartsModule } from "ng-apexcharts";
 import { GraficoBarraResenasComponent } from './charts/grafico-barra-resenas/grafico-barra-resenas.component';
 import { SeleccionRolComponent } from './components/seleccion-rol/seleccion-rol.component';
+import { TurnosComponent } from './components/turnos/turnos.component';
+import {FullCalendarModule} from "@fullcalendar/angular";
+import { AgregarTurnoComponent } from './components/turnos/agregar-turno/agregar-turno/agregar-turno.component';
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule } from '@angular/material/core';
+import { EstrellasReseniaComponent } from './charts/estrellas-resenia/estrellas-resenia.component';
+import { PanelProfesionistaComponent } from './components/panel-profesionista/panel-profesionista.component';
+import { PanelAdminComponent } from './components/panel-admin/panel-admin.component';
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import { FilterPipe } from './pipes/filter.pipe';
+import { VerticalBarChartComponent } from './charts/vertical-bar-chart/vertical-bar-chart.component';
+import { GraficoTurnosMesComponent } from './charts/grafico-turnos-mes/grafico-turnos-mes.component';
 
 const routes:Routes = [
   {path: 'home', component:HomeComponent},
@@ -71,6 +81,9 @@ const routes:Routes = [
     ]
   },
   {path: 'seleccionRol', component:SeleccionRolComponent},
+  {path: 'turnos', component:TurnosComponent},
+  {path: 'panelAdmin', component:PanelAdminComponent},
+  {path: 'panelProfesionista', component:PanelProfesionistaComponent},
 
   {path: '', redirectTo: 'home', pathMatch: 'full' },
   {path: '**', redirectTo: 'home' },
@@ -115,9 +128,16 @@ const routes:Routes = [
     ListadoAnunciosComponent,
     CambiarContraseniaComponent,
     PerfilProfesionistaComponent,
-    BarChartComponent,
     GraficoBarraResenasComponent,
-    SeleccionRolComponent
+    SeleccionRolComponent,
+    TurnosComponent,
+    AgregarTurnoComponent,
+    EstrellasReseniaComponent,
+    PanelProfesionistaComponent,
+    PanelAdminComponent,
+    FilterPipe,
+    VerticalBarChartComponent,
+    GraficoTurnosMesComponent
   ],
   imports: [
     BrowserModule,
@@ -137,8 +157,11 @@ const routes:Routes = [
     MatSelectModule,
     MatChipsModule,
     MatListModule,
-    CanvasJSAngularStockChartsModule,
     NgApexchartsModule,
+    FullCalendarModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatCheckboxModule
   ],
   providers: [
     {provide:

@@ -10,9 +10,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProfesionistaDTOPut {
-    boolean PoseeMatricula;
-    String NroMatricula;
-    boolean ComunicacionWsp;
-    String presentacion;
+    boolean poseeMatricula;
+    String nroMatricula;
+    boolean comunicacionWsp;
     List<Long> idProfesiones;
 }

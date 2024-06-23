@@ -56,6 +56,9 @@ export class UsuarioService {
   bajaUsuario(email:string):Observable<MensajeRespuesta>{
     return this.client.delete<MensajeRespuesta>("http://localhost:8080/api/usuarios/"+email);
   }
+  eliminarUsuarioSistema(email:string):Observable<MensajeRespuesta>{
+    return this.client.delete<MensajeRespuesta>("http://localhost:8080/api/usuarios/deleteUser/"+email);
+  }
   cambioRolUsuario(email:string,idRol:string):Observable<MensajeRespuesta>{
     return this.client.put<MensajeRespuesta>("http://localhost:8080/api/usuarios/"+email, idRol);
   }

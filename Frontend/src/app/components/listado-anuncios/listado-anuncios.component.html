@@ -1,4 +1,4 @@
-<div class="container mx-auto bg-green-100 py-2">
+<div class="container mx-auto bg-green-100 p-4 rounded-3xl">
   <h1 class="text-2xl text-center font-bold mb-4">Listado de Anuncios</h1>
   <mat-accordion class="example-headers-align">
     <mat-expansion-panel class="rounded-lg overflow-hidden shadow-lg mb-4" hideToggle>
@@ -55,14 +55,14 @@
   </mat-accordion>
 
   <div *ngFor="let profesionista of pagedItems" class="shadow-md rounded-lg p-4 mb-4" [ngClass]="{'suscripcion': profesionista.suscrito, 'no-suscripcion': !profesionista.suscrito}">
-    <h2 class="text-xl font-bold mb-2">{{ profesionista.persona.apellido + ', ' + profesionista.persona.nombre }}</h2>
+    <div class="flex justify-between items-center mb-2 pr-10">
+      <h2 class="text-xl font-bold">{{ profesionista.persona.apellido + ', ' + profesionista.persona.nombre }}</h2>
+      <strong class="text-right">Promedio de calificaciones: {{profesionista.promedioResenias}} <estrellas-resenia [promedioResenias]="profesionista.promedioResenias"></estrellas-resenia></strong>
+    </div>
+    <div *ngIf="profesionista.poseeMatricula" class="">
+      <strong>Matrícula:</strong> {{ profesionista.nroMatricula }}
+    </div>
     <hr class="pb-3">
-    <div *ngIf="profesionista.PoseeMatricula" class="mb-2">
-      <strong>Matrícula:</strong> {{ profesionista.NroMatricula }}
-    </div>
-    <div *ngIf="profesionista.ComunicacionWsp" class="mb-2">
-      <strong>Comunicación por WhatsApp:</strong> Sí
-    </div>
     <p>{{ profesionista.presentacion }}</p>
     <div class="flex flex-wrap gap-2">
       <ng-container *ngFor="let profesion of profesionista.profesiones">
@@ -71,6 +71,7 @@
     </div>
     <button mat-button color="primary" (click)="clickAnuncio(profesionista.id)">Ir al perfil</button>
   </div>
+
 
   <mat-paginator [length]="profesionistas.length" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25, 100]" (page)="onPageChange($event)"></mat-paginator>
 </div>

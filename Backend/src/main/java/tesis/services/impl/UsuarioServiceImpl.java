@@ -224,7 +224,7 @@ public class UsuarioServiceImpl implements UsuarioService {
                 if(personaJpaRepository.existsByUsuario_Email(emailUsuario)) {
                     PersonaEntity persona = personaJpaRepository.findByUsuarioEmail(emailUsuario);
                     if (profesionistaJpaRepository.existsByPersona_Id(persona.getId())){
-                        for (AnuncioEntity e : anuncioJpaRepository.findAllByProfesionista_Id(profesionistaJpaRepository.getByPersona_Id(persona.getId()).getId())) {
+                        for (AnuncioEntity e : anuncioJpaRepository.findAllByProfesionista_IdOrderByMesAndAnio(profesionistaJpaRepository.getByPersona_Id(persona.getId()).getId())) {
                             anuncioJpaRepository.deleteById(e.getId());
                         }
                         for (TurnoEntity t : turnoJpaRepository.findAllByProfesionista_Id(profesionistaJpaRepository.getByPersona_Id(persona.getId()).getId())) {

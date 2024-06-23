@@ -17,9 +17,11 @@ export class TopBarComponent {
   openSidebar(){
     this.dashboard.openSidebar()
   }
-
   esProfesionista():Boolean{
     return this.usuarioService.rolUsuario() == Roles.PROFESIONISTA;
+  }
+  esAdmin():Boolean{
+    return this.usuarioService.rolUsuario() == Roles.ADMINISTRADOR;
   }
 
   cerrarSesion(){

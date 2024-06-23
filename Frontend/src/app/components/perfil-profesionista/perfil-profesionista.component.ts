@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ProfesionistasService} from "../../services/profesionistasService/profesionistas.service";
 import {Profesionista} from "../../models/profesionista";
 import {Subscription} from "rxjs";
@@ -16,6 +16,7 @@ import {ClientesService} from "../../services/clientesService/clientes.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {ReseniaStats} from "../../models/resenia-stats";
 import {GraficoBarraResenasComponent} from "../../charts/grafico-barra-resenas/grafico-barra-resenas.component";
+import {Persona} from "../../models/persona";
 
 const SVG_STAR =
   `
@@ -35,7 +36,21 @@ export class PerfilProfesionistaComponent implements OnInit,OnDestroy{
   protected readonly Array = Array;
   private subscription:Subscription | undefined;
   mensaje:MensajeRespuesta = {} as MensajeRespuesta;
-  profesionista:Profesionista = {} as Profesionista;
+  profesionista: Profesionista = {
+    id: 0,
+    suscrito: false,
+    persona: {
+      apellido: '',
+      nombre: '',
+      telefono1: ''
+    } as Persona,
+    comunicacionWsp: false,
+    presentacion: '',
+    poseeMatricula: false,
+    nroMatricula: '',
+    profesiones: [],
+    promedioResenias:0
+  };
   cliente:Cliente = {} as Cliente;
   reseniaStats: ReseniaStats = {} as ReseniaStats;
   resenias:Resenia[] = [];
