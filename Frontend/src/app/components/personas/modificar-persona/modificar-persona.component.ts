@@ -11,6 +11,8 @@ import {PersonasService} from "../../../services/personasService/personas.servic
 import {Usuario} from "../../../models/usuario";
 import {UsuarioService} from "../../../services/usuariosService/usuario.service";
 import {DatePipe} from "@angular/common";
+import {PersonaDTOPut} from "../../../DTOs/persona-dtoput";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-modificar-persona',
@@ -31,7 +33,8 @@ export class ModificarPersonaComponent implements OnInit, OnDestroy{
     private fb: FormBuilder,
     private auxiliaresService: AuxiliaresService,
     private personasService:PersonasService,
-    private usuariosService:UsuarioService
+    private usuariosService:UsuarioService,
+    private alerta: MatSnackBar
   ) {}
 
   ngOnDestroy(): void {
@@ -101,15 +104,39 @@ export class ModificarPersonaComponent implements OnInit, OnDestroy{
   }
 
 
-  onSubmit(): void {
-    if (this.personaForm.valid) {
-      const usuario = this.personaForm.value;
-      console.log(usuario);
-      // Aquí enviarías los datos al servidor, por ejemplo:
-      // this.usuarioService.saveUsuario(usuario).subscribe(response => {
-      //   console.log('Usuario guardado', response);
-      // });
+  actualizarDatos(): void {
+    let persona: PersonaDTOPut= {
+      altura: this.altura?.value,
+      apellido: this.apellido?.value,
+      calle: this.calle?.value,
+      idCiudad: this.ciudad?.value,
+      fechaNacimiento: this.fechaNacimiento?.value,
+      nombre: this.nombre?.value,
+      nroDocumento: this.nroDocumento?.value,
+      telefono1: this.telefono1?.value,
+      telefono2: this.telefono2?.value,
+      telefonofijo: this.telefonofijo?.value,
+      idTipoDNI: this.tipoDNI?.value
     }
+
+    this.subscription?.add(
+      this.personasService.putPersona(persona, this.datosPersona.id).subscribe({
+        next:(response)=>{
+          this.mensajeRespuesta = response;
+          this.openSnackBar(this.mensajeRespuesta.mensaje);
+          if (this.mensajeRespuesta.ok){
+            this.personaForm.reset();
+          }
+        },
+        error:(response)=>{
+          this.mensajeRespuesta = response;
+          this.openSnackBar(this.mensajeRespuesta.mensaje);
+        }
+      })
+    )
+  }
+  openSnackBar(mensaje:string) {
+    this.alerta.open(mensaje,"Cerrar",{duration:3000});
   }
 
   cargarCiudades(idProvincia:number){
@@ -120,12 +147,6 @@ export class ModificarPersonaComponent implements OnInit, OnDestroy{
         }
       )
     );
-  }
-
-  o(){
-    console.log(this.usuarioLogeado);
-    console.log('222');
-    console.log(this.usuariosService.getUsuarioLogueado());
   }
   get apellido() {
     return this.personaForm.get('apellido');

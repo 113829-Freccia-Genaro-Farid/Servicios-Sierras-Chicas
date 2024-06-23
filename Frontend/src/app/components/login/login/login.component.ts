@@ -9,6 +9,7 @@ import {DialogGenericoComponent} from "../../ventanas/dialog-generico/dialog-gen
 import {TermsConditionsComponent} from "../../terms-conditions/terms-conditions.component";
 import {RecuperarContrasenaComponent} from "../recuperar-contrasena/recuperar-contrasena.component";
 import {MatDialog} from "@angular/material/dialog";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-login',
@@ -21,11 +22,12 @@ export class LoginComponent implements OnInit, OnDestroy{
   formLogin:FormGroup = this.fb.group({});
   mensajeRespuesta:MensajeRespuesta = {} as MensajeRespuesta;
   login:Login = {} as Login;
-  alerta:boolean = false;
+  hidePassword = true;
   constructor(private usuarioService:UsuarioService,
               private fb:FormBuilder,
               private router:Router,
-              private dialog: MatDialog
+              private dialog: MatDialog,
+              private alerta: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -47,31 +49,27 @@ export class LoginComponent implements OnInit, OnDestroy{
       password:this.formLogin.get("password")?.value
     } as Login;
 
-    this.subscription?.add(
-      this.usuarioService.postLogin(this.login).subscribe({
-        next: async(response:MensajeRespuesta) => {
-          this.mensajeRespuesta = response;
-          await this.toggleAlert();
-          if (this.mensajeRespuesta.ok){
-            this.formLogin.reset();
-            await this.router.navigate(['datospersonales'])
+    this.alerta.open('Iniciando sesión...', '', {duration:2000});
+    setTimeout(() => {
+      this.subscription?.add(
+        this.usuarioService.postLogin(this.login).subscribe({
+          next: async(response:MensajeRespuesta) => {
+            this.mensajeRespuesta = response;
+            this.openSnackBar(this.mensajeRespuesta.mensaje);
+            if (this.mensajeRespuesta.ok){
+              this.formLogin.reset();
+              await this.router.navigate(['home'])
+            }
+          },
+          error: async (response:MensajeRespuesta) => {
+            this.mensajeRespuesta = response;
+            this.openSnackBar(this.mensajeRespuesta.mensaje);
           }
-        },
-        error: async (response:MensajeRespuesta) => {
-          this.mensajeRespuesta = response;
-          await this.toggleAlert();
-        }
-      })
-    )
-  }
+        })
+      )
+    }, 2000);
 
-  async toggleAlert(): Promise<void> {
-    this.alerta = !this.alerta;
 
-    if (this.alerta) {
-      await new Promise(resolve => setTimeout(resolve, 4000));
-      this.alerta = false;
-    }
   }
 
   get email(){
@@ -88,5 +86,8 @@ export class LoginComponent implements OnInit, OnDestroy{
         sinBotones: true
       }
     });
+  }
+  openSnackBar(mensaje:string) {
+    this.alerta.open(mensaje,"Cerrar",{duration:3000});
   }
 }

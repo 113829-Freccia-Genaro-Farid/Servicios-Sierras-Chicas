@@ -33,7 +33,7 @@ public class PersonaController {
         return ResponseEntity.ok(personaService.obtenerPersonaByUser(email));
     }
     @PutMapping("/{idPersona}")
-    public ResponseEntity<MensajeRespuesta> postPersona(@RequestBody PersonaDTOPut personaDTOPut, @PathVariable Long idPersona){
+    public ResponseEntity<MensajeRespuesta> putPersona(@RequestBody PersonaDTOPut personaDTOPut, @PathVariable Long idPersona){
         return ResponseEntity.ok(personaService.modificarPersona(personaDTOPut, idPersona));
     }
 }

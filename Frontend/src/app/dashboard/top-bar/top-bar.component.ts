@@ -3,6 +3,7 @@ import {DashboardService} from "../dashboard.service";
 import {UsuarioService} from "../../services/usuariosService/usuario.service";
 import {Roles} from "../../models/Auxiliares/roles";
 import {Router} from "@angular/router";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'top-bar',
@@ -12,7 +13,8 @@ import {Router} from "@angular/router";
 export class TopBarComponent {
   constructor(private dashboard: DashboardService,
               private usuarioService:UsuarioService,
-              private roter:Router) {
+              private router:Router,
+              private alerta: MatSnackBar) {
   }
   openSidebar(){
     this.dashboard.openSidebar()
@@ -25,8 +27,13 @@ export class TopBarComponent {
   }
 
   cerrarSesion(){
-    this.usuarioService.cerrarSesion();
-    this.roter.navigate(['home'])
+    this.alerta.open('Cerrando sesión...', '', {duration:2000});
+
+    setTimeout(() => {
+      this.usuarioService.cerrarSesion();
+      this.router.navigate(['/home']);
+    }, 2000);
+
   }
 
 

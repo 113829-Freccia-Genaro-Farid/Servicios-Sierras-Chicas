@@ -22,6 +22,8 @@ export class RegistrarUsuarioComponent implements OnInit, OnDestroy {
   mensajeRespuesta: MensajeRespuesta = {} as MensajeRespuesta;
   usuario: UsuarioDTOPost = {} as UsuarioDTOPost;
   alerta: boolean = false;
+  hidePassword:boolean = true;
+  hideConfirmPassword:boolean = true;
 
   constructor(
     private usuarioService: UsuarioService,
@@ -57,6 +59,7 @@ export class RegistrarUsuarioComponent implements OnInit, OnDestroy {
           this.mensajeRespuesta = response;
           if (this.mensajeRespuesta.ok) {
             this.formUsuario.reset();
+            this.router.navigate(['login'])
           }
           await this.toggleAlert();
         },
@@ -104,6 +107,9 @@ export class RegistrarUsuarioComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.formUsuario.patchValue({ terms: true });
+      }
+      else {
+        this.formUsuario.patchValue({ terms: false });
       }
     });
   }

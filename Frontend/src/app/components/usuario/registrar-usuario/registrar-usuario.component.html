@@ -1,65 +1,80 @@
-<div class="container d-flex justify-content-center align-items-center flex-column position-relative">
+<div class="container d-flex justify-content-center align-items-center flex-column position-relative mt-24">
   <ng-container *ngIf="alerta">
     <fn-alert [mensajeRespuesta]="mensajeRespuesta"></fn-alert>
   </ng-container>
   <div class="col-md-5 mt-5">
-    <form [formGroup]="formUsuario" class="p-5 border shadow-lg rounded bg-green-600">
+    <form [formGroup]="formUsuario" class="p-5 shadow-2xl rounded bg-green-200 border-0">
       <h2 class="text-center">Registro de Usuario</h2>
       <hr class="p-1">
+
       <div class="form-group mb-3">
-        <label for="email">Email</label>
-        <input type="email"
-               class="form-control"
-               id="email"
-               formControlName="email"
-               [ngClass]="{'is-invalid': email?.invalid && (email?.touched || email?.dirty)}">
-        <div class="text-danger">
-          <p *ngIf="email?.getError('required') && (email?.touched || email?.dirty)">Debe ingresar un correo electronico</p>
-          <p *ngIf="email?.getError('email') && (email?.touched || email?.dirty)">Debe ingresar un correo electronico válido</p>
-        </div>
+        <mat-form-field class="w-100" appearance="fill">
+          <mat-label>Email</mat-label>
+          <input matInput
+                 type="email"
+                 formControlName="email"
+                 placeholder="Correo electrónico"
+                 [ngClass]="{'is-invalid': email?.invalid && (email?.touched || email?.dirty)}">
+          <mat-error *ngIf="email?.getError('required') && (email?.touched || email?.dirty)">
+            Debe ingresar un correo electrónico
+          </mat-error>
+          <mat-error *ngIf="email?.getError('email') && (email?.touched || email?.dirty)">
+            Debe ingresar un correo electrónico válido
+          </mat-error>
+        </mat-form-field>
       </div>
+
       <div class="form-group mb-3">
-        <label for="password">Contraseña</label>
-        <input type="password"
-               class="form-control"
-               id="password"
-               formControlName="password"
-               [ngClass]="{'is-invalid': password?.invalid && (password?.touched || password?.dirty)}">
-        <div class="text-danger">
-          <p *ngIf="password?.getError('required') && (password?.touched || password?.dirty)">Debe ingresar una contraseña</p>
-          <p *ngIf="password?.getError('minlength') && (password?.touched || password?.dirty)">La contraseña debe tener mínimo 8 caracteres</p>
-        </div>
+        <mat-form-field class="w-100" appearance="fill">
+          <mat-label>Contraseña</mat-label>
+          <input matInput
+                 [type]="hidePassword ? 'password' : 'text'"
+                 formControlName="password"
+                 placeholder="Contraseña"
+                 [ngClass]="{'is-invalid': password?.invalid && (password?.touched || password?.dirty)}">
+          <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+            <mat-icon>{{ hidePassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="password?.getError('required') && (password?.touched || password?.dirty)">
+            Debe ingresar una contraseña
+          </mat-error>
+          <mat-error *ngIf="password?.getError('minlength') && (password?.touched || password?.dirty)">
+            La contraseña debe tener mínimo 8 caracteres
+          </mat-error>
+        </mat-form-field>
       </div>
+
       <div class="form-group mb-3">
-        <label for="confirmpassword">Confirma contraseña</label>
-        <input type="password"
-               class="form-control"
-               id="confirmpassword"
-               formControlName="confirmpassword"
-               [ngClass]="{'is-invalid': confirmpassword?.invalid && (confirmpassword?.touched || confirmpassword?.dirty)}">
-        <div class="text-danger">
-          <p *ngIf="confirmpassword?.getError('required') && (confirmpassword?.touched || confirmpassword?.dirty)">Debe ingresar una contraseña</p>
-          <p *ngIf="(confirmpassword?.touched || confirmpassword?.dirty) && confirmpassword?.getError('mismaPassword')">La contraseña debe ser idéntica a la ingresada</p>
-        </div>
+        <mat-form-field class="w-100" appearance="fill">
+          <mat-label>Confirma contraseña</mat-label>
+          <input matInput
+                 [type]="hideConfirmPassword ? 'password' : 'text'"
+                 formControlName="confirmpassword"
+                 placeholder="Confirma contraseña"
+                 [ngClass]="{'is-invalid': confirmpassword?.invalid && (confirmpassword?.touched || confirmpassword?.dirty)}">
+          <button mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword" type="button">
+            <mat-icon>{{ hideConfirmPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="confirmpassword?.getError('required') && (confirmpassword?.touched || confirmpassword?.dirty)">
+            Debe ingresar una contraseña
+          </mat-error>
+          <mat-error *ngIf="(confirmpassword?.touched || confirmpassword?.dirty) && confirmpassword?.getError('mismaPassword')">
+            La contraseña debe ser idéntica a la ingresada
+          </mat-error>
+        </mat-form-field>
       </div>
+
       <div class="form-group mb-3">
-        <div class="form-check">
-          <input type="checkbox"
-                 formControlName="terms"
-                 class="form-check-input"
-                 id="terms"
-                 (click)="openTermsDialog()"
-          >
-          <label class="form-check-label" for="terms">
-            Acepto los <a href="javascript:void(0)" (click)="openTermsDialog()">Términos y Condiciones</a>
-          </label>
-          <div class="text-danger">
-            <p *ngIf="terms?.invalid && (terms?.touched || terms?.dirty)">Debe aceptar los términos y condiciones</p>
-          </div>
-        </div>
+        <mat-checkbox formControlName="terms" (click)="openTermsDialog()">
+          Acepto los <a href="javascript:void(0)" class="text-black no-underline hover:no-underline" (click)="openTermsDialog()">Términos y Condiciones</a>
+        </mat-checkbox>
+        <mat-error *ngIf="terms?.invalid && (terms?.touched || terms?.dirty)">
+          Debe aceptar los términos y condiciones
+        </mat-error>
       </div>
-      <div class="d-grid gap-2 justify-content-center">
-        <button type="submit" class="btn btn-primary pe-4 ps-4" [disabled]="formUsuario.invalid" (click)="registrarUsuario()">Registrarte</button>
+
+      <div class="d-grid gap-2">
+        <button mat-flat-button color="primary" [disabled]="formUsuario.invalid" (click)="registrarUsuario()">Registrarte</button>
       </div>
     </form>
   </div>
