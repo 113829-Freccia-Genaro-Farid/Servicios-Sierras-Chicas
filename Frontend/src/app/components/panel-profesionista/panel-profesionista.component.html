@@ -1,6 +1,9 @@
+<div class="container-xxl w-full bg-yellow-500 flex items-center justify-center rounded-2xl" *ngIf="profesionista == null">
+  <h1 class="text-center animate-pulse mt-2">Es necesario completar tus datos profesionales y configurar el anuncio para que puedas promocionarte</h1>
+</div>
 <div class="grid grid-cols-2 gap-4 p-4">
   <div class="bg-white rounded-lg shadow-md p-4">
-    <h2 class="text-lg font-bold mb-2">Datos del Profesionista</h2>
+    <h2 class="text-lg font-bold mb-2 text-center">Datos del Profesionista</h2>
     <form [formGroup]="profesionistaForm" class="grid grid-cols-2 gap-4 p-4">
       <mat-checkbox formControlName="poseeMatricula" (change)="toggleMatricula($event.checked)">Posee Matrícula</mat-checkbox>
       <mat-form-field appearance="fill">
@@ -35,14 +38,15 @@
     <button mat-raised-button color="warn" class="mx-1" (click)="cancelEditDesc()" *ngIf="editModeDesc">Cancelar</button>
     <button mat-raised-button color="primary" class="mx-1" (click)="saveChangesDesc()" *ngIf="editModeDesc" [disabled]="profesionistaForm.invalid">Guardar</button>
   </div>
+  <ng-container *ngIf="profesionista != null">
+    <div class="bg-white rounded-lg shadow-md p-4 text-center">
+      <h2 class="text-lg font-bold mb-2">Clicks en el Anuncio</h2>
+      <vertical-bar-chart></vertical-bar-chart>
+    </div>
 
-  <div class="bg-white rounded-lg shadow-md p-4">
-    <h2 class="text-lg font-bold mb-2">Clicks en el Anuncio</h2>
-    <vertical-bar-chart></vertical-bar-chart>
-  </div>
-
-  <div class="bg-white rounded-lg shadow-md p-4">
-    <h2 class="text-lg font-bold mb-2">Turnos durante el Mes</h2>
-    <grafico-turnos-mes></grafico-turnos-mes>
-  </div>
+    <div class="bg-white rounded-lg shadow-md p-4">
+      <h2 class="text-lg font-bold mb-2 text-center">Turnos durante el Mes</h2>
+      <grafico-turnos-mes></grafico-turnos-mes>
+    </div>
+  </ng-container>
 </div>

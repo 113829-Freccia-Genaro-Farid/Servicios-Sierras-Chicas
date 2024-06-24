@@ -109,22 +109,26 @@ public class PersonaServiceImpl implements PersonaService {
                 mensajeRespuesta.setOk(false);
                 return mensajeRespuesta;
             }
-            if(personaJpaRepository.existsByNroDocumentoAndTipoDNI_Id(personaDTO.getNroDocumento(), personaDTO.getIdTipoDNI())){
-                mensajeRespuesta.setMensaje("Ya existe una persona registrada con ese numero de documento.");
-                mensajeRespuesta.setOk(false);
-                return mensajeRespuesta;
+            PersonaEntity personaEntity = optionalEntity.get();
+            if(!personaDTO.getNroDocumento().equals(personaEntity.getNroDocumento())){
+                if(personaJpaRepository.existsByNroDocumentoAndTipoDNI_Id(personaDTO.getNroDocumento(), personaDTO.getIdTipoDNI())){
+                    mensajeRespuesta.setMensaje("Ya existe una persona registrada con ese numero de documento.");
+                    mensajeRespuesta.setOk(false);
+                    return mensajeRespuesta;
+                }
             }
-            if (personaJpaRepository.existsByTelefono1(personaDTO.getTelefono1())){
-                mensajeRespuesta.setMensaje("Ya existe una persona registrada con ese numero de celular como principal.");
-                mensajeRespuesta.setOk(false);
-                return mensajeRespuesta;
+            if(!personaDTO.getTelefono1().equals(personaEntity.getTelefono1())){
+                if (personaJpaRepository.existsByTelefono1(personaDTO.getTelefono1())){
+                    mensajeRespuesta.setMensaje("Ya existe una persona registrada con ese numero de celular como principal.");
+                    mensajeRespuesta.setOk(false);
+                    return mensajeRespuesta;
+                }
             }
             if(Period.between(personaDTO.getFechaNacimiento(), LocalDate.now()).getYears() < 18){
                 mensajeRespuesta.setMensaje("La persona debe ser mayor de 18 años.");
                 mensajeRespuesta.setOk(false);
                 return mensajeRespuesta;
             }
-            PersonaEntity personaEntity = optionalEntity.get();
 
             personaEntity.setApellido(personaDTO.getApellido());
             personaEntity.setNombre(personaDTO.getNombre());

@@ -8,6 +8,7 @@ import {Resenia} from "../../models/resenia";
 import {ReseniaDTO} from "../../DTOs/resenia-dto";
 import {ReseniaStats} from "../../models/resenia-stats";
 import {ProfesionistaDTOPut} from "../../DTOs/profesionista-dtoput";
+import {ProfesionistaDTOPost} from "../../DTOs/profesionista-dtopost";
 
 @Injectable({
   providedIn: 'root'
@@ -48,8 +49,14 @@ export class ProfesionistasService {
   putPresentacionProfesionista(idProfesionista:number, descripcion:string): Observable<MensajeRespuesta> {
     return this.client.put<MensajeRespuesta>("http://localhost:8080/api/profesionistas/presentacion/"+ idProfesionista,descripcion);
   }
+  putSuscripcionProfesionista(idProfesionista:number): Observable<MensajeRespuesta> {
+    return this.client.put<MensajeRespuesta>("http://localhost:8080/api/profesionistas/suscripcion/"+ idProfesionista,{});
+  }
   putProfesionista(idProfesionista:number, profesionistaDTOPut:ProfesionistaDTOPut): Observable<MensajeRespuesta> {
     return this.client.put<MensajeRespuesta>("http://localhost:8080/api/profesionistas/"+ idProfesionista, profesionistaDTOPut);
+  }
+  postProfesionista(profesionistaDTOPost:ProfesionistaDTOPost): Observable<MensajeRespuesta> {
+    return this.client.post<MensajeRespuesta>("http://localhost:8080/api/profesionistas", profesionistaDTOPost);
   }
 
   /* ANUNCIOS */

@@ -13,7 +13,6 @@ public class ProfesionistaDTOPost {
     boolean PoseeMatricula;
     String NroMatricula;
     boolean ComunicacionWsp;
-    String presentacion;
     List<Long> idProfesiones;
     Long idPersona;
 }

@@ -1,7 +1,5 @@
-import {Component, Inject, ViewChild} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {AgregarTurnoComponent} from "../../turnos/agregar-turno/agregar-turno/agregar-turno.component";
-import {Turno} from "../../../models/turno";
 
 @Component({
   selector: 'dialog-generico',

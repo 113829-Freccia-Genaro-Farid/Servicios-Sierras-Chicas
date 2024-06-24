@@ -17,6 +17,7 @@ import {Router} from "@angular/router";
   styleUrls: ['./listado-anuncios.component.css']
 })
 export class ListadoAnunciosComponent implements OnInit,OnDestroy{
+  @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
   private subscription:Subscription | undefined;
   filtrosForm: FormGroup = this.fb.group({});
   profesionistas: Profesionista[] = [];
@@ -121,11 +122,14 @@ export class ListadoAnunciosComponent implements OnInit,OnDestroy{
   }
 
   filtrarProfesionistas() {
+    this.pageIndex = 0;
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
     this.subscription?.add(
       this.profesionistasService.getProfesionistasFiltros(this.nombre?.value, this.categoriasControl?.value, this.profesionesControl?.value, this.ciudadesControl?.value).subscribe({
         next:(response)=>{
           this.profesionistas = response;
-          this.pageIndex = 0;
           this.updatePagedItems();
         },
         error:() => {

@@ -9,6 +9,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { CustomValidators } from '../../../customValidators/custom-validators';
 import {DialogGenericoComponent} from "../../ventanas/dialog-generico/dialog-generico.component";
 import {TermsConditionsComponent} from "../../terms-conditions/terms-conditions.component";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import _default from "chart.js/dist/plugins/plugin.tooltip";
+
 
 @Component({
   selector: 'app-registrar-usuario',
@@ -21,7 +24,6 @@ export class RegistrarUsuarioComponent implements OnInit, OnDestroy {
   formUsuario: FormGroup = this.fb.group({});
   mensajeRespuesta: MensajeRespuesta = {} as MensajeRespuesta;
   usuario: UsuarioDTOPost = {} as UsuarioDTOPost;
-  alerta: boolean = false;
   hidePassword:boolean = true;
   hideConfirmPassword:boolean = true;
 
@@ -29,7 +31,8 @@ export class RegistrarUsuarioComponent implements OnInit, OnDestroy {
     private usuarioService: UsuarioService,
     private fb: FormBuilder,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private alerta: MatSnackBar
   ) {}
 
   ngOnDestroy(): void {
@@ -40,46 +43,45 @@ export class RegistrarUsuarioComponent implements OnInit, OnDestroy {
     this.subscription = new Subscription();
 
     this.formUsuario = this.fb.group({
-      email: [null, [Validators.required, Validators.email]], // email validator
+      email: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required, Validators.minLength(8)]],
       confirmpassword: [null, [Validators.required, CustomValidators.mismaPassword]],
-      terms: [false, [Validators.requiredTrue]]
+      terms: [false, [Validators.requiredTrue]],
+      tipoUsuario: [1, [Validators.required]]
     });
+
   }
 
   registrarUsuario() {
     this.usuario = {
       email: this.formUsuario.get("email")?.value,
-      password: this.formUsuario.get("password")?.value
+      password: this.formUsuario.get("password")?.value,
+      idRol: this.formUsuario.get("tipoUsuario")?.value
     } as UsuarioDTOPost;
 
     this.subscription?.add(
       this.usuarioService.postUsuario(this.usuario).subscribe({
         next: async (response: MensajeRespuesta) => {
           this.mensajeRespuesta = response;
+          this.openSnackBar(this.mensajeRespuesta.mensaje);
           if (this.mensajeRespuesta.ok) {
-            this.formUsuario.reset();
-            this.router.navigate(['login'])
+            setTimeout(() => {
+              this.formUsuario.reset();
+              this.router.navigate(['login'])
+            }, 3000);
           }
-          await this.toggleAlert();
         },
         error: async (response: MensajeRespuesta) => {
           this.mensajeRespuesta = response;
-          await this.toggleAlert();
+          this.openSnackBar(this.mensajeRespuesta.mensaje);
         }
       })
     )
   }
 
-  async toggleAlert(): Promise<void> {
-    this.alerta = !this.alerta;
-
-    if (this.alerta) {
-      await new Promise(resolve => setTimeout(resolve, 4000));
-      this.alerta = false;
-    }
+  openSnackBar(mensaje:string) {
+    this.alerta.open(mensaje,"Cerrar",{duration:3000});
   }
-
   get email() {
     return this.formUsuario.get('email');
   }

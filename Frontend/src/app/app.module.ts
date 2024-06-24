@@ -44,7 +44,7 @@ import { RecuperarContrasenaComponent } from './components/login/recuperar-contr
 import {MatInputModule} from "@angular/material/input";
 import { ListadoAnunciosComponent } from './components/listado-anuncios/listado-anuncios.component';
 import {MatPaginatorModule} from "@angular/material/paginator";
-import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
+import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from "@angular/material/snack-bar";
 import { CambiarContraseniaComponent } from './components/login/cambiar-contrasenia/cambiar-contrasenia.component';
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatSelectModule} from "@angular/material/select";
@@ -66,6 +66,8 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import { FilterPipe } from './pipes/filter.pipe';
 import { VerticalBarChartComponent } from './charts/vertical-bar-chart/vertical-bar-chart.component';
 import { GraficoTurnosMesComponent } from './charts/grafico-turnos-mes/grafico-turnos-mes.component';
+import {MatRadioModule} from "@angular/material/radio";
+import { PagoAceptadoComponent } from './components/mercado-pago/pago-aceptado/pago-aceptado.component';
 
 const routes:Routes = [
   {path: 'home', component:HomeComponent},
@@ -84,6 +86,7 @@ const routes:Routes = [
   {path: 'turnos', component:TurnosComponent},
   {path: 'panelAdmin', component:PanelAdminComponent},
   {path: 'panelProfesionista', component:PanelProfesionistaComponent},
+  {path: 'fsd75rf6532vf67234', component:PagoAceptadoComponent},
 
   {path: '', redirectTo: 'home', pathMatch: 'full' },
   {path: '**', redirectTo: 'home' },
@@ -137,7 +140,8 @@ const routes:Routes = [
     PanelAdminComponent,
     FilterPipe,
     VerticalBarChartComponent,
-    GraficoTurnosMesComponent
+    GraficoTurnosMesComponent,
+    PagoAceptadoComponent
   ],
   imports: [
     BrowserModule,
@@ -161,7 +165,8 @@ const routes:Routes = [
     FullCalendarModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatRadioModule
   ],
   providers: [
     {provide:

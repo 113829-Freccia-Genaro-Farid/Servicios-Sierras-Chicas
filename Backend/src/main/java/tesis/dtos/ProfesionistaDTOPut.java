@@ -14,4 +14,5 @@ public class ProfesionistaDTOPut {
     String nroMatricula;
     boolean comunicacionWsp;
     List<Long> idProfesiones;
+    boolean habilitado;
 }

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Event, NavigationEnd, Router } from '@angular/router';
-import { DashboardService } from '../dashboard.service';
+import {Component, OnInit} from '@angular/core';
+import {Event, NavigationEnd, Router} from '@angular/router';
+import {DashboardService} from '../dashboard.service';
 
 @Component({
   selector: 'dashboard-layout',
@@ -8,7 +8,8 @@ import { DashboardService } from '../dashboard.service';
   styleUrls: ['./layout.component.css']
 })
 export class LayoutComponent implements OnInit {
-  constructor(private router: Router, private dashboard: DashboardService) {
+  constructor(private router: Router,
+              private dashboard: DashboardService) {
     this.router.events.subscribe((event: Event) => {
       this.dashboard.setCurrentRoute(this.router.url);
       if (event instanceof NavigationEnd) {

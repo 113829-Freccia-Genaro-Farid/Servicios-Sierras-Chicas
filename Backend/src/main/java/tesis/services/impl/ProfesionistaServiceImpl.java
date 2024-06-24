@@ -161,6 +161,7 @@ public class ProfesionistaServiceImpl implements ProfesionistaService {
                     profesionistaEntity.getProfesiones().add(profesionJpaRepository.findById(idProfesion).get());
             }
             profesionistaEntity.setSuscrito(false);
+            profesionistaEntity.setPresentacion("");
             profesionistaEntity.setPersona(personaJpaRepository.findById(profesionista.getIdPersona()).get());
             usuarioService.cambiarRolUsuario(profesionistaEntity.getPersona().getUsuario().getEmail(), rolJpaRepository.getByDescripcion("PROFESIONISTA").getId());
 
@@ -247,6 +248,28 @@ public class ProfesionistaServiceImpl implements ProfesionistaService {
         }catch (Exception e){
             return new MensajeRespuesta("Problemas al eliminar al profesionista.", false);
         }
+    }
+
+    @Override
+    public MensajeRespuesta modificarSubscripcion(Long id) {
+        MensajeRespuesta mensajeRespuesta = new MensajeRespuesta();
+        try{
+            Optional<ProfesionistaEntity> optionalEntity = profesionistaJpaRepository.findById(id);
+            if(optionalEntity.isEmpty()){
+                mensajeRespuesta.setMensaje("El profesionista a modificar no existe.");
+                mensajeRespuesta.setOk(false);
+                return mensajeRespuesta;
+            }
+            ProfesionistaEntity profesionistaEntity =  optionalEntity.get();
+            profesionistaEntity.setSuscrito(true);
+            profesionistaJpaRepository.save(profesionistaEntity);
+            mensajeRespuesta.setMensaje("Se ha modificado correctamente la suscripcion del profesionista.");
+        }catch (Exception e){
+            mensajeRespuesta.setMensaje("Error al modificar la suscripcion del profesionista.");
+            mensajeRespuesta.setOk(false);
+            throw new MensajeRespuestaException(mensajeRespuesta);
+        }
+        return mensajeRespuesta;
     }
 
     // ***************************************************

@@ -1,18 +1,16 @@
-import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {
   ApexAxisChartSeries,
   ApexChart,
   ApexDataLabels,
   ApexGrid,
-  ApexPlotOptions, ApexStroke, ApexTheme,
-  ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis,
+  ApexStroke, ApexTitleSubtitle, ApexXAxis, ApexYAxis,
   ChartComponent
 } from "ng-apexcharts";
 import {ProfesionistasService} from "../../services/profesionistasService/profesionistas.service";
 import {Subscription} from "rxjs";
 import {UsuarioService} from "../../services/usuariosService/usuario.service";
 import {Anuncio} from "../../models/anuncio";
-import {co} from "@fullcalendar/core/internal-common";
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;

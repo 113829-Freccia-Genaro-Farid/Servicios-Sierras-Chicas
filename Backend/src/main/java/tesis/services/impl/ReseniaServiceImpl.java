@@ -73,7 +73,7 @@ public class ReseniaServiceImpl implements ReseniaService {
     public List<Resenia> obtenerReseñasByProfesionista(Long idProfesionista) {
         List<Resenia> lst;
         try{
-            List<ReseniaEntity> lista= reseniaJpaRepository.findAllByProfesionista_Id(idProfesionista);
+            List<ReseniaEntity> lista= reseniaJpaRepository.findAllByProfesionista_IdOrderByFechaResenia(idProfesionista);
             lst = mapearListaReseñas(lista);
         }catch (Exception e){
             MensajeRespuesta mensajeRespuesta = new MensajeRespuesta("Error interno",false);
@@ -156,7 +156,7 @@ public class ReseniaServiceImpl implements ReseniaService {
     public ReseniaStats estadisticasReseniasByProfesionista(Long idProfesionista) {
         ReseniaStats stats = new ReseniaStats();
         try{
-            List<ReseniaEntity> lista= reseniaJpaRepository.findAllByProfesionista_Id(idProfesionista);
+            List<ReseniaEntity> lista= reseniaJpaRepository.findAllByProfesionista_IdOrderByFechaResenia(idProfesionista);
             stats.setTotalResenias(lista.size());
             for (ReseniaEntity r:lista) {
                 switch (r.getCalificacion()){
@@ -187,7 +187,7 @@ public class ReseniaServiceImpl implements ReseniaService {
     @Override
     public BigDecimal promedioReseniasByProfesionista(Long idProfesionista) {
         BigDecimal promedio = BigDecimal.ZERO;
-        List<ReseniaEntity> lista = reseniaJpaRepository.findAllByProfesionista_Id(idProfesionista);
+        List<ReseniaEntity> lista = reseniaJpaRepository.findAllByProfesionista_IdOrderByFechaResenia(idProfesionista);
         try {
             for (ReseniaEntity r : lista) {
                 promedio = promedio.add(new BigDecimal(r.getCalificacion()));

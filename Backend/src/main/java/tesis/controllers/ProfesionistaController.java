@@ -53,6 +53,10 @@ public class ProfesionistaController {
     public ResponseEntity<MensajeRespuesta> putPresentacionProfesionista(@PathVariable Long idProfesionista, @RequestBody String nuevaPresentacion){
         return ResponseEntity.ok(profesionistaService.modificarPresentacionProfesionista(idProfesionista, nuevaPresentacion));
     }
+    @PutMapping("/suscripcion/{idProfesionista}")
+    public ResponseEntity<MensajeRespuesta> putSuscripcionProfesionista(@PathVariable Long idProfesionista){
+        return ResponseEntity.ok(profesionistaService.modificarSubscripcion(idProfesionista));
+    }
     @DeleteMapping("/{id}")
     public ResponseEntity<MensajeRespuesta> deleteProfesionista(@PathVariable Long id){
         return ResponseEntity.ok(profesionistaService.borrarProfesionistaById(id));

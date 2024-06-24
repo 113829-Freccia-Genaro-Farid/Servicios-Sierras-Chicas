@@ -129,6 +129,7 @@ public class UsuarioServiceImpl implements UsuarioService {
                 return mensajeRespuesta;
             }
             UsuarioEntity entity = new UsuarioEntity(usuarioDTO.getEmail(), usuarioDTO.getPassword(), true, LocalDate.now(), null);
+            entity.setRol(rolJpaRepository.findById(usuarioDTO.getIdRol()).get());
             usuarioJpaRepository.save(entity);
             mensajeRespuesta.setMensaje("Usuario registrado con exito.");
             personaJpaRepository.save(new PersonaEntity(null,"","",null, LocalDate.now(),null,"","","","",null,null,entity.getFechaAlta(),false,entity));
@@ -230,7 +231,7 @@ public class UsuarioServiceImpl implements UsuarioService {
                         for (TurnoEntity t : turnoJpaRepository.findAllByProfesionista_Id(profesionistaJpaRepository.getByPersona_Id(persona.getId()).getId())) {
                             turnoJpaRepository.deleteById(t.getId());
                         }
-                        for (ReseniaEntity r : reseniaJpaRepository.findAllByProfesionista_Id(profesionistaJpaRepository.getByPersona_Id(persona.getId()).getId())) {
+                        for (ReseniaEntity r : reseniaJpaRepository.findAllByProfesionista_IdOrderByFechaResenia(profesionistaJpaRepository.getByPersona_Id(persona.getId()).getId())) {
                             reseniaJpaRepository.deleteById(r.getId());
                         }
                         profesionistaJpaRepository.deleteById(profesionistaJpaRepository.getByPersona_Id(persona.getId()).getId());
@@ -238,7 +239,7 @@ public class UsuarioServiceImpl implements UsuarioService {
                         for (TurnoEntity t : turnoJpaRepository.findAllByCliente_Id(clienteJpaRepository.getByPersona_Id(persona.getId()).getId())) {
                             turnoJpaRepository.deleteById(t.getId());
                         }
-                        for (ReseniaEntity r : reseniaJpaRepository.findAllByProfesionista_Id(clienteJpaRepository.getByPersona_Id(persona.getId()).getId())) {
+                        for (ReseniaEntity r : reseniaJpaRepository.findAllByProfesionista_IdOrderByFechaResenia(clienteJpaRepository.getByPersona_Id(persona.getId()).getId())) {
                             r.setCliente(null);
                             reseniaJpaRepository.save(r);
                         }

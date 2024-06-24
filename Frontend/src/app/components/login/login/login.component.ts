@@ -1,12 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
 import {UsuarioService} from "../../../services/usuariosService/usuario.service";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Login} from "../../../models/login";
 import {MensajeRespuesta} from "../../../models/mensaje-respuesta";
 import {Router} from "@angular/router";
 import {DialogGenericoComponent} from "../../ventanas/dialog-generico/dialog-generico.component";
-import {TermsConditionsComponent} from "../../terms-conditions/terms-conditions.component";
 import {RecuperarContrasenaComponent} from "../recuperar-contrasena/recuperar-contrasena.component";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";

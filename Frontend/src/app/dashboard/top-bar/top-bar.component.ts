@@ -22,6 +22,7 @@ export class TopBarComponent {
   esProfesionista():Boolean{
     return this.usuarioService.rolUsuario() == Roles.PROFESIONISTA;
   }
+
   esAdmin():Boolean{
     return this.usuarioService.rolUsuario() == Roles.ADMINISTRADOR;
   }
@@ -30,8 +31,8 @@ export class TopBarComponent {
     this.alerta.open('Cerrando sesión...', '', {duration:2000});
 
     setTimeout(() => {
+      this.router.navigate(['/login']);
       this.usuarioService.cerrarSesion();
-      this.router.navigate(['/home']);
     }, 2000);
 
   }

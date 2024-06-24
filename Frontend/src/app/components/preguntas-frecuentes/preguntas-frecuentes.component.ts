@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
-import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {MatDialog} from "@angular/material/dialog";
 import {DialogGenericoComponent} from "../ventanas/dialog-generico/dialog-generico.component";
 import {UsuarioService} from "../../services/usuariosService/usuario.service";
 import {Router} from "@angular/router";

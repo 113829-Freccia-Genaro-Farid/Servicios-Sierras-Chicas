@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Observable, Subscription} from "rxjs";
+import {Subscription} from "rxjs";
 import {MensajeRespuesta} from "../../../models/mensaje-respuesta";
 import {AuxiliaresService} from "../../../services/auxiliaresService/auxiliares.service";
 import {Ciudad} from "../../../models/Auxiliares/ciudad";
@@ -10,7 +10,6 @@ import {Persona} from "../../../models/persona";
 import {PersonasService} from "../../../services/personasService/personas.service";
 import {Usuario} from "../../../models/usuario";
 import {UsuarioService} from "../../../services/usuariosService/usuario.service";
-import {DatePipe} from "@angular/common";
 import {PersonaDTOPut} from "../../../DTOs/persona-dtoput";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
@@ -28,6 +27,7 @@ export class ModificarPersonaComponent implements OnInit, OnDestroy{
   ciudades: Ciudad[] = [];
   provincias: Provincia[] = [];
   tiposDNI: TipoDNI[] = [];
+  editModeDatos: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -85,55 +85,70 @@ export class ModificarPersonaComponent implements OnInit, OnDestroy{
     this.personaForm.controls['provincia'].valueChanges.subscribe((value) => {
       this.cargarCiudades(value);
     })
+    this.disableControls(this.personaForm);
     this.provincia?.setValue(5);
     this.provincia?.disable();
 
-    this.subscription.add(
-      this.personasService.getDatosPersonaByUser(this.usuarioLogeado.email).subscribe({
-        next: (response) => {
-          this.datosPersona = response;
-          this.personaForm.patchValue(this.datosPersona);
-          this.ciudad?.setValue(this.ciudades.find(tipo => tipo.descripcion === this.datosPersona.ciudad)?.id);
-          this.tipoDNI?.setValue(this.tiposDNI.find(tipo => tipo.descripcion === this.datosPersona.tipoDNI)?.id);
-        },
-        error: () => {
-          alert('Error al cargar los datos de la persona');
-        }
-      })
-    )
+    this.cargarDatos();
+  }
+  cancelEdit() {
+    this.editModeDatos = false;
+    this.cargarDatos();
+    this.disableControls(this.personaForm);
+    this.provincia?.setValue(5);
+    this.provincia?.disable();
+  }
+  habilitar() {
+    this.editModeDatos = true;
+    this.enableControls(this.personaForm);
+    this.provincia?.setValue(5);
+    this.provincia?.disable();
   }
 
+  private disableControls(form: FormGroup) {
+    Object.keys(form.controls).forEach(control => {
+      form.controls[control].disable();
+    });
+  }
 
+  private enableControls(form: FormGroup) {
+    Object.keys(form.controls).forEach(control => {
+      form.controls[control].enable();
+    });
+  }
   actualizarDatos(): void {
-    let persona: PersonaDTOPut= {
-      altura: this.altura?.value,
-      apellido: this.apellido?.value,
-      calle: this.calle?.value,
-      idCiudad: this.ciudad?.value,
-      fechaNacimiento: this.fechaNacimiento?.value,
-      nombre: this.nombre?.value,
-      nroDocumento: this.nroDocumento?.value,
-      telefono1: this.telefono1?.value,
-      telefono2: this.telefono2?.value,
-      telefonofijo: this.telefonofijo?.value,
-      idTipoDNI: this.tipoDNI?.value
-    }
+    if (this.personaForm.dirty) {
+      let persona: PersonaDTOPut = {
+        altura: this.altura?.value,
+        apellido: this.apellido?.value,
+        calle: this.calle?.value,
+        idCiudad: this.ciudad?.value,
+        fechaNacimiento: this.fechaNacimiento?.value,
+        nombre: this.nombre?.value,
+        nroDocumento: this.nroDocumento?.value,
+        telefono1: this.telefono1?.value,
+        telefono2: this.telefono2?.value,
+        telefonofijo: this.telefonofijo?.value,
+        idTipoDNI: this.tipoDNI?.value
+      }
 
-    this.subscription?.add(
-      this.personasService.putPersona(persona, this.datosPersona.id).subscribe({
-        next:(response)=>{
-          this.mensajeRespuesta = response;
-          this.openSnackBar(this.mensajeRespuesta.mensaje);
-          if (this.mensajeRespuesta.ok){
-            this.personaForm.reset();
+      this.subscription?.add(
+        this.personasService.putPersona(persona, this.datosPersona.id).subscribe({
+          next: (response) => {
+            this.mensajeRespuesta = response;
+            this.openSnackBar(this.mensajeRespuesta.mensaje);
+            if (this.mensajeRespuesta.ok) {
+              this.cargarDatos();
+              this.cancelEdit();
+            }
+          },
+          error: (response) => {
+            this.mensajeRespuesta = response;
+            this.openSnackBar(this.mensajeRespuesta.mensaje);
           }
-        },
-        error:(response)=>{
-          this.mensajeRespuesta = response;
-          this.openSnackBar(this.mensajeRespuesta.mensaje);
-        }
-      })
-    )
+        })
+      )
+    }
   }
   openSnackBar(mensaje:string) {
     this.alerta.open(mensaje,"Cerrar",{duration:3000});
@@ -196,4 +211,19 @@ export class ModificarPersonaComponent implements OnInit, OnDestroy{
   }
 
 
+  cargarDatos() {
+    this.subscription?.add(
+      this.personasService.getDatosPersonaByUser(this.usuarioLogeado.email).subscribe({
+        next: (response) => {
+          this.datosPersona = response;
+          this.personaForm.patchValue(this.datosPersona);
+          this.ciudad?.setValue(this.ciudades.find(tipo => tipo.descripcion === this.datosPersona.ciudad)?.id);
+          this.tipoDNI?.setValue(this.tiposDNI.find(tipo => tipo.descripcion === this.datosPersona.tipoDNI)?.id);
+        },
+        error: () => {
+          alert('Error al cargar los datos de la persona');
+        }
+      })
+    )
+  }
 }

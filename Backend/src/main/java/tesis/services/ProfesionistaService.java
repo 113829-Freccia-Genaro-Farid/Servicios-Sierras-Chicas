@@ -21,6 +21,7 @@ public interface ProfesionistaService {
     MensajeRespuesta modificarProfesionista(Long id, ProfesionistaDTOPut profesionista);
     MensajeRespuesta modificarPresentacionProfesionista(Long id, String nuevaPresentacion);
     MensajeRespuesta borrarProfesionistaById(Long id);
+    MensajeRespuesta modificarSubscripcion(Long id);
 
     // **** ANUNCIOS ****
     MensajeRespuesta clickEnAnuncio(Long idProfesionista);

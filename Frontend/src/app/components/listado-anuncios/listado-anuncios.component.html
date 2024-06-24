@@ -71,7 +71,5 @@
     </div>
     <button mat-button color="primary" (click)="clickAnuncio(profesionista.id)">Ir al perfil</button>
   </div>
-
-
-  <mat-paginator [length]="profesionistas.length" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25, 100]" (page)="onPageChange($event)"></mat-paginator>
+  <mat-paginator #paginator [length]="profesionistas.length" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25, 100]" (page)="onPageChange($event)"></mat-paginator>
 </div>

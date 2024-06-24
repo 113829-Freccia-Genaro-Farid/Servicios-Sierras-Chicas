@@ -117,7 +117,9 @@
     </div>
 
     <div class="flex justify-center">
-      <button mat-raised-button color="primary" type="submit" (click)="actualizarDatos()" [disabled]="personaForm.invalid">Enviar</button>
+      <button mat-raised-button color="primary" class="mx-1" (click)="habilitar()" *ngIf="!editModeDatos">Modificar</button>
+      <button mat-raised-button color="warn" class="mx-1" (click)="cancelEdit()" *ngIf="editModeDatos">Cancelar</button>
+      <button mat-raised-button color="primary" class="mx-1" (click)="actualizarDatos()" *ngIf="editModeDatos" [disabled]="personaForm.invalid || personaForm.pristine">Guardar</button>
     </div>
   </form>
 </div>
