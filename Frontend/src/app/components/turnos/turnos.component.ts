@@ -12,6 +12,10 @@ import {MatDialog} from "@angular/material/dialog";
 import {AgregarTurnoComponent} from "./agregar-turno/agregar-turno/agregar-turno.component";
 import {ProfesionistasService} from "../../services/profesionistasService/profesionistas.service";
 import {UsuarioService} from "../../services/usuariosService/usuario.service";
+import {Roles} from "../../models/Auxiliares/roles";
+import {PersonasService} from "../../services/personasService/personas.service";
+import {Router} from "@angular/router";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'turnos',
@@ -39,7 +43,7 @@ export class TurnosComponent implements OnInit,OnDestroy{
     titleFormat:{
       year: 'numeric',
       month: 'long',
-      day: 'numeric',
+      day: 'numeric'
     },
     eventMouseEnter:(info)=>{
       this.claseAnterior = info.el.className;
@@ -53,6 +57,11 @@ export class TurnosComponent implements OnInit,OnDestroy{
     weekends: true,
     eventBackgroundColor:'#20ab22',
     events: [],
+    eventTimeFormat:{
+      hour:'numeric',
+      minute:'numeric',
+      omitZeroMinute: false
+    },
     eventClassNames:['bg-green-600 pl-2 mt-1 text-sm select-none overflow-hidden whitespace-nowrap hover:bg-green-800 hover:text-white'],
     eventClick:(info)=> this.modificarTurno(info),
     customButtons: {
@@ -71,7 +80,10 @@ export class TurnosComponent implements OnInit,OnDestroy{
   constructor(private turnosService:TurnosService,
               private dialog: MatDialog,
               private profesionistaService:ProfesionistasService,
-              private userService:UsuarioService) {
+              private userService:UsuarioService,
+              private personaService:PersonasService,
+              private router:Router,
+              private alerta: MatSnackBar) {
   }
 
   ngOnDestroy(): void {
@@ -80,7 +92,26 @@ export class TurnosComponent implements OnInit,OnDestroy{
 
   ngOnInit(): void {
       this.subscription = new Subscription();
+      this.validarProfesionista();
       this.getTurnos();
+  }
+
+  validarProfesionista(){
+    if(this.userService.rolUsuario() == Roles.PROFESIONISTA){
+      this.subscription?.add(
+        this.personaService.getDatosPersonaByUser(this.userService.getUsuarioLogueado().email).subscribe({
+          next:(response)=>{
+            if(!response.habilitado){
+              this.router.navigate(['/datospersonales']);
+              this.alerta.open('Debes completar los datos personales para ingresar a la gestion de turnos', 'Cerrar', {duration:5000});
+              setTimeout(() => {
+              }, 2000);
+            }
+          }
+        })
+      )
+    }
+
   }
 
   getTurnos(){

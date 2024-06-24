@@ -57,7 +57,7 @@ export class PerfilProfesionistaComponent implements OnInit,OnDestroy{
   profesionistaId:number = 0;
   reseniaForm: FormGroup = this.fb.group({});
   stars = Array(5).fill(0);
-  nuevaResena:Boolean = true;
+  nuevaResena:Boolean = false;
   constructor(private profesionistasService:ProfesionistasService,
               private usuarioService:UsuarioService,
               private clienteService:ClientesService,
@@ -76,8 +76,6 @@ export class PerfilProfesionistaComponent implements OnInit,OnDestroy{
 
   ngOnInit() {
     this.subscription = new Subscription();
-
-    this.nuevaResena = this.usuarioService.estaLogueado() && this.usuarioService.rolUsuario() == Roles.CLIENTE;
 
     this.reseniaForm = this.fb.group({
       descripcion: ['', Validators.required],
@@ -106,6 +104,7 @@ export class PerfilProfesionistaComponent implements OnInit,OnDestroy{
         this.clienteService.getClienteByUserEmail(this.usuarioService.getUsuarioLogueado().email).subscribe({
           next: (response)=>{
             this.cliente = response;
+            this.nuevaResena = this.usuarioService.estaLogueado() && this.usuarioService.rolUsuario() == Roles.CLIENTE && response.persona.habilitado;
           },
           error:()=>{
             alert("Error al encontrar al cliente logueado");
@@ -113,6 +112,8 @@ export class PerfilProfesionistaComponent implements OnInit,OnDestroy{
         })
       )
     }
+
+
 
     this.obtenerResenias(this.profesionistaId);
     this.obtenerStatsResenias(this.profesionistaId);

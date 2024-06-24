@@ -28,6 +28,7 @@ export class PreguntasFrecuentesComponent implements OnInit, OnDestroy{
   openDialog(): void {
     if(!this.usuarioService.estaLogueado()){
       this.router.navigate(['/login'])
+      return;
     }
 
     const dialogRef1 = this.dialog.open(DialogGenericoComponent, {
@@ -63,11 +64,16 @@ export class PreguntasFrecuentesComponent implements OnInit, OnDestroy{
   borrarUsuario() {
     this.subscription?.add(
       this.usuarioService.eliminarUsuarioSistema(this.usuarioService.getUsuarioLogueado().email).subscribe({
-        next:()=>{
+        next:(response)=>{
+          console.log(response)
           this.usuarioService.cerrarSesion();
+        },
+        error:(response)=>{
+          console.log(response)
         }
       })
     )
+    this.usuarioService.cerrarSesion();
   }
 
   comprobarLogin() {

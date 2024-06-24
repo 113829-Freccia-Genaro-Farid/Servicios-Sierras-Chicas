@@ -9,9 +9,11 @@ import tesis.dtos.UsuarioDTO;
 import tesis.dtos.UsuarioDTOPost;
 import tesis.dtos.common.MensajeRespuesta;
 import tesis.entities.*;
+import tesis.entities.auxiliar.ProfesionEntity;
 import tesis.entities.auxiliar.RecuperacionEntity;
 import tesis.exceptions.MensajeRespuestaException;
 import tesis.repositories.*;
+import tesis.repositories.auxiliar.ProfesionJpaRepository;
 import tesis.repositories.auxiliar.RecuperacionJpaRepository;
 import tesis.repositories.auxiliar.RolJpaRepository;
 import tesis.services.UsuarioService;
@@ -32,6 +34,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     PersonaJpaRepository personaJpaRepository;
     @Autowired
     ProfesionistaJpaRepository profesionistaJpaRepository;
+    @Autowired
+    ProfesionJpaRepository profesionJpaRepository;
     @Autowired
     ClienteJpaRepository clienteJpaRepository;
     @Autowired
@@ -129,10 +133,16 @@ public class UsuarioServiceImpl implements UsuarioService {
                 return mensajeRespuesta;
             }
             UsuarioEntity entity = new UsuarioEntity(usuarioDTO.getEmail(), usuarioDTO.getPassword(), true, LocalDate.now(), null);
-            entity.setRol(rolJpaRepository.findById(usuarioDTO.getIdRol()).get());
+            if(rolJpaRepository.findById(usuarioDTO.getIdRol()).isPresent()){
+                entity.setRol(rolJpaRepository.findById(usuarioDTO.getIdRol()).get());
+            }
             usuarioJpaRepository.save(entity);
             mensajeRespuesta.setMensaje("Usuario registrado con exito.");
-            personaJpaRepository.save(new PersonaEntity(null,"","",null, LocalDate.now(),null,"","","","",null,null,entity.getFechaAlta(),false,entity));
+            PersonaEntity pe = personaJpaRepository.save(new PersonaEntity(null,"","",null, LocalDate.now(),null,"","","","",null,null,entity.getFechaAlta(),false,entity));
+            if(usuarioDTO.getIdRol() == 1){
+                ClienteEntity cli = new ClienteEntity(null, pe);
+                clienteJpaRepository.save(cli);
+            }
         }catch (Exception e){
             mensajeRespuesta.setMensaje("Error al grabar el usuario.");
             mensajeRespuesta.setOk(false);
@@ -220,6 +230,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     @Transactional
     public MensajeRespuesta eliminarUsuarioSistema(String emailUsuario) {
+        MensajeRespuesta mensajeRespuesta = new MensajeRespuesta();
         try{
             if(usuarioJpaRepository.existsByEmail(emailUsuario)){
                 if(personaJpaRepository.existsByUsuario_Email(emailUsuario)) {
@@ -234,12 +245,13 @@ public class UsuarioServiceImpl implements UsuarioService {
                         for (ReseniaEntity r : reseniaJpaRepository.findAllByProfesionista_IdOrderByFechaResenia(profesionistaJpaRepository.getByPersona_Id(persona.getId()).getId())) {
                             reseniaJpaRepository.deleteById(r.getId());
                         }
+                        profesionJpaRepository.deleteProfesionesByProfesionistaId(profesionistaJpaRepository.getByPersona_Id(persona.getId()).getId());
                         profesionistaJpaRepository.deleteById(profesionistaJpaRepository.getByPersona_Id(persona.getId()).getId());
                     }else if (clienteJpaRepository.existsByPersona_Id(persona.getId())){
                         for (TurnoEntity t : turnoJpaRepository.findAllByCliente_Id(clienteJpaRepository.getByPersona_Id(persona.getId()).getId())) {
                             turnoJpaRepository.deleteById(t.getId());
                         }
-                        for (ReseniaEntity r : reseniaJpaRepository.findAllByProfesionista_IdOrderByFechaResenia(clienteJpaRepository.getByPersona_Id(persona.getId()).getId())) {
+                        for (ReseniaEntity r : reseniaJpaRepository.findAllByCliente_Id(clienteJpaRepository.getByPersona_Id(persona.getId()).getId())) {
                             r.setCliente(null);
                             reseniaJpaRepository.save(r);
                         }
@@ -248,12 +260,17 @@ public class UsuarioServiceImpl implements UsuarioService {
                     personaJpaRepository.deleteById(persona.getId());
                 }
                 usuarioJpaRepository.deleteByEmail(emailUsuario);
-                return new MensajeRespuesta("Se ha eliminado correctamente al usuario de todo el sistema.", true);
-            }else
-                return new MensajeRespuesta("No se encontro al usuario a eliminar.", false);
+                mensajeRespuesta.setMensaje("Se ha eliminado correctamente al usuario de todo el sistema.");
+            }else{
+                mensajeRespuesta.setOk(false);
+                mensajeRespuesta.setMensaje("No se encontro al usuario a eliminar.");
+            }
         }catch (Exception e){
-            return new MensajeRespuesta("Problemas al eliminar al usuario.", false);
+            mensajeRespuesta.setOk(false);
+            mensajeRespuesta.setMensaje("Problemas al eliminar al usuario.");
+            throw new MensajeRespuestaException(mensajeRespuesta);
         }
+        return mensajeRespuesta;
     }
 
     @Override

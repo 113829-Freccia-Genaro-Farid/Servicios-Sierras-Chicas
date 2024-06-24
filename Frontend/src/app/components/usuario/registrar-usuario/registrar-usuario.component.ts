@@ -47,7 +47,7 @@ export class RegistrarUsuarioComponent implements OnInit, OnDestroy {
       password: [null, [Validators.required, Validators.minLength(8)]],
       confirmpassword: [null, [Validators.required, CustomValidators.mismaPassword]],
       terms: [false, [Validators.requiredTrue]],
-      tipoUsuario: [1, [Validators.required]]
+      tipoUsuario: [null, [Validators.required]]
     });
 
   }

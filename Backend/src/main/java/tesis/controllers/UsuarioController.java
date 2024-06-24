@@ -44,7 +44,7 @@ public class UsuarioController {
     public ResponseEntity<MensajeRespuesta> bajaUsuario(@PathVariable String email){
         return ResponseEntity.ok(usuarioService.bajaUsuario(email));
     }
-    @DeleteMapping("/deleteUser/{email}")
+    @PostMapping("/deleteUser/{email}")
     public ResponseEntity<MensajeRespuesta> borrarUsuarioSistema(@PathVariable String email){
         return ResponseEntity.ok(usuarioService.eliminarUsuarioSistema(email));
     }
@@ -52,12 +52,10 @@ public class UsuarioController {
     public ResponseEntity<MensajeRespuesta> cambiarRolUsuario(@PathVariable String email, @RequestParam(required = false) Long idRol){
         return ResponseEntity.ok(usuarioService.cambiarRolUsuario(email, idRol));
     }
-
     @PostMapping("/cambioPassword")
     public ResponseEntity<MensajeRespuesta> cambioContraseña(@RequestBody CambioContraseña body){
         return ResponseEntity.ok(usuarioService.cambiarContraseña(body.getEmail(), body.getPassword()));
     }
-
     @PostMapping("/verificarCodigo")
     public ResponseEntity<MensajeRespuesta> verificacionCodigo(@RequestBody VerificacionCodigo body){
         return ResponseEntity.ok(usuarioService.verificacionCodigo(body.getEmail(), body.getCodigo()));
