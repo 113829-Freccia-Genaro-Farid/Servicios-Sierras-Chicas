@@ -68,6 +68,11 @@ import { VerticalBarChartComponent } from './charts/vertical-bar-chart/vertical-
 import { GraficoTurnosMesComponent } from './charts/grafico-turnos-mes/grafico-turnos-mes.component';
 import {MatRadioModule} from "@angular/material/radio";
 import { PagoAceptadoComponent } from './components/mercado-pago/pago-aceptado/pago-aceptado.component';
+import { GraficoTortaSubsComponent } from './charts/grafico-torta-subs/grafico-torta-subs.component';
+import { ListadoUsuariosComponent } from './components/panel-admin/listados/listado-usuarios/listado-usuarios.component';
+import { ListadoClientesComponent } from './components/panel-admin/listados/listado-clientes/listado-clientes.component';
+import { ListadoProfesionistasComponent } from './components/panel-admin/listados/listado-profesionistas/listado-profesionistas.component';
+import {MatTableModule} from "@angular/material/table";
 
 const routes:Routes = [
   {path: 'home', component:HomeComponent},
@@ -141,7 +146,11 @@ const routes:Routes = [
     FilterPipe,
     VerticalBarChartComponent,
     GraficoTurnosMesComponent,
-    PagoAceptadoComponent
+    PagoAceptadoComponent,
+    GraficoTortaSubsComponent,
+    ListadoUsuariosComponent,
+    ListadoClientesComponent,
+    ListadoProfesionistasComponent
   ],
   imports: [
     BrowserModule,
@@ -166,7 +175,8 @@ const routes:Routes = [
     MatDatepickerModule,
     MatNativeDateModule,
     MatCheckboxModule,
-    MatRadioModule
+    MatRadioModule,
+    MatTableModule
   ],
   providers: [
     {provide:

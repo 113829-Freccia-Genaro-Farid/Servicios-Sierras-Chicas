@@ -1,0 +1,51 @@
+<div class="container overflow-y-scroll altura">
+  <div class="bg-white rounded-lg shadow-md p-4">
+    <h2 class="text-lg font-bold mb-4 text-center">Listado de Profesionistas</h2>
+    <table mat-table [dataSource]="profesionistas" class="w-full text-center">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let profesionista">{{ profesionista.id }}</td>
+      </ng-container>
+      <ng-container matColumnDef="poseeMatricula">
+        <th mat-header-cell *matHeaderCellDef>Posee Matrícula</th>
+        <td mat-cell *matCellDef="let profesionista">{{ profesionista.poseeMatricula ? 'Sí' : 'No' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="nroMatricula">
+        <th mat-header-cell *matHeaderCellDef>Número de Matrícula</th>
+        <td mat-cell *matCellDef="let profesionista">{{ profesionista.nroMatricula }}</td>
+      </ng-container>
+      <ng-container matColumnDef="comunicacionWsp">
+        <th mat-header-cell *matHeaderCellDef>Comunicación por WhatsApp</th>
+        <td mat-cell *matCellDef="let profesionista">{{ profesionista.comunicacionWsp ? 'Sí' : 'No' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="presentacion">
+        <th mat-header-cell *matHeaderCellDef>Presentación</th>
+        <td mat-cell *matCellDef="let profesionista">{{ profesionista.presentacion }}</td>
+      </ng-container>
+      <ng-container matColumnDef="profesiones">
+        <th mat-header-cell *matHeaderCellDef>Profesiones</th>
+        <td mat-cell *matCellDef="let profesionista">{{ profesionista.profesiones.join(', ') }}</td>
+      </ng-container>
+      <ng-container matColumnDef="suscrito">
+        <th mat-header-cell *matHeaderCellDef>Suscrito</th>
+        <td mat-cell *matCellDef="let profesionista">{{ profesionista.suscrito ? 'Sí' : 'No' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef>Acciones</th>
+        <td mat-cell *matCellDef="let profesionista">
+          <button mat-icon-button (click)="consultarProfesionista(profesionista)">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button mat-icon-button (click)="editarProfesionista(profesionista)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="eliminarProfesionista(profesionista)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="['id', 'poseeMatricula', 'nroMatricula', 'comunicacionWsp', 'presentacion', 'profesiones', 'suscrito', 'acciones']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['id', 'poseeMatricula', 'nroMatricula', 'comunicacionWsp', 'presentacion', 'profesiones', 'suscrito', 'acciones'];"></tr>
+    </table>
+  </div>
+</div>

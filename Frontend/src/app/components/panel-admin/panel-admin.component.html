@@ -1,14 +1,39 @@
 <div class="grid grid-cols-2 gap-4 p-4">
   <div class="bg-white rounded-lg shadow-md p-4 text-center">
-    <h2 class="text-lg font-bold mb-2">Descripción del Anuncio</h2>
+    <h2 class="text-lg font-bold mb-2">Listados</h2>
+    <mat-list role="list" class="mt-4">
+      <mat-list-item role="listitem" class="flex justify-between items-center mb-4">
+        <span>Lista de usuarios</span>
+        <button mat-mini-fab color="primary" class="ml-4" (click)="abrirListadoUsuarios()">
+          <mat-icon>list_alt</mat-icon>
+        </button>
+      </mat-list-item>
+      <mat-list-item role="listitem" class="flex justify-between items-center mb-4">
+        <span>Lista de profesionistas</span>
+        <button mat-mini-fab color="primary" class="ml-4" (click)="abrirListadoProfesionistas()">
+          <mat-icon>list_alt</mat-icon>
+        </button>
+      </mat-list-item>
+      <mat-list-item role="listitem" class="flex justify-between items-center mb-4">
+        <span>Lista de clientes</span>
+        <button mat-mini-fab color="primary" class="ml-4" (click)="abrirListadoClientes()">
+          <mat-icon>list_alt</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-list>
   </div>
+
   <div class="bg-white rounded-lg shadow-md p-4 text-center">
-    <h2 class="text-lg font-bold mb-2">Descripción del Anuncio</h2>
+    <h2 class="text-lg font-bold mb-2"></h2>
   </div>
+
   <div class="bg-white rounded-lg shadow-md p-4 text-center">
-    <h2 class="text-lg font-bold mb-2">Clicks en el Anuncio</h2>
+    <h2 class="text-lg font-bold mb-2">Profesionistas suscritos</h2>
+    <grafico-torta-subs class="flex justify-center" [tipo]="0"></grafico-torta-subs>
   </div>
+
   <div class="bg-white rounded-lg shadow-md p-4 text-center">
-    <h2 class="text-lg font-bold mb-2">Turnos durante el Mes</h2>
+    <h2 class="text-lg font-bold mb-2">Cantidad Profesionistas y Clientes</h2>
+    <grafico-torta-subs class="flex justify-center" [tipo]="1"></grafico-torta-subs>
   </div>
 </div>
