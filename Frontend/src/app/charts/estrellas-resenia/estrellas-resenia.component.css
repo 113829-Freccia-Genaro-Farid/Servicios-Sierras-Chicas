@@ -1,0 +1,8 @@
+.relative {
+  position: relative;
+}
+
+.rating-label {
+  position: absolute;
+  bottom: -1.5rem; /* Adjust this value as needed */
+}

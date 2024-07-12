@@ -13,7 +13,6 @@ import java.time.LocalDate;
 public class UsuarioDTO {
     String email;
     boolean activo;
-    @JsonFormat(pattern = "dd-MM-yyyy")
     LocalDate fechaAlta;
     String rol;
 }

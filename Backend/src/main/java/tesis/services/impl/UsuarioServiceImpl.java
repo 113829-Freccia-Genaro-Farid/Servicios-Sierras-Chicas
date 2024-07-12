@@ -9,7 +9,6 @@ import tesis.dtos.UsuarioDTO;
 import tesis.dtos.UsuarioDTOPost;
 import tesis.dtos.common.MensajeRespuesta;
 import tesis.entities.*;
-import tesis.entities.auxiliar.ProfesionEntity;
 import tesis.entities.auxiliar.RecuperacionEntity;
 import tesis.exceptions.MensajeRespuestaException;
 import tesis.repositories.*;
@@ -242,7 +241,7 @@ public class UsuarioServiceImpl implements UsuarioService {
                         for (TurnoEntity t : turnoJpaRepository.findAllByProfesionista_Id(profesionistaJpaRepository.getByPersona_Id(persona.getId()).getId())) {
                             turnoJpaRepository.deleteById(t.getId());
                         }
-                        for (ReseniaEntity r : reseniaJpaRepository.findAllByProfesionista_IdOrderByFechaResenia(profesionistaJpaRepository.getByPersona_Id(persona.getId()).getId())) {
+                        for (ReseniaEntity r : reseniaJpaRepository.findAllByProfesionista_IdOrderByFechaReseniaDesc(profesionistaJpaRepository.getByPersona_Id(persona.getId()).getId())) {
                             reseniaJpaRepository.deleteById(r.getId());
                         }
                         profesionJpaRepository.deleteProfesionesByProfesionistaId(profesionistaJpaRepository.getByPersona_Id(persona.getId()).getId());

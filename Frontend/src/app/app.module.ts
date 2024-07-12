@@ -73,6 +73,7 @@ import { ListadoUsuariosComponent } from './components/panel-admin/listados/list
 import { ListadoClientesComponent } from './components/panel-admin/listados/listado-clientes/listado-clientes.component';
 import { ListadoProfesionistasComponent } from './components/panel-admin/listados/listado-profesionistas/listado-profesionistas.component';
 import {MatTableModule} from "@angular/material/table";
+import { GraficoUsuariosNuevosComponent } from './charts/grafico-usuarios-nuevos/grafico-usuarios-nuevos.component';
 
 const routes:Routes = [
   {path: 'home', component:HomeComponent},
@@ -150,7 +151,8 @@ const routes:Routes = [
     GraficoTortaSubsComponent,
     ListadoUsuariosComponent,
     ListadoClientesComponent,
-    ListadoProfesionistasComponent
+    ListadoProfesionistasComponent,
+    GraficoUsuariosNuevosComponent
   ],
   imports: [
     BrowserModule,

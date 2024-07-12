@@ -48,11 +48,13 @@
             <p class="font-bold" *ngIf="!resenia.cliente">Usuario eliminado</p>
             <p><strong> Fecha: </strong>{{ resenia.fechaResenia}}</p>
           </div>
-          <div class="flex items-center">
-            <div class="flex">
+          <div class="flex items-center relative pb-3">
+            <span class="text-xs rating-label top-6">Insatisfecho</span>
+            <div class="flex mx-4">
               <mat-icon *ngFor="let _ of Array(resenia.calificacion).fill(0)" svgIcon="estrella-llena"></mat-icon>
-              <mat-icon *ngFor="let _ of Array(5-resenia.calificacion).fill(0)"  svgIcon="estrella-vacia"></mat-icon>
+              <mat-icon *ngFor="let _ of Array(5 - resenia.calificacion).fill(0)" svgIcon="estrella-vacia"></mat-icon>
             </div>
+            <span class="text-xs rating-label top-6 ml-28">Satisfecho</span>
           </div>
           <div class="bg-gray-100 p-4 rounded-lg mt-2 text-black">
             <p>{{ resenia.descripcion }}</p>
@@ -71,13 +73,15 @@
       <form [formGroup]="reseniaForm">
         <div class="mb-4">
           <label class="font-bold">Calificación:</label>
-          <button class="flex">
+          <button class="flex pl-5">
             <mat-icon *ngFor="let star of stars; let i = index"
                       (click)="calificacion?.setValue(i + 1)"
                       [ngClass]="{'text-yellow-300': calificacion?.value > i, 'text-gray-100': calificacion?.value <= i}">
               star
             </mat-icon>
           </button>
+          <span class="text-xs">Insatisfecho</span>
+          <span class="text-xs ml-12">Satisfecho</span>
         </div>
         <div class="mb-4">
           <label class="font-bold">Descripción:</label>

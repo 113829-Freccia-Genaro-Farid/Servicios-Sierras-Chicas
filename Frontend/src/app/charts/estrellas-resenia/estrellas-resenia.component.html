@@ -1,5 +1,6 @@
-<div class="flex items-center">
-  <div class="flex">
+<div class="flex items-center relative">
+  <span class="text-xs rating-label">Insatisfecho</span>
+  <div class="flex mx-4">
     <ng-container *ngFor="let star of stars">
       <mat-icon *ngIf="star == 'filled'" svgIcon="estrella-llena"></mat-icon>
       <mat-icon *ngIf="star == 'half'" svgIcon="estrella-mitad"></mat-icon>
@@ -9,4 +10,6 @@
       <p class="p-0 m-0 font-normal">No tiene reseñas</p>
     </ng-container>
   </div>
+  <span class="text-xs rating-label ml-28">Satisfecho</span>
 </div>
+

@@ -6,14 +6,14 @@
 </mat-form-field>
 <div id="chart">
   <apx-chart
-    #chartVert
+    #grafico
     [series]="chartOptions.series!"
     [chart]="chartOptions.chart!"
-    [xaxis]="chartOptions.xaxis!"
     [dataLabels]="chartOptions.dataLabels!"
-    [grid]="chartOptions.grid!"
-    [stroke]="chartOptions.stroke!"
-    [title]="chartOptions.title!"
-    [yaxis]="chartOptions.yaxis!"
+    [plotOptions]="chartOptions.plotOptions!"
+    [responsive]="chartOptions.responsive!"
+    [xaxis]="chartOptions.xaxis!"
+    [legend]="chartOptions.legend!"
+    [fill]="chartOptions.fill!"
   ></apx-chart>
 </div>

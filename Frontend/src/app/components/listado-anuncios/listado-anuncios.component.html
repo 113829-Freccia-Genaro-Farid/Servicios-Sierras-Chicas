@@ -62,6 +62,7 @@
     <div *ngIf="profesionista.poseeMatricula" class="">
       <strong>Matrícula:</strong> {{ profesionista.nroMatricula }}
     </div>
+    <br *ngIf="!profesionista.poseeMatricula">
     <hr class="pb-3">
     <p>{{ profesionista.presentacion }}</p>
     <div class="flex flex-wrap gap-2">

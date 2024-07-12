@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit, OnDestroy{
     this.subscription = new Subscription();
 
     this.formLogin = this.fb.group({
-      email: [null, [Validators.required]], // email validator
+      email: [null, [Validators.required, Validators.email]], // email validator
       password: [null, [Validators.required]],
     });
   }

@@ -49,6 +49,7 @@ export class GraficoTurnosMesComponent implements OnInit, OnDestroy {
   private subscription: Subscription | undefined;
   turnos: Turno[] = [];
   t: TurnosMes[] = [];
+  availableYears: number[] = [];
 
   constructor(private turnosService: TurnosService,
               private profesionistaService: ProfesionistasService,
@@ -79,9 +80,7 @@ export class GraficoTurnosMesComponent implements OnInit, OnDestroy {
         colors: ["transparent"]
       },
       xaxis: {
-        categories: [
-          "Ene", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dic"
-        ],
+        categories: [],
         title: {
           text: "Mes"
         }
@@ -153,18 +152,83 @@ export class GraficoTurnosMesComponent implements OnInit, OnDestroy {
     // Ordenar por año y luego por mes
     this.t.sort((a, b) => (a.anio - b.anio) || (a.numMes - b.numMes));
 
+    // Obtener años disponibles
+    this.availableYears = Array.from(new Set(this.t.map(item => item.anio))).sort((a, b) => b - a);
+
     // Actualizar datos del gráfico
-    this.chartOptions.series = [{
-      name: "Turnos",
-      data: this.t.map(item => item.cant)
-    }];
-    this.chartOptions.xaxis = {
-      categories: this.t.map(item => `${item.mes}/${item.anio}`)
-    };
+    //this.updateChartData();
+  }
+
+  private updateChartData(): void {
+    if (this.chart && this.chartOptions.xaxis && this.chartOptions.series) {
+      const categories = this.t.map(item => `${item.mes}/${item.anio}`);
+      const data = this.t.map(item => item.cant);
+
+      this.chartOptions.xaxis.categories = categories;
+      this.chartOptions.series[0].data = data;
+
+      this.chart?.updateOptions({
+        xaxis: {
+          categories: categories,
+          title: {
+            text: 'Mes'
+          }
+        },
+        series: [{
+          data: data
+        }]
+      });
+
+      setTimeout(() => (window as any).dispatchEvent(new Event('resize')), 1);
+    }
   }
 
   private getNombreMes(mes: number): string {
     const meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
     return meses[mes];
+  }
+
+  onYearChange(selectedYear: number): void {
+    // Reiniciar los datos originales del gráfico
+    this.t = [];
+    this.updateChartData();
+
+    // Filtrar los datos por el año seleccionado
+    const filteredData = this.turnos.filter(turno => {
+      const fecha = new Date(turno.fechaTurno);
+      return fecha.getFullYear() === selectedYear;
+    });
+
+    // Mapear y actualizar los datos filtrados
+    const turnosPorMesAnio: { [key: string]: number } = {};
+
+    filteredData.forEach(turno => {
+      const fecha = new Date(turno.fechaTurno);
+      const mes = fecha.getMonth();
+      const anio = fecha.getFullYear();
+      const key = `${anio}-${mes}`;
+
+      if (turnosPorMesAnio[key]) {
+        turnosPorMesAnio[key]++;
+      } else {
+        turnosPorMesAnio[key] = 1;
+      }
+    });
+
+    this.t = Object.keys(turnosPorMesAnio).map(key => {
+      const [anio, mes] = key.split('-').map(Number);
+      return {
+        numMes: mes,
+        mes: this.getNombreMes(mes),
+        anio: anio,
+        cant: turnosPorMesAnio[key]
+      };
+    });
+
+    // Ordenar por año y luego por mes
+    this.t.sort((a, b) => (a.anio - b.anio) || (a.numMes - b.numMes));
+
+    // Actualizar datos del gráfico con los datos filtrados
+    this.updateChartData();
   }
 }
