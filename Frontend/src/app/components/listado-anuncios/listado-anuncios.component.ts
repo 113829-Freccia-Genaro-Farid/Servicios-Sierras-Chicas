@@ -45,7 +45,7 @@ export class ListadoAnunciosComponent implements OnInit,OnDestroy{
       ciudades: [[]]
     });
     this.filtrosForm.controls['categorias'].valueChanges.subscribe((value) => {
-      if (this.categoriasControl?.value.length == 1){
+      if (this.categoriasControl?.value.length > 0){
         this.cargarProfesiones(value);
       }else{
         this.profesiones = [];
@@ -99,11 +99,11 @@ export class ListadoAnunciosComponent implements OnInit,OnDestroy{
     this.pagedItems = this.profesionistas.slice(startIndex, endIndex);
   }
 
-  cargarProfesiones(value:number){
+  cargarProfesiones(value:number[]){
     this.subscription?.add(
-      this.auxiliaresService.getProfesionesByCategoria(value).subscribe({
+      this.auxiliaresService.getProfesiones().subscribe({
         next:(response)=>{
-          this.profesiones = response;
+          this.profesiones = response.filter(profesion => value.includes(profesion.idCategoria));
         }
       })
     )
@@ -131,6 +131,7 @@ export class ListadoAnunciosComponent implements OnInit,OnDestroy{
         next:(response)=>{
           this.profesionistas = response;
           this.updatePagedItems();
+          this.obtenerPromedios();
         },
         error:() => {
           alert('Error al filtrar los profesionistas');

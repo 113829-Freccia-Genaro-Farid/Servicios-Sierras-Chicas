@@ -75,8 +75,8 @@ public class ProfesionistaServiceImpl implements ProfesionistaService {
 
         List<ProfesionistaEntity> filteredList = entityList.stream()
                 .filter(profesionista -> (nombreApellido == null || nombreApellido.isEmpty() || normalizar(profesionista.getPersona().getNombre()).contains(normalizar(nombreApellido)) || normalizar(profesionista.getPersona().getApellido()).contains(normalizar(nombreApellido))))
-                .filter(profesionista -> categorias == null || categorias.isEmpty() || categorias.stream().allMatch(categoria -> profesionista.getProfesiones().stream().anyMatch(p -> p.getCategoria().getId().equals(categoria))))
-                .filter(profesionista -> profesiones == null || profesiones.isEmpty() || profesiones.stream().allMatch(p -> profesionista.getProfesiones().stream().anyMatch(profesion -> profesion.getId().equals(p))))
+                .filter(profesionista -> categorias == null || categorias.isEmpty() || categorias.stream().anyMatch(categoria -> profesionista.getProfesiones().stream().anyMatch(p -> p.getCategoria().getId().equals(categoria))))
+                .filter(profesionista -> profesiones == null || profesiones.isEmpty() || profesiones.stream().anyMatch(p -> profesionista.getProfesiones().stream().anyMatch(profesion -> profesion.getId().equals(p))))
                 .filter(profesionista -> ciudades == null || ciudades.isEmpty() || ciudades.stream().anyMatch(ciudad -> profesionista.getPersona().getCiudad().getId().equals(ciudad))).toList();
         List<ProfesionistaDTO> lst = mapearListaProfesionistas(filteredList);
         lst.sort(Comparator.comparing(ProfesionistaDTO::isSuscrito).reversed());

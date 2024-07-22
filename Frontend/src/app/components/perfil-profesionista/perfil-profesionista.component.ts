@@ -78,7 +78,7 @@ export class PerfilProfesionistaComponent implements OnInit,OnDestroy{
     this.subscription = new Subscription();
 
     this.reseniaForm = this.fb.group({
-      descripcion: ['', Validators.required],
+      descripcion: ['', [Validators.required, Validators.maxLength(200)]],
       calificacion: [0, [Validators.required, Validators.min(1)]]
     });
 
