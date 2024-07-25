@@ -67,6 +67,10 @@ export class VerticalBarChartComponent implements OnInit, OnDestroy {
       stroke: {
         curve: "straight"
       },
+      title: {
+        text: "Clicks en el anuncio por mes",
+        align: "center"
+      },
       grid: {
         row: {
           colors: ["#f3f3f3", "transparent"],

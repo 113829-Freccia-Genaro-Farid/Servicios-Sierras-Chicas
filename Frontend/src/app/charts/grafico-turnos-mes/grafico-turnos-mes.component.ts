@@ -10,7 +10,7 @@ import {
   ApexStroke,
   ApexXAxis,
   ApexFill,
-  ApexTooltip
+  ApexTooltip, ApexTitleSubtitle
 } from "ng-apexcharts";
 import { Subscription } from "rxjs";
 import { Turno } from "../../models/turno";
@@ -21,6 +21,7 @@ import { UsuarioService } from "../../services/usuariosService/usuario.service";
 export type ChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
+  title: ApexTitleSubtitle;
   dataLabels: ApexDataLabels;
   plotOptions: ApexPlotOptions;
   yaxis: ApexYAxis;
@@ -64,6 +65,10 @@ export class GraficoTurnosMesComponent implements OnInit, OnDestroy {
       chart: {
         type: "bar",
         height: 350
+      },
+      title: {
+        text: "Turnos por mes",
+        align: "center"
       },
       plotOptions: {
         bar: {

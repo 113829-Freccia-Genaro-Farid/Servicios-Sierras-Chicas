@@ -8,7 +8,7 @@ import {
   ApexResponsive,
   ApexXAxis,
   ApexLegend,
-  ApexFill
+  ApexFill, ApexTitleSubtitle
 } from "ng-apexcharts";
 import { UsuarioService } from "../../services/usuariosService/usuario.service";
 import { Usuario } from "../../models/usuario";
@@ -22,6 +22,7 @@ export type ChartOptions = {
   responsive: ApexResponsive[];
   xaxis: ApexXAxis;
   legend: ApexLegend;
+  title: ApexTitleSubtitle;
   fill: ApexFill;
 };
 
@@ -64,6 +65,10 @@ export class GraficoUsuariosNuevosComponent implements OnInit, OnDestroy {
           }
         }
       ],
+      title: {
+        text: "Clientes/Profesionistas nuevos por mes",
+        align: "center"
+      },
       plotOptions: {
         bar: {
           horizontal: false
