@@ -9,7 +9,7 @@
       </dui-accordion-body>
     </dui-accordion-expansion>
     <!-- Pregunta 4 -->
-    <dui-accordion-expansion className= "divide-y-2 divide-green-800">
+    <dui-accordion-expansion className= "divide-y-2 divide-green-800" *ngIf="esProf()">
       <dui-accordion-header [showIcon]="true" title="¿Cómo puedo suscribirme?"></dui-accordion-header>
       <dui-accordion-body className="bg-green-700 text-white">
         La opcion de suscribirse es solo para profesionistas para poder promocionar su anuncio.
@@ -28,7 +28,7 @@
       <dui-accordion-header [showIcon]="true" title="¿Qué medios de pago aceptan?"></dui-accordion-header>
       <dui-accordion-body className="bg-green-700 text-white">
         Aceptamos todos los medios de pago que permita la plataforma Mercado Pago.
-        Puedes consultarlos <a href="https://www.mercadopago.com.ar/ayuda/medios-de-pago-cuotas-promociones_264">aqui</a>.
+        Puedes consultarlos <a href="https://www.mercadopago.com.ar/ayuda/Como-pa-gar-tu-compra_923">aqui</a>.
       </dui-accordion-body>
     </dui-accordion-expansion>
     <!-- Pregunta 5 -->

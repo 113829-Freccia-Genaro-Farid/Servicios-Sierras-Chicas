@@ -4,6 +4,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {DialogGenericoComponent} from "../ventanas/dialog-generico/dialog-generico.component";
 import {UsuarioService} from "../../services/usuariosService/usuario.service";
 import {Router} from "@angular/router";
+import {Roles} from "../../models/Auxiliares/roles";
 
 @Component({
   selector: 'preguntas-frecuentes',
@@ -81,4 +82,19 @@ export class PreguntasFrecuentesComponent implements OnInit, OnDestroy{
       this.router.navigate(['/login'])
     }
   }
+
+  esProf():boolean{
+    if(this.usuarioService.estaLogueado()){
+      if(this.usuarioService.rolUsuario() == Roles.PROFESIONISTA){
+        return true;
+      }
+      else{
+        return false;
+      }
+    }else{
+      return false;
+    }
+  }
+
+  protected readonly Roles = Roles;
 }
