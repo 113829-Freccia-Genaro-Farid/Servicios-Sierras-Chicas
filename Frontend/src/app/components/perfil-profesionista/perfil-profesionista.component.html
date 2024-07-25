@@ -3,7 +3,7 @@
     <div class="w-1/2">
       <div class="flex">
         <h2 class="text-2xl font-bold mb-4">{{ profesionista.persona.apellido }}, {{ profesionista.persona.nombre }}</h2>
-        <div *ngIf="profesionista.comunicacionWsp" class="ml-12">
+        <div class="ml-12">
           <a
             type="button"
             href="https://wa.me/{{profesionista.persona.telefono1}}"
@@ -25,6 +25,10 @@
       <div class="mb-4">
         <p class="font-bold">Matrícula:</p>
         <p>{{ profesionista.poseeMatricula ? profesionista.nroMatricula : 'No tiene matrícula' }}</p>
+      </div>
+      <div class="mb-4">
+        <p class="font-bold">Telefono:</p>
+        <p>+54{{ profesionista.persona.telefono1 }}</p>
       </div>
       <h3 class="text-xl font-bold mb-2">Profesiones</h3>
       <div class="flex flex-wrap gap-2">
