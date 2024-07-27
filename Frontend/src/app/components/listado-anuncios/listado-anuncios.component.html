@@ -72,5 +72,8 @@
     </div>
     <button mat-button color="primary" (click)="clickAnuncio(profesionista.id)">Ir al perfil</button>
   </div>
+  <div *ngIf="pagedItems.length == 0">
+    <h1 class="text-center">No se encontraron profesionistas</h1>
+  </div>
   <mat-paginator #paginator [length]="profesionistas.length" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25, 100]" (page)="onPageChange($event)"></mat-paginator>
 </div>
